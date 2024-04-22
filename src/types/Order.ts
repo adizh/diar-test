@@ -1,0 +1,20 @@
+export type AwaitingOrder = {
+  userId: string;
+  userName: string;
+  userPhone: string;
+  orderNumber: number;
+  dishesCount: number;
+  foods: string;
+  address: string;
+  houseNumber: string;
+  kvOffice: string;
+  intercom: string;
+  floor: string;
+  entrance: string;
+  comment: string;
+  paymentMethod: string;
+  price: number;
+  timeRequest: string;
+  courierId: string;
+  status: string;
+};

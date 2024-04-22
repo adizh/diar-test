@@ -1,0 +1,11 @@
+@mixin centerBlock($margin: 10px) {
+  margin: $margin auto;
+}
+
+@mixin flex($direction, $justify, $align, $gap: 10px) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}

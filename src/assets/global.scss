@@ -1,0 +1,19 @@
+@import "./mixins.scss";
+.section {
+  margin: 3rem 0 2rem 1rem;
+}
+.section-header {
+  margin: 2rem 0 2rem 0;
+}
+li {
+  list-style: none;
+}
+
+.card-list {
+  @include flex(row, start, start, 1rem);
+  flex-wrap: wrap;
+}
+
+.p-panelmenu .p-panelmenu-panel .p-panelmenu-content {
+  padding: 10px;
+}

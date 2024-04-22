@@ -1,0 +1,141 @@
+<template>
+    <div class="section">
+
+        <Card class='w-25rem'>
+            <template #content>
+
+                <div class="card flex align-items-center w-full">
+                    <label for="category" class="font-semibold w-full">Select Category</label>
+                    <Dropdown v-model="selectedCategory" :options="store.getters.categoriesName" optionLabel="name"
+                        placeholder="Select a category" class="w-full md:w-14rem" id="category" />
+
+                </div>
+                <div class="flex justify-content-end mt-2" v-if="selectedCategory.name">
+                    <Button @click="confirm2()" label="Delete" severity="danger" outlined></Button>
+                </div>
+            </template>
+
+        </Card>
+
+
+
+        <Card class='w-25rem'>
+            <template #content>
+                <div class="card flex align-items-center w-full">
+                    <label for="category" class="font-semibold w-full">Select Food</label>
+                    <Dropdown v-model="selectedFood" :options="store.getters.allFoodsNames" placeholder="Select a food"
+                        class="w-full md:w-14rem" id="category" />
+
+                </div>
+                <div class="flex justify-content-end mt-2" v-if="selectedFood">
+                    <Button @click="confirmFood" label="Delete" severity="danger" outlined></Button>
+                </div>
+            </template>
+
+        </Card>
+
+        <Toast />
+        <ConfirmDialog></ConfirmDialog>
+    </div>
+</template>
+
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from 'primevue/usetoast';
+import { Category } from '@/types/Category';
+import http, { BaseUrl } from '@/http';
+import axios from 'axios';
+
+const selectedCategory = ref({} as Category)
+const store = useStore();
+const confirm = useConfirm();
+const toast = useToast();
+
+const selectedFood = ref('');
+
+const deleteFood = async () => {
+    try {
+        const response = await http({
+            method: 'delete',
+            url: `admin/delete-food`,
+            data: { name: selectedFood.value }
+        });
+        console.log('response', response);
+        if (response.status) {
+            toast.add({ severity: 'success', summary: 'Success', detail: 'Successfully deleted', life: 3000 });
+        }
+    } catch (err: any) {
+        console.log(err);
+        toast.add({ severity: 'error', summary: 'Rejected', detail: err.response.statusText, life: 3000 });
+    }
+}
+const confirmFood = () => {
+    confirm.require({
+        message: 'Do you want to delete this ' + selectedFood.value,
+        header: 'Danger Zone',
+        icon: 'pi pi-info-circle',
+        rejectLabel: 'Cancel',
+        acceptLabel: 'Delete',
+        rejectClass: 'p-button-secondary p-button-outlined',
+        acceptClass: 'p-button-danger',
+        accept: () => {
+            deleteFood()
+            //  toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
+
+        },
+        reject: () => {
+            toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        }
+    });
+}
+const confirm2 = () => {
+    confirm.require({
+        message: 'Do you want to delete this ' + selectedCategory.value.name,
+        header: 'Danger Zone',
+        icon: 'pi pi-info-circle',
+        rejectLabel: 'Cancel',
+        acceptLabel: 'Delete',
+        rejectClass: 'p-button-secondary p-button-outlined',
+        acceptClass: 'p-button-danger',
+        accept: () => {
+            deleteCategory()
+            //  toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
+
+        },
+        reject: () => {
+            toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        }
+    });
+};
+
+const deleteCategory = async () => {
+    try {
+        const response = await http({
+            method: 'delete',
+            data: { name: selectedCategory.value.name },
+            url: 'admin/delete-category'
+        })
+        if (response.status === 200) {
+            toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Category deleted' });
+        }
+
+    } catch (err: any) {
+        console.log(err);
+        toast.add({ severity: 'error', summary: 'Rejected', detail: err.response.statusText });
+    }
+}
+onMounted(() => {
+    store.dispatch('getAllCategoryNames')
+})
+
+</script>
+
+<style scoped lang="scss">
+@import '../../assets/mixins.scss';
+
+.section {
+    @include flex(row, space-around, start)
+}
+</style>
