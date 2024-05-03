@@ -23,6 +23,7 @@ const store: Store<State> = createStore({
         state.categoriesName = response.data.map((item: any) => item.Category);
         state.allFoodsNames = response.data
           .map((item: any) => item.Foods?.map((food: any) => food.name))
+
           .filter((eachFood: any) => Boolean(eachFood))
           .flat();
       } catch (err) {
@@ -77,6 +78,11 @@ const store: Store<State> = createStore({
     },
     allFoodsNames(state: State) {
       return state.allFoodsNames;
+    },
+    allFoodsNamesObj(state:State){
+return state.allFoodsNames.map((item)=>{
+  return {name:item}
+})
     },
 
     allContainers(state) {
