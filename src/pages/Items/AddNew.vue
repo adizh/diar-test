@@ -195,16 +195,6 @@ const addContainer = async () => {
 const onUpload = async (event: any) => {
     console.log('event onUpload', event)
     uploadFile.value = event.target.files[0];
-
-    // console.log('fd', fd);
-    // const response = await http.post('admin/add-food', {
-    //     name: 'test',
-    //     categoryName: 'TEST',
-    //     price: 43,
-    //     weight: 23,
-    //     file: fd
-    // });
-    // console.log('response onUpload', response)
 }
 
 const addFood = async () => {
@@ -225,15 +215,7 @@ const addFood = async () => {
         formData.append('iDCTMax', foodiDCTMax.value);
         formData.append('containerName', selectedContainerName.value.name);
         formData.append('containerCount', foodContainerCount.value);
-        // const body = {
-        //     name: foodName.value,
-        //     categoryName: selectedCategory.value?.name,
-        //     price: foodPrice.value,
-        //     weight: foodWeight.value,
-        //     file: formData
-        // }
-        //  console.log('body', body);
-
+    
         const response = await http.post('admin/add-food', formData);
         console.log('response', response);
         if (response.status === 200) {

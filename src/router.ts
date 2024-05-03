@@ -18,6 +18,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/pages/Orders/Awaiting.vue"),
       },
       {
+        path: "/news",
+        name: "News",
+        component: () => import("@/pages/News.vue"),
+      },
+      {
+        path: "/sales",
+        name: "Sales",
+        component: () => import("@/pages/Sales.vue"),
+      },
+      {
         path: "/awaiting-orders-pickup",
         name: "AwaitinPickup",
         component: () => import("@/pages/Orders/AwaitingPickup.vue"),

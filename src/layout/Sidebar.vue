@@ -110,6 +110,36 @@ const items = ref([
         ]
     },
     {
+        label: 'Новости',
+
+        items: [
+            {
+                label: 'Новости',
+                //   icon: 'pi pi-print',
+                command: () => {
+                    router.push('/news')
+                    // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
+                }
+            },
+
+        ]
+    },
+    {
+        label: 'Распродажа',
+
+        items: [
+            {
+                label: 'Распродажи',
+                //   icon: 'pi pi-print',
+                command: () => {
+                    router.push('/sales')
+                    // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
+                }
+            },
+
+        ]
+    },
+    {
         label: 'Добавить',
         icon: 'pi pi-plus',
         items: [
