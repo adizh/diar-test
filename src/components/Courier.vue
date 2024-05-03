@@ -1,10 +1,10 @@
 <template>
     <Card>
-        <template #title>Courier Name: {{ item?.username }}</template>
+        <template #title>Имя курьера: {{ item?.username }}</template>
         <template #content>
             <p class="m-0 flex flex-column g-3">
-                <span>Email :{{ item?.email }}</span>
-                <span class="mt-2">Phone :{{ item?.phone }}</span>
+                <span>Почта :{{ item?.email }}</span>
+                <span class="mt-2">Номер телефона :{{ item?.phone }}</span>
             </p>
         </template>
     </Card>

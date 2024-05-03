@@ -5,13 +5,13 @@
             <template #content>
 
                 <div class="card flex align-items-center w-full">
-                    <label for="category" class="font-semibold w-full">Select Category</label>
+                    <label for="category" class="font-semibold w-full">Выбрать категорию</label>
                     <Dropdown v-model="selectedCategory" :options="store.getters.categoriesName" optionLabel="name"
-                        placeholder="Select a category" class="w-full md:w-14rem" id="category" />
+                        placeholder="Выбрать категорию" class="w-full md:w-14rem" id="category" />
 
                 </div>
                 <div class="flex justify-content-end mt-2" v-if="selectedCategory.name">
-                    <Button @click="confirm2()" label="Delete" severity="danger" outlined></Button>
+                    <Button @click="confirm2()" label="Удалить" severity="danger" outlined></Button>
                 </div>
             </template>
 
@@ -22,13 +22,13 @@
         <Card class='w-25rem'>
             <template #content>
                 <div class="card flex align-items-center w-full">
-                    <label for="category" class="font-semibold w-full">Select Food</label>
-                    <Dropdown v-model="selectedFood" :options="store.getters.allFoodsNames" placeholder="Select a food"
+                    <label for="category" class="font-semibold w-full">Выбрать еду</label>
+                    <Dropdown v-model="selectedFood" :options="store.getters.allFoodsNames" placeholder="Выбрать еду"
                         class="w-full md:w-14rem" id="category" />
 
                 </div>
                 <div class="flex justify-content-end mt-2" v-if="selectedFood">
-                    <Button @click="confirmFood" label="Delete" severity="danger" outlined></Button>
+                    <Button @click="confirmFood" label="Удалить" severity="danger" outlined></Button>
                 </div>
             </template>
 
@@ -64,11 +64,11 @@ const deleteFood = async () => {
         });
         console.log('response', response);
         if (response.status) {
-            toast.add({ severity: 'success', summary: 'Success', detail: 'Successfully deleted', life: 3000 });
+            toast.add({ severity: 'success', summary: 'Успешно', detail: 'Удалено', life: 3000 });
         }
     } catch (err: any) {
         console.log(err);
-        toast.add({ severity: 'error', summary: 'Rejected', detail: err.response.statusText, life: 3000 });
+        toast.add({ severity: 'error', summary: 'Ошибка при удалении', detail: err.response.statusText, life: 3000 });
     }
 }
 const confirmFood = () => {
@@ -86,7 +86,7 @@ const confirmFood = () => {
 
         },
         reject: () => {
-            toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+            toast.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отклонили', life: 3000 });
         }
     });
 }
@@ -105,7 +105,7 @@ const confirm2 = () => {
 
         },
         reject: () => {
-            toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+            toast.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отклонили', life: 3000 });
         }
     });
 };
@@ -118,12 +118,12 @@ const deleteCategory = async () => {
             url: 'admin/delete-category'
         })
         if (response.status === 200) {
-            toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Category deleted' });
+            toast.add({ severity: 'info', summary: 'Успешно', detail: 'Категория удалена' });
         }
 
     } catch (err: any) {
         console.log(err);
-        toast.add({ severity: 'error', summary: 'Rejected', detail: err.response.statusText });
+        toast.add({ severity: 'error', summary: 'Ошибка', detail: err.response.statusText });
     }
 }
 onMounted(() => {

@@ -1,7 +1,7 @@
 <template>
     <div class="section">
-        Awaiting orders
-        <Button label="Create order" @click="openCreateOrderModal" />
+       Заказы в ожидании
+        <Button label="Создать заказ" @click="openCreateOrderModal" />
         <Card v-if="noOrder?.length">
             <template #content>{{
             noOrder }}</template>
@@ -17,62 +17,62 @@
 
     <div class="card flex justify-content-center">
         <Dialog v-model:visible="isCreateModal" modal header="Create order" :style="{ width: '25rem' }">
-            <span class="p-text-secondary block mb-5">Creare order</span>
+            <span class="p-text-secondary block mb-5">Создать заказ</span>
             <div class="flex flex-column gap-3 mb-5">
 
-                <label for="address" class="font-semibold">Address</label>
+                <label for="address" class="font-semibold">Адрес</label>
                 <InputText id="address" class="flex-auto" autocomplete="off" v-model.trim="orderValues.address" />
             </div>
 
             <div class="flex flex-column gap-3 mb-5">
-                <label for="comment" class="font-semibold">Comment</label>
+                <label for="comment" class="font-semibold">Комментарий</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.comment" />
             </div>
 
             <div class="flex flex-column gap-3 mb-5">
-                <label for="comment" class="font-semibold">dishesCount</label>
+                <label for="comment" class="font-semibold">Кол-во еды</label>
                 <InputNumber id="comment" class="flex-auto" autocomplete="off" v-model="orderValues.dishesCount" />
             </div>
 
             <div class="flex flex-column gap-3 mb-5">
-                <label for="comment" class="font-semibold">entrance</label>
+                <label for="comment" class="font-semibold">Вход</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.entrance" />
             </div>
             <div class="flex flex-column gap-3 mb-5">
-                <label for="comment" class="font-semibold">floor</label>
+                <label for="comment" class="font-semibold">Этаж</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.floor" />
             </div>
             <div class="flex flex-column gap-3 mb-5">
-                <label for="comment" class="font-semibold">foods</label>
+                <label for="comment" class="font-semibold">Еда</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.foods" />
             </div>
             <div class="flex flex-column gap-3 mb-5">
-                <label for="comment" class="font-semibold">houseNumber</label>
+                <label for="comment" class="font-semibold">Номер квартиры</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.houseNumber" />
             </div>
             <div class="flex flex-column gap-3 mb-5">
-                <label for="comment" class="font-semibold">intercom</label>
+                <label for="comment" class="font-semibold">Внутренняя связь</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.intercom" />
             </div>
             <div class="flex flex-column gap-3 mb-5">
-                <label for="comment" class="font-semibold">kvOffice</label>
+                <label for="comment" class="font-semibold">Квартира/Офис</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.kvOffice" />
             </div>
             <div class="flex flex-column gap-3 mb-5">
-                <label for="comment" class="font-semibold">paymentMethod</label>
+                <label for="comment" class="font-semibold">Метод оплаты</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.paymentMethod" />
             </div>
 
             <div class="flex flex-column gap-3 mb-5">
-                <label for="comment" class="font-semibold">price</label>
+                <label for="comment" class="font-semibold">Цена</label>
                 <InputNumber id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.price" />
             </div>
             <div class="flex flex-column gap-3 mb-5">
-                <label for="comment" class="font-semibold">userName</label>
+                <label for="comment" class="font-semibold">Имя</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.userName" />
             </div>
             <div class="flex flex-column gap-3 mb-5">
-                <label for="comment" class="font-semibold">userPhone</label>
+                <label for="comment" class="font-semibold">Номер телефона</label>
                 <!-- <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.userPhone" /> -->
 
                 <InputMask id="phone" v-model.trim="orderValues.userPhone" mask="+996 (999) 99-99-99"
@@ -80,8 +80,8 @@
 
             </div>
             <div class="flex justify-content-end gap-2">
-                <Button type="button" label="Cancel" severity="secondary" @click='isCreateModal = false'></Button>
-                <Button type="button" label="Add" @click='createOrder'></Button>
+                <Button type="button" label="Отменить" severity="secondary" @click='isCreateModal = false'></Button>
+                <Button type="button" label="Добавить" @click='createOrder'></Button>
             </div>
         </Dialog>
     </div>

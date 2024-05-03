@@ -14,11 +14,11 @@ import { useRouter } from 'vue-router';
 const router = useRouter()
 const items = ref([
     {
-        label: 'Orders',
+        label: 'Заказы',
 
         items: [
             {
-                label: 'Awaiting orders',
+                label: 'Заказы в ожидании',
 
                 command: () => {
                     router.push('/awaiting-orders')
@@ -26,7 +26,7 @@ const items = ref([
                 }
             },
             {
-                label: 'Awaiting pick-up orders',
+                label: 'Заказы(самовывоз) в ожидании',
                 //   icon: 'pi pi-search',
                 command: () => {
                     router.push('/awaiting-orders-pickup')
@@ -34,7 +34,7 @@ const items = ref([
                 }
             },
             {
-                label: 'Cancelled',
+                label: 'Отмененные',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/cancelled-orders')
@@ -42,7 +42,7 @@ const items = ref([
                 }
             },
             {
-                label: 'Pickup cancelled',
+                label: 'Отмененные (самовывоз)',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/cancelled-orders-pickup')
@@ -50,7 +50,7 @@ const items = ref([
                 }
             },
             {
-                label: 'Closed orders',
+                label: 'Закрытые заказы',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/closed-orders')
@@ -58,7 +58,7 @@ const items = ref([
                 }
             },
             {
-                label: 'Closed orders pick-up',
+                label: 'Закрытые заказы(самовывоз)',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/closed-orders-pickup')
@@ -66,7 +66,7 @@ const items = ref([
                 }
             },
             {
-                label: 'Cooked orders',
+                label: 'Готовые заказы',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/cooked-orders')
@@ -75,7 +75,7 @@ const items = ref([
                 }
             },
             {
-                label: 'Cooked orders pick-up',
+                label: 'Готовые заказы(самовывоз)',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/cooked-orders-pickup')
@@ -84,7 +84,7 @@ const items = ref([
             },
 
             {
-                label: 'Delegated orders',
+                label: 'Делегированные заказы',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/delegated-orders')
@@ -95,11 +95,11 @@ const items = ref([
         ]
     },
     {
-        label: 'Couries',
+        label: 'Курьеры',
 
         items: [
             {
-                label: 'All couriers',
+                label: 'Курьеры',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/all-couriers')
@@ -110,27 +110,25 @@ const items = ref([
         ]
     },
     {
-        label: 'Add Items',
+        label: 'Добавить',
         icon: 'pi pi-plus',
         items: [
             {
-                label: 'Add items',
+                label: 'Добавить',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/add-items')
                     // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
                 }
             },
-
-
         ]
     },
     {
-        label: 'Update Items',
+        label: 'Обновить',
         icon: 'pi pi-plus',
         items: [
             {
-                label: 'Update items',
+                label: 'Обновить',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/update-items')
@@ -143,11 +141,11 @@ const items = ref([
     },
 
     {
-        label: 'Delete',
+        label: 'Удалить',
         icon: 'pi pi-trash',
         items: [
             {
-                label: 'Delete items',
+                label: 'Удалить',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/delete-items')

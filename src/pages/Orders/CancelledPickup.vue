@@ -1,6 +1,6 @@
 <template>
     <div class="section">
-        Cancelled orders pick-up
+       Отмененные заказы самовывоз
         <Card v-if="noOrder?.length">
 
             <template #content>{{

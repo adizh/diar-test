@@ -1,12 +1,12 @@
 <template>
     <div>
-        <Button label="Add food for order" @click="addFoodForOrder" />
+        <Button label="Добавить еду в заказ" @click="addFoodForOrder" />
 
-        <Button label="Add food for pick-up orders" @click="addFoodForOrderPickup" />
+        <Button label="Добавить еду в самовывоз" @click="addFoodForOrderPickup" />
 
-        <Button label="Cancel order" @click="openCancelOrder" severity="warning" />
+        <Button label="Отменить заказ" @click="openCancelOrder" severity="warning" />
 
-        <Button label="Cancel pick-up order" @click="openCancelOrderPickup" severity="warning" />
+        <Button label="Отменить самовывоз" @click="openCancelOrderPickup" severity="warning" />
 
 
         <div class="card flex justify-content-center">
@@ -14,19 +14,19 @@
                 <span class="p-text-secondary block mb-5">{{ header }}</span>
 
                 <div class="flex flex-column gap-3 mb-5">
-                    <label for="email" class="font-semibold">Food name</label>
+                    <label for="email" class="font-semibold">Название еды</label>
                     <Dropdown v-model="selectedFoodName" :options="store.getters.allFoodsNames"
-                        placeholder="Select a food" class="w-full md:w-14rem" id="category" />
+                        placeholder="Выбрать еду" class="w-full md:w-14rem" id="category" />
                     <!-- <InputText id="email" class="flex-auto" autocomplete="off" v-model.trim="name" /> -->
                 </div>
 
                 <div class="flex flex-column gap-3 mb-5">
-                    <label for="email" class="font-semibold">Order number </label>
+                    <label for="email" class="font-semibold">Номер заказа </label>
                     <InputNumber id="email" class="flex-auto" autocomplete="off" v-model.trim="orderNumber" />
                 </div>
                 <div class="flex justify-content-end gap-2">
-                    <Button type="button" label="Cancel" severity="secondary" @click='isModalVisible = false'></Button>
-                    <Button type="button" label="Add" @click="submitFoodOrder"></Button>
+                    <Button type="button" label="Отменить" severity="secondary" @click='isModalVisible = false'></Button>
+                    <Button type="button" label="Добавить" @click="submitFoodOrder"></Button>
                 </div>
             </Dialog>
         </div>
@@ -39,13 +39,13 @@
 
 
                 <div class="flex flex-column gap-3 mb-5">
-                    <label for="email" class="font-semibold">Order number</label>
+                    <label for="email" class="font-semibold">Номер заказа</label>
                     <InputNumber id="email" class="flex-auto" autocomplete="off" v-model.trim="orderNumberCancel" />
                 </div>
                 <div class="flex justify-content-end gap-2">
-                    <Button type="button" label="Cancel" severity="secondary"
+                    <Button type="button" label="Отменить" severity="secondary"
                         @click='isModalVisibleCancel = false'></Button>
-                    <Button type="button" label="Add" @click="addOrderCancel"></Button>
+                    <Button type="button" label="Добавить" @click="addOrderCancel"></Button>
                 </div>
             </Dialog>
         </div>
@@ -84,7 +84,7 @@ const sendReqFoorOrder = async (type: string) => {
             console.log('response add food for order', response)
         } catch (err: any) {
             console.log(err)
-            toast.add({ severity: 'error', summary: 'Error adding the food', detail: err.response.data.message });
+            toast.add({ severity: 'error', summary:'Ошибка при создании еды', detail: err.response.data.message });
 
 
         } finally {
@@ -97,18 +97,18 @@ const sendReqFoorOrder = async (type: string) => {
 
 const addFoodForOrder = async () => {
     isModalVisible.value = true;
-    header.value = 'Add food for order';
+    header.value = 'Добавить еду в заказ';
     // sendReqFoorOrder('add-food-for-order')
 }
 
 const addFoodForOrderPickup = async () => {
     isModalVisible.value = true
-    header.value = 'Add food for pick-up order';
+    header.value = 'Добавить еду в самовывоз';
     // sendReqFoorOrder('add-food-for-pickup-order')
 }
 
 const submitFoodOrder = () => {
-    if (header.value === 'Add food for order') {
+    if (header.value === 'Добавить еду в заказ') {
         sendReqFoorOrder('add-food-for-order')
     } else {
         sendReqFoorOrder('add-food-for-pickup-order')
@@ -118,16 +118,16 @@ const submitFoodOrder = () => {
 
 const openCancelOrder = () => {
     isModalVisibleCancel.value = true
-    cancelHeader.value = 'Cancel order'
+    cancelHeader.value = 'Отменить заказ'
 }
 
 const openCancelOrderPickup = () => {
     isModalVisibleCancel.value = true
-    cancelHeader.value = 'Cancel order pick-up'
+    cancelHeader.value = 'Отменить самовывоз'
 }
 
 const addOrderCancel = () => {
-    if (cancelHeader.value === 'Cancel order') {
+    if (cancelHeader.value === 'Отменить заказ') {
         cancelOrderSubmit('cancel-order')
     } else {
         cancelOrderSubmit('cancel-pickup-order')
@@ -139,12 +139,12 @@ const cancelOrderSubmit = async (type: string) => {
             const response = await http.post(`admin/${type}`, { orderNumber: orderNumberCancel.value });
             console.log('response', response)
             if (response.status === 200) {
-                toast.add({ severity: 'success', summary: 'Successfully cancelled', detail: response.data.message });
+                toast.add({ severity: 'success', summary: 'Успешно отменен', detail: response.data.message });
 
             }
         } catch (err: any) {
             console.log(err);
-            toast.add({ severity: 'error', summary: 'Error adding the food', detail: err.response.data.message });
+            toast.add({ severity: 'error', summary: 'Ошибка при добавлении еды', detail: err.response.data.message });
         } finally {
             isModalVisibleCancel.value = false
             orderNumberCancel.value = 0

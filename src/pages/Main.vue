@@ -1,6 +1,6 @@
 <template>
     <div class='section'>
-        Main Page
+  Главная страница
     </div>
 </template>
 

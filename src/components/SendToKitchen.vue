@@ -1,7 +1,7 @@
 <template>
     <div>
-        <Button label="Send order to kitchen" severity="info" @click="sendOrder" />
-        <Button label="Send pick-up order to kitchen" severity="info" @click="sendPickup" />
+        <Button label="Отправить заказ на кухню" severity="info" @click="sendOrder" />
+        <Button label="Отправить заказ(самовывоз) на кухню" severity="info" @click="sendPickup" />
     </div>
 
 
@@ -12,12 +12,12 @@
 
 
             <div class="flex flex-column gap-3 mb-5">
-                <label for="email" class="font-semibold">Order number</label>
+                <label for="email" class="font-semibold">Номер заказа</label>
                 <InputNumber id="email" class="flex-auto" autocomplete="off" v-model.trim="orderNumber" />
             </div>
             <div class="flex justify-content-end gap-2">
-                <Button type="button" label="Cancel" severity="secondary" @click='isModalVisible = false'></Button>
-                <Button type="button" label="Add" @click="submitOrder"></Button>
+                <Button type="button" label="Отменить" severity="secondary" @click='isModalVisible = false'></Button>
+                <Button type="button" label="Добавить" @click="submitOrder"></Button>
             </div>
         </Dialog>
     </div>
@@ -34,11 +34,11 @@ const orderNumber = ref(0)
 
 const sendOrder = () => {
     isModalVisible.value = true
-    header.value = 'Send order'
+    header.value = 'Отравить заказ'
 }
 const sendPickup = () => {
     isModalVisible.value = true
-    header.value = 'Send pick-up order'
+    header.value = 'Отправить заказ(самовывоз)'
 }
 const toast = useToast()
 const sendRequest = async (type: string) => {
@@ -47,11 +47,11 @@ const sendRequest = async (type: string) => {
             const response = await http.post(`admin/${type}`, { orderNumber: orderNumber.value });
             console.log('response', response)
             if (response.status === 200) {
-                toast.add({ severity: 'success', summary: 'Success', detail: 'Sucessfully added the order' });
+                toast.add({ severity: 'success', summary: 'Успешно', detail: 'Заказ отправлен' });
             }
         } catch (err: any) {
             console.log(err)
-            toast.add({ severity: 'error', summary: 'Error adding the order', detail: err.response.data.message });
+            toast.add({ severity: 'error', summary: 'Ошибка при отправлении заказа', detail: err.response.data.message });
         } finally {
             isModalVisible.value = false;
             orderNumber.value = 0
@@ -60,7 +60,7 @@ const sendRequest = async (type: string) => {
 }
 
 const submitOrder = () => {
-    if (header.value === 'Send order') {
+    if (header.value ==='Отравить заказ') {
         sendRequest('send-to-kitchen')
     } else {
         sendRequest('send-to-kitchen-pickup-order')

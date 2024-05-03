@@ -1,6 +1,6 @@
 vbas3<template>
     <div class="section">
-        Cooked orders pickup
+        Самовывоз готовых заказов
         <Card v-if="noOrder?.length">
 
             <template #content>{{

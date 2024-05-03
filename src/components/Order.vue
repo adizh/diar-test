@@ -1,21 +1,21 @@
 <template>
     <Card>
-        <template #title>User Name: {{ order?.userName }}</template>
+        <template #title>ФИО: {{ order?.userName }}</template>
         <template #content>
             <p class="m-0 order-info">
-                <span>Price :{{ order?.price }}</span>
-                <span>User phone :{{ order?.userPhone }}</span>
-            <div class="order-info">Address :{{ order?.address }}
-                <span>Entrance:{{ order.entrance }}</span>
-                <span>Floor:{{ order?.floor }}</span>
-                <span>House number:{{ order?.houseNumber }}</span>
-                <span>Intercom:{{ order?.intercom }}</span>
-                <span>KvOffice:{{ order?.kvOffice }}</span>
+                <span>Цена :{{ order?.price }}</span>
+                <span>Номер телефона :{{ order?.userPhone }}</span>
+            <div class="order-info">Адрес :{{ order?.address }}
+                <span>Вход:{{ order.entrance }}</span>
+                <span>Этаж:{{ order?.floor }}</span>
+                <span>Номер квартиры:{{ order?.houseNumber }}</span>
+                <span>Внутренняя связь:{{ order?.intercom }}</span>
+                <span>Квартира/Офис:{{ order?.kvOffice }}</span>
 
 
             </div>
-            <span>Payment method:{{ order?.paymentMethod }}</span>
-            <span>Requested time:{{ order?.timeRequest }}</span>
+            <span>Метод оплаты:{{ order?.paymentMethod }}</span>
+            <span>Запрошенное время:{{ order?.timeRequest }}</span>
             </p>
         </template>
 

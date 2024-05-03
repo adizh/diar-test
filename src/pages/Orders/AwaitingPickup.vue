@@ -1,6 +1,6 @@
 <template>
     <div class="section">
-        Awaiting pick-up orders
+        Заказы в ожидании на самовывоз
         <Card v-if="noOrder?.length">
             <template #content>{{
             noOrder }}</template>

@@ -1,6 +1,6 @@
 vbas3<template>
     <div class="section">
-        Closed orders
+        Закрытые заказы
         <Card v-if="noOrder?.length">
 
             <template #content>{{

@@ -1,10 +1,10 @@
 <template>
     <div class="section">
-        <div class="section-header">Add new items</div>
+        <div class="section-header">Добавить</div>
         <div class="add-items-block">
-            <Button label="Add category" @click='openCategoryModal' />
-            <Button label="Add container" @click='openContainerModal' />
-            <Button label="Add Food" @click="openFood" />
+            <Button label="Добавить категорию" @click='openCategoryModal' />
+            <Button label="Добавить контейнер" @click='openContainerModal' />
+            <Button label="Добавить еду" @click="openFood" />
             <AddFoodsOrder />
             <SendToKitchen />
         </div>
@@ -12,63 +12,63 @@
 
 
     <div class="card flex justify-content-center">
-        <Dialog v-model:visible="isModalVisible" modal header="Add category" :style="{ width: '25rem' }">
-            <span class="p-text-secondary block mb-5">Add category</span>
+        <Dialog v-model:visible="isModalVisible" modal header="Добавить категорию" :style="{ width: '25rem' }">
+            <span class="p-text-secondary block mb-5">Добавить категорию</span>
 
             <div class="flex flex-column gap-3 mb-5">
-                <label for="email" class="font-semibold">Category name</label>
+                <label for="email" class="font-semibold">Название категории</label>
                 <InputText id="email" class="flex-auto" autocomplete="off" v-model.trim="categoryName" />
             </div>
             <div class="flex justify-content-end gap-2">
-                <Button type="button" label="Cancel" severity="secondary" @click='isModalVisible = false'></Button>
-                <Button type="button" label="Add" @click='addNewCategory'></Button>
+                <Button type="button" label="Отменить" severity="secondary" @click='isModalVisible = false'></Button>
+                <Button type="button" label="Добавить" @click='addNewCategory'></Button>
             </div>
         </Dialog>
     </div>
     <div class="card flex justify-content-center">
-        <Dialog v-model:visible="isModalContainer" modal header="Add container" :style="{ width: '25rem' }">
-            <span class="p-text-secondary block mb-5">Add container</span>
+        <Dialog v-model:visible="isModalContainer" modal header="Добавить контейнер" :style="{ width: '25rem' }">
+            <span class="p-text-secondary block mb-5">Добавить контейнер</span>
 
             <div class="flex flex-column gap-3 mb-5">
-                <label for="email" class="font-semibold">Container name</label>
+                <label for="email" class="font-semibold">Название контейнера</label>
                 <InputText id="email" class="flex-auto" autocomplete="off" v-model.trim="containerName" />
             </div>
             <div class="flex flex-column gap-3 mb-5">
-                <label for="price" class="font-semibold">Container price</label>
+                <label for="price" class="font-semibold">Цена</label>
                 <InputNumber id="price" class="flex-auto" autocomplete="off" v-model="containerPrice" />
             </div>
 
             <div class="flex flex-column gap-3 mb-5">
-                <label for="idt" class="font-semibold">Container iDCTMax</label>
+                <label for="idt" class="font-semibold">iDCTMax</label>
                 <InputNumber id="idt" class="flex-auto" autocomplete="off" v-model="containeriDCTMax" />
             </div>
             <div class="flex justify-content-end gap-2">
-                <Button type="button" label="Cancel" severity="secondary" @click='isModalContainer = false'></Button>
-                <Button type="button" label="Add" @click='addContainer'></Button>
+                <Button type="button" label="Отменить" severity="secondary" @click='isModalContainer = false'></Button>
+                <Button type="button" label="Добавить" @click='addContainer'></Button>
             </div>
         </Dialog>
     </div>
 
 
     <div class="card flex justify-content-center">
-        <Dialog v-model:visible="isModalVisibleFood" modal header="Add food" :style="{ width: '25rem' }">
-            <span class="p-text-secondary block mb-5">Add food</span>
+        <Dialog v-model:visible="isModalVisibleFood" modal header="Добавить еду" :style="{ width: '25rem' }">
+            <span class="p-text-secondary block mb-5">Добавить еду</span>
             <div class="flex  align-items-center gap-3 mb-5">
-                <label for="name" class="font-semibold">Food name</label>
+                <label for="name" class="font-semibold">Название еды</label>
                 <InputText id="name" class="flex-auto" autocomplete="off" v-model.trim="foodName" />
             </div>
 
             <div class="card flex gap-3 mb-5 align-items-center">
-                <label for="category" class="font-semibold w-full">Category name</label>
+                <label for="category" class="font-semibold w-full">Название категории</label>
                 <Dropdown v-model="selectedCategory" :options="store.getters.categoriesName" optionLabel="name"
-                    placeholder="Select a category" class="w-full md:w-14rem" id="category" />
+                    placeholder="Выбрать категорию" class="w-full md:w-14rem" id="category" />
             </div>
 
 
             <div class="card flex gap-3 mb-5 align-items-center">
-                <label for="category" class="font-semibold w-full">Container name</label>
+                <label for="category" class="font-semibold w-full">Название контейнера</label>
                 <Dropdown v-model="selectedContainerName" :options="store.getters.allContainers" optionLabel="name"
-                    placeholder="Select a container" class="w-full md:w-14rem" id="category" />
+                    placeholder="Выбрать контейнер" class="w-full md:w-14rem" id="category" />
             </div>
 
             <div class="flex  align-items-center gap-3 mb-5">
@@ -76,24 +76,24 @@
                 <InputText id="iDCTMax" class="flex-auto" autocomplete="off" v-model="foodiDCTMax" />
             </div>
             <div class="flex  align-items-center gap-3 mb-5">
-                <label for="containerCount" class="font-semibold">Container count</label>
+                <label for="containerCount" class="font-semibold">Кол-во контейнеров</label>
                 <InputText id="containerCount" class="flex-auto" autocomplete="off" v-model="foodContainerCount" />
             </div>
             <div class="flex  align-items-center gap-3 mb-5">
-                <label for="price" class="font-semibold">Price</label>
+                <label for="price" class="font-semibold">Цена</label>
                 <InputText id="price" class="flex-auto" autocomplete="off" v-model.trim="foodPrice" />
             </div>
 
 
             <div class="flex  align-items-center gap-3 mb-5">
-                <label for="Weight" class="font-semibold">Weight</label>
+                <label for="Weight" class="font-semibold">Вес</label>
                 <InputText id="Weight" class="flex-auto" autocomplete="off" v-model.trim="foodWeight" />
             </div>
 
 
 
             <div class="flex  align-items-center gap-3 mb-5">
-                <label for="Weight" class="font-semibold">File</label>
+                <label for="Weight" class="font-semibold">Файл</label>
                 <input type="file" @change="($event: any) => onUpload($event)" id="uploadImage" />
                 <!-- <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000"
                     @select="($event: any) => onUpload($event)" /> -->
@@ -102,8 +102,8 @@
 
 
             <div class="flex justify-content-end gap-2">
-                <Button type="button" label="Cancel" severity="secondary" @click='isModalVisibleFood = false'></Button>
-                <Button type="button" label="Add food" @click='addFood'></Button>
+                <Button type="button" label="Отменить" severity="secondary" @click='isModalVisibleFood = false'></Button>
+                <Button type="button" label="Добавить еду" @click='addFood'></Button>
             </div>
 
         </Dialog>
@@ -159,12 +159,12 @@ const addNewCategory = async () => {
             const response = await http.post('admin/add-category', { name: categoryName.value });
             console.log('response addNewCategory', response);
             if (response.status === 200) {
-                toast.add({ severity: 'success', summary: 'Successfully added', detail: 'Add category', life: 3000 });
+                toast.add({ severity: 'success', summary: 'Успешно добавлен', detail:'Добавить категорию', life: 3000 });
             }
 
         } catch (err) {
             console.log(err);
-            toast.add({ detail: 'Error', severity: 'error' })
+            toast.add({ detail: 'Ошибка', severity: 'error' })
         } finally {
             isModalVisible.value = false
         }
@@ -180,12 +180,12 @@ const addContainer = async () => {
             });
             console.log('response addNewCategory', response);
             if (response.status === 200) {
-                toast.add({ severity: 'success', summary: 'Successfully added', detail: 'Add category', life: 3000 });
+                toast.add({ severity: 'success', summary: 'Успешно добавлен', detail: 'Добавить контейнер', life: 3000 });
             }
 
         } catch (err) {
             console.log(err);
-            toast.add({ detail: 'Error', severity: 'error' })
+            toast.add({ detail: 'Ошибка', severity: 'error' })
         } finally {
             isModalVisible.value = false
         }
@@ -237,7 +237,7 @@ const addFood = async () => {
         const response = await http.post('admin/add-food', formData);
         console.log('response', response);
         if (response.status === 200) {
-            toast.add({ severity: 'success', summary: 'Success', detail: 'Successfully added!' })
+            toast.add({ severity: 'success', summary: 'Успешно', detail: 'Еда добавлена!' })
         }
     } catch (err) {
         console.log(err)

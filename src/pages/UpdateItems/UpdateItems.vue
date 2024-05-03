@@ -1,32 +1,32 @@
 <template>
     <div class="section">
-        <Button label="Update food" severity="secondary" rounded @click="isModalVisibleFood = !isModalVisibleFood" />
+        <Button label="Обновить еду" severity="secondary" rounded @click="isModalVisibleFood = !isModalVisibleFood" />
     </div>
 
 
     <div class="card flex justify-content-center ">
-        <Dialog v-model:visible="isModalVisibleFood" modal header="Update food" :style="{ width: '25rem' }">
-            <span class="p-text-secondary block mb-5">Update food</span>
+        <Dialog v-model:visible="isModalVisibleFood" modal header="Обновить еду" :style="{ width: '25rem' }">
+            <span class="p-text-secondary block mb-5">Обновить еду</span>
             <div class="flex gap-3 mb-5 flex-column">
-                <label for="name" class="font-semibold">New food name</label>
+                <label for="name" class="font-semibold">Название новой еды</label>
                 <InputText id="name" class="flex-auto" autocomplete="off" v-model.trim="newFoodName" />
             </div>
 
             <div class="card flex gap-3 mb-5  flex-column">
-                <label for="category" class="font-semibold w-full">Old food name name</label>
+                <label for="category" class="font-semibold w-full">Старое название еды</label>
                 <!-- <Dropdown v-model="allFoodName" :options="store.getters.categoriesName" optionLabel="name"
                     placeholder="Select a category" class="w-full md:w-14rem" id="category" /> -->
             </div>
 
 
             <div class="flex   gap-3 mb-5 flex-column">
-                <label for="price" class="font-semibold">New Price</label>
+                <label for="price" class="font-semibold">Новая цена</label>
                 <InputText id="price" class="flex-auto" autocomplete="off" v-model.trim="foodPrice" />
             </div>
 
 
             <div class="flex  gap-3 mb-5 flex-column">
-                <label for="Weight" class="font-semibold">New Weight</label>
+                <label for="Weight" class="font-semibold">Новый вес</label>
                 <InputText id="Weight" class="flex-auto" autocomplete="off" v-model.trim="foodWeight" />
             </div>
 
