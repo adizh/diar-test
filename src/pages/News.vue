@@ -47,7 +47,7 @@ const newsInfo=ref('')
 const toast=useToast()
 const fetchNews=async()=>{
     try{
-const response =await http('admin/get-all-news');
+const response =await http('news/get-all-news');
 if(response.status===200){
     console.log('response get all news',response)
 }

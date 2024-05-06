@@ -78,7 +78,7 @@ const createSale=async()=>{
         formData.append('name', newsName.value);
         formData.append('description', newsInfo.value);
         formData.append('discount', saleDiscount.value);
-        const response = await http.post('admin/create-news', formData);
+        const response = await http.post('admin/create-sale', formData);
         console.log('response create createSale', response);
         if (response.status === 200) {
             toast.add({ severity: 'success', summary: 'Успешно', detail: 'Распродажа добавлена!' })
