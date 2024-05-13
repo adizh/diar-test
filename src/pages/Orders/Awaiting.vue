@@ -16,7 +16,7 @@
 
 
     <div class="card flex justify-content-center">
-        <Dialog v-model:visible="isCreateModal" modal header="Create order" :style="{ width: '25rem' }">
+        <Dialog v-model:visible="isCreateModal" modal header="Создать заказ" :style="{ width: '25rem' }">
             <span class="p-text-secondary block mb-5">Создать заказ</span>
             <div class="flex flex-column gap-3 mb-5">
 
@@ -42,10 +42,33 @@
                 <label for="comment" class="font-semibold">Этаж</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.floor" />
             </div>
+
             <div class="flex flex-column gap-3 mb-5">
                 <label for="comment" class="font-semibold">Еда</label>
-                <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.foods" />
+                <Dropdown :options="updatedFoods"
+                placeholder="Выбрать еду" class="w-full md:w-14rem" id="category"  optionLabel="name"  v-model.trim="orderValues.foods" 
+                @change="selectFood"
+                />
+                <div class="selected-food" v-if="selectedFoods?.length">
+                    <div v-for="food in selectedFoods" :key="food?.value?.id" class="each-food">
+              
+                            <div class="flex align-items-center">{{ food?.value?.name }}
+<Button label="X" severity="danger" small @click="removeFood(food.value)"/>
+
+                            </div>
+
+<div class="controls">
+ <Button label="-" @click="decreaseCount(food.value)"/>
+    <span>{{food?.value?.quantity}}</span>
+    <Button label="+"  @click="increaseCount(food.value)"/>
+</div>
+                   
+                    </div>
+                </div>
+              
+                <!-- <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.foods" /> -->
             </div>
+
             <div class="flex flex-column gap-3 mb-5">
                 <label for="comment" class="font-semibold">Номер квартиры</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.houseNumber" />
@@ -84,36 +107,67 @@
                 <Button type="button" label="Добавить" @click='createOrder'></Button>
             </div>
         </Dialog>
+        <Toast/>
     </div>
+
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref,computed } from 'vue'
 import http from '@/http';
 import { AwaitingOrder } from '@/types/Order'
+import { OrderFood,Food } from '@/types/Food'
 import { onMounted } from 'vue';
 import Order from '@/components/Order.vue';
+import { useStore } from 'vuex';
+import { useToast } from 'primevue/usetoast';
 const noOrder = ref('');
+const toast=useToast()
 const awaitingOrders = ref<AwaitingOrder[]>([])
 const isCreateModal = ref(false)
-
+const selectedFoods=ref([] as {value:Food}[])
+const store=useStore()
 const orderValues = ref({
     address: ref(''),
     comment: ref(''),
     dishesCount: ref(0),
     entrance: ref(''),
     floor: ref(''),
-    foods: ref(''),
+    foods: ref({} as OrderFood),
     houseNumber: ref(''),
     intercom: ref(''),
     kvOffice: ref(''),
     paymentMethod: ref(''),
     price: ref(0),
     userName: ref(''),
-    userPhone: ref('')
+    userPhone: ref(''),
+    sdacha:ref(0)
+})
+
+const updatedFoods=computed(()=>{
+    return store.getters.getFood.map((food:Food)=>{
+    return {...food, quantity:1}
+})
 })
 
 
+
+const removeFood =(food:Food)=>{
+    const index = selectedFoods.value.findIndex((item:{value:Food})=>item.value.id===food.id);
+    console.log('index',index)
+    if(index!==-1){
+        selectedFoods.value.splice(index,1)
+    }
+}
+
+const increaseCount=(food:Food)=>{
+food.quantity++
+}
+const decreaseCount=(food:Food)=>{
+    if(food.quantity>1){
+        food.quantity--;
+    }
+}
 const openCreateOrderModal = () => {
     isCreateModal.value = true
 }
@@ -134,48 +188,111 @@ const fetchAwaitingOrders = async () => {
         console.log(err)
     }
 }
+const selectFood =(event:any)=>{
+    console.log(event)
+    console.log(event)
+    const isExist = selectedFoods.value.findIndex((item:any)=>item.value.id===event.value.id);
+    if(isExist===-1){
+        selectedFoods.value.push(event);
+    }
+setTimeout(()=>{
+    orderValues.value.foods={ name: '',
+    price: 0,
+    quantity: 0}
+},500)
+}
 
 
 const createOrder = async () => {
+    console.log('selectedFoods',selectedFoods)
+
+    const foods= selectedFoods.value.map((item:{value:Food})=>{
+        return {name:item?.value?.name,price:item?.value?.price,quantity:item?.value?.quantity}
+    })
+    console.log('foods',foods)
     const body = {
         "address": orderValues.value.address,
         "comment": orderValues.value.comment,
         "dishesCount": orderValues.value.dishesCount,
         "entrance": orderValues.value.entrance,
         "floor": orderValues.value.floor,
-        "foods": orderValues.value.foods,
+        "foods": foods,
         "houseNumber": orderValues.value.houseNumber,
         "intercom": orderValues.value.intercom,
         "kvOffice": orderValues.value.kvOffice,
         "paymentMethod": orderValues.value.paymentMethod,
         "price": orderValues.value.price,
         "userName": orderValues.value.userName,
-        "userPhone": orderValues.value.userPhone
+        "userPhone": orderValues.value.userPhone,
+        "sdacha":343
     }
 
-    if (Object.values(orderValues.value).every((value) => value))
+    const areFieldsFilled=Object.entries(orderValues.value)
+    .filter(([key]) => {
+        console.log('what is a key?',key)
+        return key !== 'foods'
+    })
+    .every(([item, value]) => {
+        console.log('value',value)
+        return value
+    })
+    console.log('areFieldsFilled',areFieldsFilled)
+    if (!areFieldsFilled){
+        console.log('it this coed woring??')
         try {
             const response = await http.post('orders/create-order',
                 body
             )
             console.log('response create order', response);
             if (response.status === 200) {
-                isCreateModal.value = false
+                isCreateModal.value = false;
+                toast.add({severity:'success',summary:"Успешно",detail:'Заказ создан!'})
             }
         } catch (err) {
             console.log(err)
+
         }
+    }else{
+        console.log('all fields are required')
+    }
+       
 }
+
 
 
 
 onMounted(() => {
     fetchAwaitingOrders();
-
+    store.dispatch('fetchAllFood');
+    console.log('updatedFoods',updatedFoods)
+console.log('store.getters.getFood',store)
 })
 
 
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.card-list{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.selected-food{
+    display: flex;
+    flex-direction: column;
+    gap:15px
+}
+.each-food{
+    display: flex;
+    justify-content: space-between;
+}
+.controls{
+    display: flex;
+    gap:10px;
+    align-items: center;
+}
+.controls button:hover{
+    cursor: pointer;
+}
+</style>

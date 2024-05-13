@@ -1,10 +1,12 @@
+import { OrderFood } from "./Food";
+
 export type AwaitingOrder = {
   userId: string;
   userName: string;
   userPhone: string;
   orderNumber: number;
   dishesCount: number;
-  foods: string;
+  foods: OrderFood[];
   address: string;
   houseNumber: string;
   kvOffice: string;
@@ -17,4 +19,6 @@ export type AwaitingOrder = {
   timeRequest: string;
   courierId: string;
   status: string;
+  sdacha:number
+  deliveryPrice:number
 };
