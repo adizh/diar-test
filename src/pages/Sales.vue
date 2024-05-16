@@ -2,18 +2,17 @@
     <div class='section'>
 <div class="mb-5">
     Распродажи
+
+<div class="sales flex flex-row gap-2 flex-wrap">
+
+<SaleItem v-for="sale in sales" :key="sale?.id" :sale="sale" class="flex flex-column justify-content-center w-20rem"/>
+</div>
 </div>
 
 <Button type="button" label="Добавить распродажу" @click='isModalVisible=true'></Button>
     </div>
-
-
-
     <div class="card flex justify-content-center">
         <Dialog v-model:visible="isModalVisible" modal header="Создать распродажу" :style="{ width: '25rem' }">
-            <!-- <span class="p-text-secondary block mb-5">{{ cancelHeader }}</span> -->
-
-
             <div class="flex flex-column gap-3 mb-5">
                 <label for="name" class="font-semibold">Название</label>
                 <InputText id="name" class="flex-auto" autocomplete="off" v-model.trim="newsName" />
@@ -29,9 +28,7 @@
             <div class="flex  align-items-center gap-3 mb-5">
                 <label for="Weight" class="font-semibold">Изображение для распродажи</label>
                 <input type="file" @change="($event: any) => onUpload($event)" id="uploadImage" />
-        
             </div>
-
             <Button type="button" label="Создать" @click='createSale'></Button>
         </Dialog>
     </div>
@@ -43,18 +40,22 @@ import { ref,onMounted } from 'vue';
 import {News} from '@/types/News'
 import http from '@/http';
 import { useToast } from 'primevue/usetoast';
+import SaleItem from '@/components/Items/Sale.vue'
+import {Sale} from '@/types/Sale'
 const news=ref([] as News[])
 const isModalVisible =ref(false)
 const uploadFile = ref();
 const newsName=ref('')
 const newsInfo=ref('')
+const sales=ref([] as Sale[])
 const saleDiscount=ref('')
 const toast=useToast()
 const fetchNews=async()=>{
     try{
-const response =await http('admin/get-all-sale');
+const response =await http('sale/get-all-sales');
 if(response.status===200){
     console.log('response get all sales',response)
+    sales.value=response.data
 }
     }
     catch(err){

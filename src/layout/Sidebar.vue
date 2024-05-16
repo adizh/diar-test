@@ -5,12 +5,51 @@
     <div class="sidebar-left">
         <router-view></router-view>
     </div>
+
+
+    <!-- <Dialog v-model:visible="isSignOutOpen" modal  :style="{ width: '25rem' }">
+       <div>
+        вы действительно хотите выйти
+       </div>
+    </Dialog> -->
+    <ConfirmDialog></ConfirmDialog>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import PanelMenu from 'primevue/panelmenu';
+import { useConfirm } from "primevue/useconfirm";
 import { useRouter } from 'vue-router';
+const isSignOutOpen=ref(false)
+const confirm = useConfirm();
+
+const confirmLogout=()=>{
+    localStorage.removeItem('accessToken')
+                localStorage.removeItem('refreshToken')
+                localStorage.removeItem('role');
+
+                window.location.reload()
+}
+
+const openSignOutModal=()=>{
+   // isSignOutOpen.value=true
+   confirm.require({
+        message: 'Вы действительно хотите выйти?',
+        header: 'Выход',
+        icon: 'pi pi-info-circle',
+        rejectLabel: 'Отмена',
+        acceptLabel: 'Выход',
+        rejectClass: 'p-button-secondary p-button-outlined',
+        acceptClass: 'p-button-danger',
+        accept: () => {
+            confirmLogout()
+          //  toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
+        },
+        reject: () => {
+          //  toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        }
+    });
+}
 const router = useRouter()
 const items = ref([
     {
@@ -185,13 +224,14 @@ const items = ref([
 
         ]
     },
-    // {
-    //     label: 'Sign Out',
-    //     icon: 'pi pi-sign-out',
-    //     command: () => {
-    //         // toast.add({ severity: 'info', summary: 'Signed out', detail: 'User logged out', life: 3000 });
-    //     }
-    // }
+    {
+        label: 'Выйти из аккаунта',
+        icon: 'pi pi-sign-out',
+        command: () => {
+            openSignOutModal()
+           //  toast.add({ severity: 'info', summary: 'Signed out', detail: 'User logged out', life: 3000 });
+        }
+    }
 ]);
 </script>
 
