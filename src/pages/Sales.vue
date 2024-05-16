@@ -3,7 +3,7 @@
 <div class="mb-5">
     Распродажи
 
-<div class="sales flex flex-row gap-2 flex-wrap">
+<div class="sales flex flex-row gap-2">
 
 <SaleItem v-for="sale in sales" :key="sale?.id" :sale="sale" class="flex flex-column justify-content-center w-20rem"/>
 </div>
