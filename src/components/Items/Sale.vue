@@ -17,7 +17,7 @@
     <Dialog v-model:visible="isDeleteOpen" modal :style="{ width: '25rem' }">
 <div>
   <p>Вы действительно хотите удалить?</p>
-  <div>
+  <div class="flex flex-row gap-2 justify-content-end">
     <Button label="Отменить" @click="isDeleteOpen=false"/>
     <Button label="Удалить" @click="deleteSale" severity="danger"/>
   </div>
@@ -50,7 +50,8 @@ data:{name:props?.sale?.name}
 })
 console.log(response);
 if(response.status===200){
-toast.add({severity:'success',detail:'Акция удалена!',summary:'Успешно'})
+toast.add({severity:'success',detail:'Акция удалена!',summary:'Успешно'});
+isDeleteOpen.value=false
 }
   }catch(err){
     console.log(err)

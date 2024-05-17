@@ -20,22 +20,24 @@
     <Dialog v-model:visible="isDeleteOpen" modal :style="{ width: '25rem' }">
         <div>
           <p>Вы действительно хотите удалить эту новость?</p>
-          <div>
+          <div class="flex flex-row gap-2 justify-content-end">
             <Button label="Отменить" @click="isDeleteOpen=false"/>
             <Button label="Удалить" @click="deleteNews" severity="danger"/>
           </div>
         </div>
             </Dialog>
+            <Toast/>
 </template>
 
 <script setup lang="ts">
 import http from '@/http';
 import {News} from '@/types/News'
+import { useToast } from 'primevue/usetoast';
 import { ref } from 'vue';
 const props = defineProps<{ 
   news: News; 
 }>();
-
+const toast=useToast()
 const isDeleteOpen=ref(false);
 const openDelete =()=>{
     isDeleteOpen.value=true
@@ -51,6 +53,8 @@ const response=await http({
 console.log('response',response);
 if(response.status===200){
   isDeleteOpen.value=false;
+  toast.add({severity:'success',detail:'Новость удалена!',summary:'Успешно'})
+
 }
     }catch(err){
         console.log(err)

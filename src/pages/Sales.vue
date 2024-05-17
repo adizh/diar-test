@@ -1,7 +1,12 @@
 <template>
     <div class='section'>
 <div class="mb-5">
-    Распродажи
+
+    <div class="flex flex-row gap-4 align-items-start mb-5">
+        <p>    Распродажи</p>
+        <Button type="button" label="Добавить распродажу" @click='isModalVisible=true'></Button>
+    </div>
+
 
 <div class="sales flex gap-2">
 
@@ -9,7 +14,7 @@
 </div>
 </div>
 
-<Button type="button" label="Добавить распродажу" @click='isModalVisible=true'></Button>
+
     </div>
     <div class="card flex justify-content-center">
         <Dialog v-model:visible="isModalVisible" modal header="Создать распродажу" :style="{ width: '25rem' }">
