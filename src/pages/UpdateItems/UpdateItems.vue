@@ -1,6 +1,8 @@
 <template>
     <div class="section">
         <Button label="Обновить еду" severity="secondary" rounded @click="isModalVisibleFood = !isModalVisibleFood" />
+        <UpdatePopularFoor :isPopularOpen="isPopularOpen"/>
+     
     </div>
 
 
@@ -18,8 +20,7 @@
                 <InputText id="name" class="flex-auto" autocomplete="off" v-model.trim="newFoodName" />
             </div>
 
-           
-
+        
             <div class="flex   gap-3 mb-5 flex-column"  v-if="openNew">
                 <label for="price" class="font-semibold">Новая цена</label>
                 <InputNumber id="price" class="flex-auto" autocomplete="off" v-model="foodPrice" />
@@ -49,17 +50,21 @@
 
         </Dialog>
     </div>
+
+
+
     <Toast/>
 </template>
 
 <script setup lang="ts">
 import http from '@/http';
+import UpdatePopularFoor from '@/components/Update/PopularFood.vue'
 import { open } from 'fs/promises';
 import { useToast } from 'primevue/usetoast';
 import { ref ,onMounted} from 'vue';
 import { useStore } from 'vuex';
 const isModalVisibleFood = ref(false);
-
+const isPopularOpen=ref(false)
 const allFoodName = ref({} as {name:string});
 const newFoodName = ref('');
 const foodPrice = ref(0);

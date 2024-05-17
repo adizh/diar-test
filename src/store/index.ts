@@ -3,6 +3,7 @@ import router from "@/router";
 import { Category } from "@/types/Category";
 import { createStore, Store } from "vuex";
 import {Courier} from '@/types/Courier'
+import { Food } from "@/types/Food";
 
 interface State {
   categoriesName: Category[];
@@ -15,7 +16,8 @@ const store: Store<State> = createStore({
     allFoodsNames: [],
     allContainers: [],
     allFood:[],
-    allCouriers:[]  as Courier[]
+    allCouriers:[]  as Courier[],
+    allFoods:[] as Food[]
   },
   mutations: {},
   actions: {
@@ -99,6 +101,16 @@ console.log('response get all food',response)
       }catch(err){
         console.log(err)
       }
+    },
+    async fetchAllFoods({state}){
+      try{
+  const response = await http('foods/get-all-foods')
+  if(response.status===200){
+state.allFoods=response.data
+  }
+      }catch(err){
+        console.log(err)
+      }
     }
   },
   getters: {
@@ -123,6 +135,9 @@ return state.allFoodsNames.map((item)=>{
     },
     getCouriers(state){
       return state.allCouriers
+    },
+    getAllFoods(state){
+      return state.allFoods
     }
     
   },
