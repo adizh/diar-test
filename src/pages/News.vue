@@ -91,6 +91,7 @@ const createNews =async()=>{
         console.log(err)
     }finally{
         isModalVisible.value=false
+        fetchNews()
     }
     }else{
         toast.add({ severity: 'error', summary:'Ошибка', detail:'Заполните все поля!' });

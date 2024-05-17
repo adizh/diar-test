@@ -8,7 +8,7 @@
         </Card>
         <ul v-else class="card-list">
             <li v-for="order in awaitingOrders" :key="order?.orderNumber">
-                <Order :order="order" />
+                <Order :order="order" from="awaiting"/>
             </li>
         </ul>
 
@@ -251,6 +251,8 @@ const createOrder = async () => {
         } catch (err) {
             console.log(err)
 
+        }finally{
+            fetchAwaitingOrders()
         }
     }else{
         console.log('all fields are required')

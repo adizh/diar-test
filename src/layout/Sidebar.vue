@@ -73,6 +73,13 @@ const items = ref([
                 }
             },
             {
+                label: 'Заказы на кухне',
+                command: () => {
+                    router.push('/sent-to-kitchen')
+                    // toast.add({ severity: 'success', summary: 'Success', detail: 'File created', life: 3000 });
+                }
+            },
+            {
                 label: 'Отмененные',
                 //   icon: 'pi pi-print',
                 command: () => {

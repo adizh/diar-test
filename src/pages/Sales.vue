@@ -55,7 +55,7 @@ const newsInfo=ref('')
 const sales=ref([] as Sale[])
 const saleDiscount=ref('')
 const toast=useToast()
-const fetchNews=async()=>{
+const fetchSales=async()=>{
     try{
 const response =await http('sale/get-all-sales');
 if(response.status===200){
@@ -73,7 +73,7 @@ const onUpload = async (event: any) => {
     uploadFile.value = event.target.files[0];
 }
 onMounted(() => {
-    fetchNews()
+    fetchSales()
 })
 
 const createSale=async()=>{
@@ -93,6 +93,7 @@ const createSale=async()=>{
         console.log(err)
     }finally{
         isModalVisible.value=false
+        fetchSales()
     }
     }else{
         toast.add({ severity: 'error', summary:'Ошибка', detail:'Заполните все поля!' });

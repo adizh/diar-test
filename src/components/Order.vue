@@ -1,8 +1,13 @@
 <template>
     <Card>
-        <template #title>Номер заказа: {{ order?.orderNumber }}
-            <Button v-if="type!=='delegated'" label="Назначить курьера" severity="success" raised  @click="isDelegOpen=true"/>
+        <template #title>
+          <div class='flex flex-row gap-3 align-items-center'>
+            <p>Номер заказа: {{ order?.orderNumber }}</p>
+            <Button v-if="from==='kitchen'" label="Назначить курьера" severity="success" raised  @click="isDelegOpen=true"/>
+            <Button v-if="from==='awaiting'" label="Отправить на кухню" severity="success" raised  @click="sendToKitchen"/>
+          </div>
         </template>
+
         <template #content>
           <div>
             Еда: 
@@ -10,7 +15,6 @@
     <Column field="name" header="Название"></Column>
     <Column field="quantity" header="Кол-во"></Column>
     <Column field="price" header="Цена"></Column>
-
       </DataTable>
           </div>
             <p class="m-0 order-info">
@@ -35,15 +39,11 @@
             <span>Запрошенное время:{{ order?.timeRequest }}</span>
             </p>
         </template>
-
     </Card>
-
-
 
     <Dialog v-model:visible="isDelegOpen" modal header="Назначить курьера" :style="{ width: '25rem' }">
 <div class='flex flex-column gap-5 align-items-center'>
     <Dropdown v-model="selectedCourier" :options="store?.getters?.getCouriers" optionLabel="username" placeholder="Выбрать курьера" class="w-full md:w-14rem" />
-
     <Button label="Назначить" icon="pi pi-check" severity="info"  @click="delegateOrder"/>
 </div>
     </Dialog>
@@ -55,7 +55,8 @@ import {ref,onMounted} from 'vue';
 import { AwaitingOrder } from '@/types/Order'
 const props = defineProps<{
     order: AwaitingOrder,
-    type?:string
+    type?:string,
+    from?:string
 
 }>()
 const store=useStore()
@@ -93,6 +94,20 @@ if(response.status===200){
 }
 }
 
+
+const sendToKitchen =async()=>{
+    try{
+const response =await http.post('admin/send-to-kitchen',{
+    orderNumber:props?.order?.orderNumber
+})
+console.log('response send to kitchedn',response)
+if(response.status===200){
+    toast.add({severity:'success',detail:'Отправлено на кухню!',summary:'Успешно'})
+}
+    }catch(err){
+        console.log(err)
+    }
+}
 onMounted(async() => {
    await store.dispatch('fetchAllCouriers');
     console.log('getCouriers',store.getters?.getCouriers)

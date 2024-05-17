@@ -79,6 +79,8 @@ const createCourier = async () => {
             console.log(err.response.data.message);
             toast.add({ severity: 'error', summary: 'Неправильные данные', detail: err?.response?.data?.message || 'Error occurred!' });
 
+        }finally{
+            fetchAllCouriers()
         }
 
     } else {
@@ -86,7 +88,7 @@ const createCourier = async () => {
     }
 }
 
-const fetchOrders = async () => {
+const fetchAllCouriers = async () => {
     try {
         const response = await http.get('/admin/get-all-couriers') as any;
         console.log('response', response)
@@ -101,7 +103,7 @@ const fetchOrders = async () => {
 }
 
 onMounted(() => {
-    fetchOrders();
+    fetchAllCouriers();
 
 })
 </script>
