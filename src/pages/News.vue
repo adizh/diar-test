@@ -1,10 +1,20 @@
 <template>
     <div class='section'>
-<div class="mb-5">
+<div class="mb-5 flex flex-row gap-4 align-items-start">
+ <p>
     Новости
+ </p>
+    <Button type="button" label="Добавить новость" @click='isModalVisible=true'></Button>
 </div>
 
-<Button type="button" label="Добавить новость" @click='isModalVisible=true'></Button>
+
+<div class='flex flex-row gap-4 flex-wrap'>
+<ItemsNews v-for="item in news" :key="item?.name" :news="item"/>
+</div>
+
+
+
+
     </div>
 
 
@@ -12,8 +22,6 @@
     <div class="card flex justify-content-center">
         <Dialog v-model:visible="isModalVisible" modal header="Создать новость" :style="{ width: '25rem' }">
             <!-- <span class="p-text-secondary block mb-5">{{ cancelHeader }}</span> -->
-
-
             <div class="flex flex-column gap-3 mb-5">
                 <label for="name" class="font-semibold">Название</label>
                 <InputText id="name" class="flex-auto" autocomplete="off" v-model.trim="newsName" />
@@ -39,6 +47,7 @@ import { ref,onMounted } from 'vue';
 import {News} from '@/types/News'
 import http from '@/http';
 import { useToast } from 'primevue/usetoast';
+import ItemsNews from '@/components/Items/News.vue'
 const news=ref([] as News[])
 const isModalVisible =ref(false)
 const uploadFile = ref();
@@ -50,6 +59,7 @@ const fetchNews=async()=>{
 const response =await http('news/get-all-news');
 if(response.status===200){
     console.log('response get all news',response)
+    news.value=response.data
 }
     }
     catch(err){

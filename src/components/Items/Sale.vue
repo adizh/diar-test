@@ -1,5 +1,5 @@
 <template>
-    <Card>
+    <Card class="list-card">
         <template #title>
           <div class="flex flex-row justify-content-between">
             <span>
@@ -9,7 +9,7 @@
           </div>
         </template>
         <template #content>
-            <img :src="sale?.photoLink" :alt="sale?.name" class="sale-img">
+            <img :src="sale?.photoLink" :alt="sale?.name" class="list-img">
             <p>Описание: {{ sale?.description }}</p>
             <p>Скидка: {{ sale?.discount }}</p>
         </template>

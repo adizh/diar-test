@@ -1,5 +1,6 @@
 export type News={
     name:string,
     description:string,
-    file:string
+    photoLink:string
+    id:string
 }
