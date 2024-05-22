@@ -25,14 +25,16 @@
        
     </Card>
 
-    <Dialog v-model:visible="isDeleteOpen" modal header="Удаление курьера"  :style="{ width: '25rem' }">
-
-
+    <Dialog v-model:visible="isDeleteOpen" modal header="Удаление курьера" >
 <ConfirmButtons confirmText="Удалить" declineText="Отменить"
 :descrText="`Вы действительно хотите удалить курьера ${item?.username}`"
 @confirmAction="confirmDelete" @closeModal="isDeleteOpen=false"/>
-
     </Dialog>
+
+    <Dialog v-model:visible="isEditOpen" modal header="Редактирование курьера" >
+<EditCourier :item="item"  @closeModal="isEditOpen=false"/>
+    
+        </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -41,6 +43,7 @@ import {ref,onMounted} from 'vue';
 import ConfirmButtons from '../components/UI/ConfirmButtons.vue'
 import http from '@/http';
 import { useToast } from 'primevue/usetoast';
+import EditCourier from '../components/Courier/Edit.vue'
 import { useStore } from 'vuex';
 
 const props=defineProps<{

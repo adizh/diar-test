@@ -3,7 +3,7 @@ export type Courier = {
   id: string;
   password: string;
   phone: string;
-  role: string;
+  role?: string;
   username: string;
-  active:boolean
+  active?:boolean
 };

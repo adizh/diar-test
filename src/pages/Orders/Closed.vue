@@ -7,11 +7,11 @@ vbas3<template>
             noOrder }}</template>
         </Card>
 
-        <!-- <ul v-else>
+        <ul v-else class="card-list">
             <li v-for="order in orders" :key="order?.orderNumber">
                 <Order :order="order" />
             </li>
-        </ul> -->
+        </ul>
     </div>
 </template>
 
@@ -34,9 +34,9 @@ const fetchOrders = async () => {
             noOrder.value = response.statusText;
         }
 
-        // else if (response.status == 200) {
-        //     awaitingOrders.value = response.data.orders
-        // }
+        else if (response.status == 200) {
+            orders.value = response.data.orders
+        }
 
     } catch (err) {
         console.log(err)
