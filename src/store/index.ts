@@ -17,7 +17,8 @@ const store: Store<State> = createStore({
     allContainers: [],
     allFood:[],
     allCouriers:[]  as Courier[],
-    allFoods:[] as Food[]
+    allFoods:[] as Food[],
+   
   },
   mutations: {},
   actions: {
@@ -94,7 +95,7 @@ console.log('response get all food',response)
         const response = await http('admin/get-all-couriers');
         console.log('fetch couriers response',response)
         if(response.status===200){
-          state.allCouriers=response.data;
+          state.allCouriers=response.data?.filter((item:Courier)=>item?.active)
           console.log('state.allCouriers=response.data;',state.allCouriers)
         }
 

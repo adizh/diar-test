@@ -5,4 +5,5 @@ export type Courier = {
   phone: string;
   role: string;
   username: string;
+  active:boolean
 };

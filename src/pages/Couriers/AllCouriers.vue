@@ -1,19 +1,28 @@
 <template>
     <div class="section">
-        <div class="section-header">Курьеры</div>
-        <Card v-if="!AllCouriers?.length">
+        <div class="section-header">
+
+            <div class="flex flex-row gap-5 align-items-center">
+                <span>
+                    Курьеры
+                </span>
+                    <Button label="Создать курьера" @click="visible = true" />
+            </div>
+
+        </div>
+        <Card v-if="!store.getters.getCouriers?.length">
             <template #content>
                 {{ noContent }}
             </template>
         </Card>
 
         <ul v-else class="card-list">
-            <li v-for="item in AllCouriers" :key="item.id">
+            <li v-for="item in store.getters.getCouriers" :key="item.id">
                 <CourierItem :item="item" />
             </li>
         </ul>
 
-        <Button label="Создать курьера" @click="visible = true" />
+       
         <div class="card flex justify-content-center">
             <Dialog v-model:visible="visible" modal header="Создать курьера" :style="{ width: '25rem' }">
                 <span class="p-text-secondary block mb-5">Информация о курьере.</span>
@@ -43,20 +52,25 @@
         </div>
     </div>
     <Toast />
+
+
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 const visible = ref(false);
+const isDeleteOpen =ref(true)
 import http from '@/http';
 import { Courier } from '@/types/Courier';
 import CourierItem from '@/components/Courier.vue'
 import { useToast } from 'primevue/usetoast';
+import { useStore } from 'vuex';
 const AllCouriers = ref<Courier[]>([])
 const noContent = ref('')
 const email = ref('');
 const username = ref('');
 const phone = ref('');
+const store=useStore()
 const password = ref('');
 const toast = useToast()
 const createCourier = async () => {
@@ -80,7 +94,7 @@ const createCourier = async () => {
             toast.add({ severity: 'error', summary: 'Неправильные данные', detail: err?.response?.data?.message || 'Error occurred!' });
 
         }finally{
-            fetchAllCouriers()
+        store.dispatch('fetchAllCouriers')
         }
 
     } else {
@@ -88,22 +102,10 @@ const createCourier = async () => {
     }
 }
 
-const fetchAllCouriers = async () => {
-    try {
-        const response = await http.get('/admin/get-all-couriers') as any;
-        console.log('response', response)
-        if (response.status === 200) {
-            AllCouriers.value = response.data;
-        } else if (response.status === 204) {
-            noContent.value = response.data.message
-        }
-    } catch (err) {
-        console.log(err)
-    }
-}
+
 
 onMounted(() => {
-    fetchAllCouriers();
+    store.dispatch('fetchAllCouriers')
 
 })
 </script>

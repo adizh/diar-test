@@ -55,7 +55,8 @@ const addPopularFood = async() => {
         } catch(err){
             console.log(err)
         }finally{
-            isPopularOpen.value=false
+            isPopularOpen.value=false;
+            
         }
     }
 }
