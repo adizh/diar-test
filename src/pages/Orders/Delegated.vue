@@ -7,7 +7,7 @@ vbas3<template>
             noOrder }}</template>
         </Card>
 
-        <ul v-else>
+        <ul v-else class="card-list">
             <li v-for="order in orders" :key="order?.orderNumber" class='card-list'>
                 <Order :order="order" type="delegated" />
             </li>

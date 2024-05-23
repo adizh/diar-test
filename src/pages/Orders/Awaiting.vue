@@ -1,10 +1,11 @@
 <template>
     <div class="section">
-       Заказы в ожидании
+      <p class="mb-3">
+        Заказы в ожидании
         <Button label="Создать заказ" @click="openCreateOrderModal" />
+      </p>
         <Card v-if="noOrder?.length">
-            <template #content>{{
-            noOrder }}</template>
+            <template #content>Нет данных</template>
         </Card>
         <ul v-else class="card-list">
             <li v-for="order in awaitingOrders" :key="order?.orderNumber">
@@ -229,14 +230,11 @@ const createOrder = async () => {
 
     const areFieldsFilled=Object.entries(orderValues.value)
     .filter(([key]) => {
-        console.log('what is a key?',key)
         return key !== 'foods'
     })
     .every(([item, value]) => {
-        console.log('value',value)
         return value
     })
-    console.log('areFieldsFilled',areFieldsFilled)
     if (!areFieldsFilled){
         console.log('it this coed woring??')
         try {
@@ -246,28 +244,21 @@ const createOrder = async () => {
             console.log('response create order', response);
             if (response.status === 200) {
                 isCreateModal.value = false;
+                fetchAwaitingOrders();
                 toast.add({severity:'success',summary:"Успешно",detail:'Заказ создан!'})
             }
         } catch (err) {
             console.log(err)
-
-        }finally{
-            fetchAwaitingOrders()
         }
     }else{
         console.log('all fields are required')
     }
-       
 }
-
-
 
 
 onMounted(() => {
     fetchAwaitingOrders();
     store.dispatch('fetchAllFood');
-    console.log('updatedFoods',updatedFoods)
-console.log('store.getters.getFood',store)
 })
 
 

@@ -6,12 +6,6 @@
         <router-view></router-view>
     </div>
 
-
-    <!-- <Dialog v-model:visible="isSignOutOpen" modal  :style="{ width: '25rem' }">
-       <div>
-        вы действительно хотите выйти
-       </div>
-    </Dialog> -->
     <ConfirmDialog></ConfirmDialog>
 </template>
 
@@ -80,6 +74,13 @@ const items = ref([
                 }
             },
             {
+                label: 'Заказы на кухне (самовывоз)',
+                command: () => {
+                    router.push('/sent-to-kitchen-pickup')
+                    // toast.add({ severity: 'success', summary: 'Success', detail: 'File created', life: 3000 });
+                }
+            },
+            {
                 label: 'Отмененные',
                 //   icon: 'pi pi-print',
                 command: () => {
@@ -111,23 +112,8 @@ const items = ref([
                     // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
                 }
             },
-            {
-                label: 'Готовые заказы',
-                //   icon: 'pi pi-print',
-                command: () => {
-                    router.push('/cooked-orders')
-
-                    // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
-                }
-            },
-            {
-                label: 'Готовые заказы(самовывоз)',
-                //   icon: 'pi pi-print',
-                command: () => {
-                    router.push('/cooked-orders-pickup')
-                    // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
-                }
-            },
+           
+           
 
             {
                 label: 'Делегированные заказы',

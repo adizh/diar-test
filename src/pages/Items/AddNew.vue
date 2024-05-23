@@ -1,12 +1,12 @@
 <template>
     <div class="section">
         <div class="section-header">Добавить</div>
-        <div class="add-items-block">
+        <div class="add-items-block flex flex-row gap-3">
             <Button label="Добавить категорию" @click='openCategoryModal' />
             <Button label="Добавить контейнер" @click='openContainerModal' />
             <Button label="Добавить еду" @click="openFood" />
-            <AddFoodsOrder />
-            <SendToKitchen />
+            <!-- <AddFoodsOrder />
+            <SendToKitchen /> -->
         </div>
     </div>
 
@@ -198,11 +198,7 @@ const onUpload = async (event: any) => {
 }
 
 const addFood = async () => {
-    //const uploadImage = document.getElementById('uploadImage');
-    // let formData = new FormData(uploadFile.value);
-    // formData.append('file', uploadImage)
-    // if (foodName.value?.length > 0 && foodPrice.value?.length > 0 && selectedCategory.value?.length > 0 && foodWeight.value?.length && uploadFile.value) {
-    try {
+     try {
         const formData = new FormData();
         // Append the file to the FormData object
         formData.append('file', uploadFile.value);

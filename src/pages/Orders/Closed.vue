@@ -29,7 +29,7 @@ const orders = ref<AwaitingOrder[]>([])
 const fetchOrders = async () => {
     try {
         const response = await http.get('admin/get-all-closed-orders') as any;
-        console.log('response', response)
+        console.log('response closed order', response)
         if (response.status === 204) {
             noOrder.value = response.statusText;
         }

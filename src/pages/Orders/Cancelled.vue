@@ -2,22 +2,18 @@
     <div class="section">
         Отмененные заказы
 
-        <Card v-if="noOrder?.length">
+       
+        <Card v-if="!awaitingOrders?.length">
 
             <template #content>{{
             noOrder }}</template>
         </Card>
-        <!-- <Card v-if="!awaitingOrders?.length">
 
-            <template #content>{{
-            noOrder }}</template>
-        </Card>
-
-        <ul v-else>
+        <ul v-else class='card-list'>
             <li v-for="order in awaitingOrders" :key="order?.orderNumber">
                 <Order :order="order" />
             </li>
-        </ul> -->
+        </ul>
     </div>
 </template>
 
@@ -35,14 +31,14 @@ const awaitingOrders = ref<AwaitingOrder[]>([])
 const fetchAwaitingOrders = async () => {
     try {
         const response = await http.get('admin/get-all-cancel-orders') as any;
-        console.log('response', response)
+        console.log('response cancelled orders', response)
         if (response.status === 204) {
             noOrder.value = response.statusText
         }
 
-        // else if (response.status == 200) {
-        //     awaitingOrders.value = response.data.orders
-        // }
+        else if (response.status == 200) {
+            awaitingOrders.value = response.data.orders
+        }
 
     } catch (err) {
         console.log(err)

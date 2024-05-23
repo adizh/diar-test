@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-
+import CourierOrder from '@/components/Courier/Order.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -21,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/sent-to-kitchen',
         name: "SentToKitchen",
         component: () => import("@/pages/Orders/SentKitchen.vue"),
+      },
+      {
+        path: '/sent-to-kitchen-pickup',
+        name: "SentToKitchenPicktup",
+        component: () => import("@/pages/SentToKitchenPickup.vue"),
       },
       {
         path: "/news",
@@ -59,14 +64,9 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/pages/Orders/ClosedPickup.vue"),
       },
       {
-        path: "/cooked-orders",
-        name: "CookedOrdes",
-        component: () => import("@/pages/Orders/Cooked.vue"),
-      },
-      {
-        path: "/cooked-orders-pickup",
-        name: "CookedOrderPickup",
-        component: () => import("@/pages/Orders/CookedPickup.vue"),
+        path: "/courier/:id",
+        name: "CourierOrder",
+        component: CourierOrder,
       },
       {
         path: "/delegated-orders",

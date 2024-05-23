@@ -3,7 +3,8 @@ import router from "@/router";
 import { Category } from "@/types/Category";
 import { createStore, Store } from "vuex";
 import {Courier} from '@/types/Courier'
-import { Food } from "@/types/Food";
+import { Food, OrderFood } from "@/types/Food";
+import { AwaitingOrder } from "@/types/Order";
 
 interface State {
   categoriesName: Category[];
@@ -18,9 +19,11 @@ const store: Store<State> = createStore({
     allFood:[],
     allCouriers:[]  as Courier[],
     allFoods:[] as Food[],
+   awaitingPickupOrders:[] as AwaitingOrder[],
+   closedPickUpOrders:[]as AwaitingOrder[],
+   cookedPickUpOrders:[] as AwaitingOrder[]
    
   },
-  mutations: {},
   actions: {
     async getAllCategoryNames({ state }) {
       try {
@@ -93,10 +96,10 @@ console.log('response get all food',response)
     async fetchAllCouriers({state}){
       try{
         const response = await http('admin/get-all-couriers');
-        console.log('fetch couriers response',response)
+
         if(response.status===200){
           state.allCouriers=response.data?.filter((item:Courier)=>item?.active)
-          console.log('state.allCouriers=response.data;',state.allCouriers)
+        
         }
 
       }catch(err){
@@ -109,6 +112,36 @@ console.log('response get all food',response)
   if(response.status===200){
 state.allFoods=response.data
   }
+      }catch(err){
+        console.log(err)
+      }
+    },
+    async fetchAwaitingPickup({state}){
+      try {
+        const response = await http.get('admin/get-all-awaiting-pickup-orders') as any;
+        console.log('response fetchAwaitingOrders', response)
+if(response.status===200){
+    state.awaitingPickupOrders=response.data?.pickUpOrders
+}
+    
+    } catch (err) {
+        console.log(err)
+    }
+    },
+    async fetchClosedPickUp({state}){
+try{
+const response = await http('admin/get-all-closed-pickup-orders');
+console.log('rresonse closed pickup',response)
+}catch(err){
+  console.log(err)
+}
+    },
+    async fetchCookedPickUp({state}){
+      try{
+      const response = await http('admin/get-all-cooked-pickup-orders');
+      if(response.status===200){
+        state.cookedPickUpOrders=response.data.pickUpOrders;
+      }
       }catch(err){
         console.log(err)
       }
@@ -139,6 +172,12 @@ return state.allFoodsNames.map((item)=>{
     },
     getAllFoods(state){
       return state.allFoods
+    },
+    getAwaitingPickupOrders(state){
+      return state.awaitingPickupOrders
+    },
+    getCookedPickupOrders(state){
+      return state.cookedPickUpOrders
     }
     
   },

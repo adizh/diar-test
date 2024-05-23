@@ -2,7 +2,7 @@
     <div>
         <div class="flex flex-column gap-3 mb-5">
             <label for="name" class="font-semibold">Имя курьера</label>
-            <InputText id="name" class="flex-auto" autocomplete="off" v-model="forms.username" />
+            <InputText id="name" class="flex-auto" autocomplete="off" v-model="forms.userName" />
         </div>
 
         <div class="flex flex-column gap-3 mb-5">
@@ -37,7 +37,7 @@ const props = defineProps<{
  item:Courier
 }>()
 const forms=ref({
-    username:'',
+    userName:'',
     email:'',
     password:"",
     phone:'',
@@ -45,16 +45,28 @@ const forms=ref({
 })
 const emit=defineEmits(['closeModal'])
 const courier=ref({} as Courier)
-const store=useStore()
-onMounted(() => {
-    courier.value=store.getters.getCouriers?.find((item:Courier)=>item?.id===props?.item?.id);
+const store=useStore();
+
+
+const fetchCourierId=async()=>{
+    try{
+const response = await http(`admin/get-courier-by-id?courierId=${props?.item?.id}`)
+
+if(response.status===200){
+    courier.value=response.data
+}
+    }catch(err){
+        console.log(err)
+    }
+}
+
+onMounted(async() => {
+    await fetchCourierId()
     console.log('courier',courier);
     for (const key in courier.value) {
         if(key==='active' || key==='role') continue;
-        forms.value[key as keyof typeof forms.value] = courier.value[key as keyof typeof courier.value] as any; 
-    
+        forms.value[key as keyof typeof forms.value] = courier.value[key as keyof typeof courier.value] as any;    
 }
-
 })
 
 const editCourier =async()=>{
@@ -66,7 +78,7 @@ if(isError){
   "email": forms.value?.email,
   "password": forms?.value?.password,
   "phone": forms?.value?.phone,
-  "username":forms?.value?.username
+  "username":forms?.value?.userName
    }
 
 

@@ -8,7 +8,7 @@
         <div  class='flex flex-column justify-content-center gap-3 align-items-center'>
             <div>
                 <Dropdown v-model="selectedFood" :options="store.getters.getAllFoods"
-                placeholder="Выбрать еду" class="w-full md:w-14rem" optionLabel="name" />
+                placeholder="Выбрать еду" class="w-full md:w-14rem" optionLabel="name"  @change="changeFood"/>
                </div>
         
               <div>
@@ -39,6 +39,11 @@ const isPopularOpen =ref(false);
 import http from '@/http';
 import { useToast } from 'primevue/usetoast';
 const toast=useToast()
+
+const changeFood =(event:any)=>[
+
+    isPopular.value=event?.value?.isFeatured
+]
 const addPopularFood = async() => {
     if(selectedFood?.value?.id){
         console.log('isPopular',isPopular)

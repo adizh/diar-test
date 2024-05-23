@@ -1,46 +1,43 @@
 <template>
     <div class="section">
+
         Заказы в ожидании на самовывоз
-        <Card v-if="noOrder?.length">
+
+        <Button label="Создать заказ" @click="isOrderOpen=true" />
+
+        <Card v-if="!store.getters.getAwaitingPickupOrders?.length">
             <template #content>{{
             noOrder }}</template>
         </Card>
+
+        <ul v-else class="card-list">
+            <li v-for="order in store.getters.getAwaitingPickupOrders" :key="order?.orderNumber">
+                <Order :order="order" from="awaiting-pickup"/>
+            </li>
+        </ul>
     </div>
+
+    <Dialog v-model:visible="isOrderOpen" modal header="Создать заказ" :style="{ width: '25rem' }">
+        <OrdersCreate/>
+        </Dialog>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import http from '@/http';
-import { AwaitingOrder } from '@/types/Order'
+
+
 import { onMounted } from 'vue';
 import Order from '@/components/Order.vue';
-
+import OrdersCreate from '@/components/Orders/Create.vue'
+import { useStore } from 'vuex';
 const noOrder = ref('');
-const awaitingOrders = ref<AwaitingOrder[]>([])
 
+const isOrderOpen=ref(false)
+const store=useStore()
 
-const fetchAwaitingOrders = async () => {
-    try {
-        const response = await http.get('admin/get-all-awaiting-pickup-orders') as any;
-        console.log('response', response)
-
-        if (response.status === 204) {
-            noOrder.value = response.statusText
-        }
-        else if (response.status === 200) {
-            awaitingOrders.value = response.data.message;
-        }
-        // else if (response.status == 200) {
-        //     awaitingOrders.value = response.data.orders
-        // }
-
-    } catch (err) {
-        console.log(err)
-    }
-}
 
 onMounted(() => {
-    fetchAwaitingOrders();
+    store.dispatch('fetchAwaitingPickup')
 
 })
 

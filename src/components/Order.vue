@@ -4,8 +4,11 @@
           <div class='flex flex-row gap-3 align-items-center'>
             <p>Номер заказа: {{ order?.orderNumber }}</p>
             <Button v-if="from==='kitchen'" label="Назначить курьера" severity="success" raised  @click="isDelegOpen=true"/>
-            <Button v-if="from==='awaiting'" label="Отправить на кухню" severity="success" raised  @click="sendToKitchen"/>
-          </div>
+            <Button v-else-if="from==='awaiting'"  icon="pi pi-directions-alt" v-tooltip.top="'Отправить на кухню'" severity="success" raised  @click="sendToKitchen"/>
+            <Button v-else-if="from==='awaiting-pickup'" v-tooltip.top="'Отправить на кухню'"  icon="pi pi-directions-alt"severity="success" raised  @click="sendToKitchenPickup"/>
+        <Button v-if="from==='awaiting-pickup' || from==='awaiting'" icon="pi pi-times" severity="danger" v-tooltip.top="'Отменить заказ'"  @click="isCancelOpen=true"/>
+        
+        </div>
         </template>
 
         <template #content>
@@ -22,20 +25,20 @@
                 <span>Сдача: {{ order?.sdacha }}</span>
                 <span>Статус: {{ order?.status }}</span>
                 <span>Кол-во блюд: {{ order?.dishesCount }}</span>
-                <span>Цена за доставку :{{ order?.deliveryPrice }}</span>
+                <span v-if="order.deliveryPrice" >Цена за доставку :{{ order?.deliveryPrice }}</span>
                 <span>Комментарий: {{ order?.comment }}</span>
                 <span>Имя: {{ order?.userName }}</span>
                 <span>Номер телефона :{{ order?.userPhone }}</span>
-            <div class="order-info">Адрес: {{ order?.address }}
-                <span>Вход: {{ order.entrance }}</span>
-                <span>Этаж: {{ order?.floor }}</span>
-                <span>Номер квартиры: {{ order?.houseNumber }}</span>
-                <span>Внутренняя связь: {{ order?.intercom }}</span>
-                <span>Квартира/Офис: {{ order?.kvOffice }}</span>
+            <div class="order-info" v-if="order.address">Адрес: {{ order?.address }}
+                <span v-if="order.entrance">Вход: {{ order.entrance }}</span>
+                <span v-if="order.floor">Этаж: {{ order?.floor }}</span>
+                <span v-if="order.houseNumber">Номер квартиры: {{ order?.houseNumber }}</span>
+                <span v-if="order.intercom">Внутренняя связь: {{ order?.intercom }}</span>
+                <span v-if="order.kvOffice">Квартира/Офис: {{ order?.kvOffice }}</span>
 
 
             </div>
-            <span>Метод оплаты:{{ order?.paymentMethod }}</span>
+            <span v-if="order.paymentMethod">Метод оплаты:{{ order?.paymentMethod }}</span>
             <span>Запрошенное время:{{ order?.timeRequest }}</span>
             </p>
         </template>
@@ -47,6 +50,13 @@
     <Button label="Назначить" icon="pi pi-check" severity="info"  @click="delegateOrder"/>
 </div>
     </Dialog>
+
+    <Dialog v-model:visible="isCancelOpen" modal header="Отменить заказ" :style="{ width: '25rem' }">
+
+        <ConfirmButtons confirmText="Да"  declineText="Нет" @close-modal="isCancelOpen=false" @confirm-action="cancelOrder" :descr-text="'Вы действительно хотите отменить заказ'"/>
+</Dialog>
+
+
     <Toast/>
 </template>
 
@@ -59,25 +69,25 @@ const props = defineProps<{
     from?:string
 
 }>()
-const store=useStore()
-const isDelegOpen=ref(false)
-
+const store=useStore();
+const isDelegOpen=ref(false);
+const isCancelOpen=ref(false);
 import { useStore } from 'vuex';
 import { Courier } from '@/types/Courier';
 import http from '@/http';
 import { useToast } from 'primevue/usetoast';
 const selectedCourier=ref({} as Courier)
-const toast=useToast()
+const toast=useToast();
+import ConfirmButtons from './UI/ConfirmButtons.vue';
 
-
+console.log('order from',props?.from)
 const delegateOrder =async()=>{
 if(selectedCourier?.value?.id){
 
     try{
         const body={
             "courierId":selectedCourier?.value?.id,
-             "orderNumber": props?.order?.orderNumber,
-             "status": props?.order?.status
+             "orderNumber": props?.order?.orderNumber
         }
 const response = await http.post('admin/delegation-to-courier',body);
 console.log('response',response);
@@ -94,6 +104,39 @@ if(response.status===200){
 }
 }
 
+const sendToKitchenPickup =async()=>{
+    try{
+const response =await http.post('admin/send-to-kitchen-pickup-order',{
+    orderNumber:props?.order?.orderNumber
+})
+console.log('response send to kitchedn',response)
+if(response.status===200){
+    toast.add({severity:'success',detail:'Отправлено на кухню!',summary:'Успешно'});
+    setTimeout(()=>{
+window.location.reload()
+    },1000)
+}
+    }catch(err){
+        console.log(err)
+    }
+}
+
+
+const cancelOrder =async()=>{
+    const url = props?.from==='awaiting' ? 'admin/cancel-order' :  props?.from==='awaiting-pickup' ? 'admin/cancel-pickup-order':'' 
+    try{
+        const response = await http.post(url,{orderNumber:props?.order?.orderNumber});
+        if(response.status===200){
+            toast.add({severity:'success',detail:'Заказ отменен!',summary:'Успешно'});
+        setTimeout(()=>{
+window.location.reload()
+        },1500)
+
+        }
+    }catch(err){
+        console.log(err)
+    }
+}
 
 const sendToKitchen =async()=>{
     try{
@@ -102,7 +145,10 @@ const response =await http.post('admin/send-to-kitchen',{
 })
 console.log('response send to kitchedn',response)
 if(response.status===200){
-    toast.add({severity:'success',detail:'Отправлено на кухню!',summary:'Успешно'})
+    toast.add({severity:'success',detail:'Отправлено на кухню!',summary:'Успешно'});
+    setTimeout(()=>{
+window.location.reload()
+    },1000)
 }
     }catch(err){
         console.log(err)
@@ -110,7 +156,6 @@ if(response.status===200){
 }
 onMounted(async() => {
    await store.dispatch('fetchAllCouriers');
-    console.log('getCouriers',store.getters?.getCouriers)
 })
 </script>
 
