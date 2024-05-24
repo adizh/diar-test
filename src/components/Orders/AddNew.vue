@@ -84,6 +84,9 @@ const updatedFoods=computed(()=>{
 })
 
 const addFood =async()=>{
+    if(selectedFoods?.value?.length>0){
+
+    
 const foods=selectedFoods.value?.map((item)=>{
     return{
         "name": item?.value?.name,
@@ -108,7 +111,9 @@ if(response.status===200){
 }catch(err){
     console.log(err)
 }
-    
+}else{
+    toast.add({severity:'error',detail:'Выберите еду!',summary:"Ошибка"})
+}
 }
 onMounted(()=>{
     store.dispatch('fetchAllFood');
