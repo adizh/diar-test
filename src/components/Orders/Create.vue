@@ -13,9 +13,7 @@
             <InputNumber id="comment" class="flex-auto" autocomplete="off" v-model="orderValues.dishesCount" />
         </div>
 
-       
-
-
+        
    <div class="flex flex-column gap-3 mb-5">
             <label for="comment" class="font-semibold">Еда</label>
             <Dropdown :options="updatedFoods"
@@ -99,7 +97,14 @@ const removeFood =(food:Food)=>{
         selectedFoods.value.splice(index,1)
     }
 }
-
+const increaseCount=(food:Food)=>{
+food.quantity++
+}
+const decreaseCount=(food:Food)=>{
+    if(food.quantity>1){
+        food.quantity--;
+    }
+}
 const selectFood =(event:any)=>{
     console.log(event)
     console.log(event)
@@ -113,14 +118,7 @@ setTimeout(()=>{
     quantity: 0}
 },500)
 }
-const increaseCount=(food:Food)=>{
-food.quantity++
-}
-const decreaseCount=(food:Food)=>{
-    if(food.quantity>1){
-        food.quantity--;
-    }
-}
+
 
 const updatedFoods=computed(()=>{
     return store.getters.getFood.map((food:Food)=>{

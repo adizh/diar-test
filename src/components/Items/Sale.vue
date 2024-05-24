@@ -11,7 +11,7 @@
         <template #content>
             <img :src="sale?.photoLink" :alt="sale?.name" class="list-img">
             <p>Описание: {{ sale?.description }}</p>
-            <p>Скидка: {{ sale?.discount }}</p>
+            <p>Скидка: {{ sale?.discount }}%</p>
         </template>
     </Card>
     <Dialog v-model:visible="isDeleteOpen" modal :style="{ width: '25rem' }">
