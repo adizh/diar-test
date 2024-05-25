@@ -31,8 +31,10 @@
             </div>
 
             <div class="flex   gap-3 mb-5 flex-column"  v-if="openNew">
-                <label for="price" class="font-semibold">Новое название контейнера</label>
-                <InputText id="price" class="flex-auto" autocomplete="off" v-model.trim="newContainerName" />
+                <label for="price" class="font-semibold">Новый контейнер</label>
+                <Dropdown v-model="selectedContainerName" :options="store.getters.allContainers" optionLabel="name"
+                :placeholder="selectedContainerName?.name || 'Выбрать контейнер'" class="w-full md:w-14rem" id="category" />
+                <!-- <InputText id="price" class="flex-auto" autocomplete="off" v-model.trim="newContainerName" /> -->
             </div>
 
 
@@ -61,7 +63,7 @@ import http from '@/http';
 import UpdatePopularFoor from '@/components/Update/PopularFood.vue'
 import { open } from 'fs/promises';
 import { useToast } from 'primevue/usetoast';
-import { ref ,onMounted} from 'vue';
+import { ref ,onMounted,computed} from 'vue';
 import { useStore } from 'vuex';
 const isModalVisibleFood = ref(false);
 const isPopularOpen=ref(false)
@@ -69,11 +71,14 @@ const allFoodName = ref({} as {name:string});
 const newFoodName = ref('');
 const foodPrice = ref(0);
 const foodWeight = ref('');
+//const selectedContainerName = ref<{ name: string }>({name:'adinai'} as { name: string });
+const selectedContainerName = ref({name:'adinai'} as {name:string})
 const newContainerName = ref('');
 const newContainerCount = ref(0);
 const openNew=ref(false)
 const store=useStore()
-const toast=useToast()
+const toast=useToast();
+
 const selectOld =()=>{
    if(allFoodName.value){
     openNew.value=true;
@@ -93,19 +98,30 @@ if(response.status===200){
     foodPrice.value=response.data.price;
     foodWeight.value=response.data.weight;
     newContainerName.value=response.data.containerName;
-    newContainerCount.value=response.data.containerCount
+    newContainerCount.value=response.data.containerCount;
+
+    selectedContainerName.value={name:response.data.containerName};
+
+    console.log("selectedContainerName ????",selectedContainerName);
+
 
 }
     }catch(err){
         console.log(err)
     }
 }
+
+
+const optionValue =computed(()=>{
+    return 'adin'
+})
+
 const updateFood =async()=>{
     if(newFoodName.value?.length){
 try{
     const body={
         "newContainerCount": newContainerCount.value,
-  "newContainerName": newContainerName.value,
+  "newContainerName": selectedContainerName.value?.name,
   "newName": newFoodName.value,
   "newPrice": foodPrice.value,
   "newWeight": foodWeight.value,
@@ -129,6 +145,7 @@ if(response.status===200){
 
 onMounted(async() => {
   await  store.dispatch('getAllCategoryNames');
+  store.dispatch('fetchAllContainers')
 })
 </script>
 

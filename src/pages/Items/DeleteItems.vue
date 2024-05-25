@@ -35,6 +35,7 @@
         </Card>
 
         <Toast />
+        
         <ConfirmDialog></ConfirmDialog>
     </div>
 </template>
@@ -73,11 +74,11 @@ const deleteFood = async () => {
 }
 const confirmFood = () => {
     confirm.require({
-        message: 'Do you want to delete this ' + selectedFood.value,
+        message: 'Вы действительно хотите удалить ' + selectedFood.value,
         header: 'Danger Zone',
         icon: 'pi pi-info-circle',
-        rejectLabel: 'Cancel',
-        acceptLabel: 'Delete',
+        rejectLabel: 'Отмена',
+        acceptLabel: 'Удалить',
         rejectClass: 'p-button-secondary p-button-outlined',
         acceptClass: 'p-button-danger',
         accept: () => {
@@ -92,11 +93,11 @@ const confirmFood = () => {
 }
 const confirm2 = () => {
     confirm.require({
-        message: 'Do you want to delete this ' + selectedCategory.value.name,
+        message: 'Вы действительно хотите удалить ' + selectedCategory.value.name,
         header: 'Danger Zone',
         icon: 'pi pi-info-circle',
-        rejectLabel: 'Cancel',
-        acceptLabel: 'Delete',
+        rejectLabel: 'Отмена',
+        acceptLabel: 'Удалить',
         rejectClass: 'p-button-secondary p-button-outlined',
         acceptClass: 'p-button-danger',
         accept: () => {
