@@ -35,8 +35,20 @@
         </Card>
 
         <Toast />
-        
-        <ConfirmDialog></ConfirmDialog>
+
+        <Dialog v-model:visible="isFoodDeleteOpen" modal header="Удалить еду" :style="{ width: '25rem' }">
+            <ConfirmButtons :descrText="`Вы действительно хотите удалить  + ${selectedFood}`"
+            confirmText="Удалить" declineText='Отменить' @closeModal="isFoodDeleteOpen=false" @confirmAction="deleteFood"
+            />
+        </Dialog>
+
+        <Dialog v-model:visible="isCategoryDeleteOpen" modal header="Удалить категорию" :style="{ width: '25rem' }">
+            <ConfirmButtons :descrText="`Вы действительно хотите удалить  + ${selectedCategory?.name}`"
+            confirmText="Удалить" declineText='Отменить' @closeModal="isCategoryDeleteOpen=false" @confirmAction="deleteCategory"
+            />
+        </Dialog>
+
+ 
     </div>
 </template>
 
@@ -48,11 +60,14 @@ import { useToast } from 'primevue/usetoast';
 import { Category } from '@/types/Category';
 import http, { BaseUrl } from '@/http';
 import axios from 'axios';
-
+import ConfirmButtons from '@/components/UI/ConfirmButtons.vue';
 const selectedCategory = ref({} as Category)
 const store = useStore();
 const confirm = useConfirm();
 const toast = useToast();
+const isFoodDeleteOpen=ref(false)
+const isCategoryDeleteOpen=ref(false)
+
 
 const selectedFood = ref('');
 
@@ -66,6 +81,7 @@ const deleteFood = async () => {
         console.log('response', response);
         if (response.status) {
             toast.add({ severity: 'success', summary: 'Успешно', detail: 'Удалено', life: 3000 });
+            isFoodDeleteOpen.value=false
         }
     } catch (err: any) {
         console.log(err);
@@ -73,42 +89,27 @@ const deleteFood = async () => {
     }
 }
 const confirmFood = () => {
-    confirm.require({
-        message: 'Вы действительно хотите удалить ' + selectedFood.value,
-        header: 'Danger Zone',
-        icon: 'pi pi-info-circle',
-        rejectLabel: 'Отмена',
-        acceptLabel: 'Удалить',
-        rejectClass: 'p-button-secondary p-button-outlined',
-        acceptClass: 'p-button-danger',
-        accept: () => {
-            deleteFood()
-            //  toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
-
-        },
-        reject: () => {
-            toast.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отклонили', life: 3000 });
-        }
-    });
+    isFoodDeleteOpen.value=true;
 }
 const confirm2 = () => {
-    confirm.require({
-        message: 'Вы действительно хотите удалить ' + selectedCategory.value.name,
-        header: 'Danger Zone',
-        icon: 'pi pi-info-circle',
-        rejectLabel: 'Отмена',
-        acceptLabel: 'Удалить',
-        rejectClass: 'p-button-secondary p-button-outlined',
-        acceptClass: 'p-button-danger',
-        accept: () => {
-            deleteCategory()
-            //  toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
+    isCategoryDeleteOpen.value=true
+    // confirm.require({
+    //     message: 'Вы действительно хотите удалить ' + selectedCategory.value.name,
+    //     header: 'Danger Zone',
+    //     icon: 'pi pi-info-circle',
+    //     rejectLabel: 'Отмена',
+    //     acceptLabel: 'Удалить',
+    //     rejectClass: 'p-button-secondary p-button-outlined',
+    //     acceptClass: 'p-button-danger',
+    //     accept: () => {
+    //         deleteCategory()
+    //         //  toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
 
-        },
-        reject: () => {
-            toast.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отклонили', life: 3000 });
-        }
-    });
+    //     },
+    //     reject: () => {
+    //         toast.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отклонили', life: 3000 });
+    //     }
+    // });
 };
 
 const deleteCategory = async () => {
@@ -120,6 +121,7 @@ const deleteCategory = async () => {
         })
         if (response.status === 200) {
             toast.add({ severity: 'info', summary: 'Успешно', detail: 'Категория удалена' });
+            isCategoryDeleteOpen.value=false
         }
 
     } catch (err: any) {
