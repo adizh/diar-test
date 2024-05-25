@@ -7,7 +7,7 @@
             <Button v-else-if="from==='awaiting'"  icon="pi pi-directions-alt" v-tooltip.top="'Отправить на кухню'" severity="success" raised  @click="sendToKitchen"/>
             <Button v-else-if="from==='awaiting-pickup'" v-tooltip.top="'Отправить на кухню'"  icon="pi pi-directions-alt"severity="success" raised  @click="sendToKitchenPickup"/>
             <Button v-if="from==='awaiting-pickup' ||from==='awaiting' " v-tooltip.top="'Добавить еду'"  icon="pi pi-plus" severity="info" raised 
-            class='mb-2'
+
             @click="isAddNewFoodOpen=true"/>
             <Button v-if="from==='awaiting-pickup' || from==='awaiting'" icon="pi pi-times" severity="danger" v-tooltip.top="'Отменить заказ'"  @click="isCancelOpen=true"/>
        

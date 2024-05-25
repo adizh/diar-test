@@ -187,7 +187,7 @@ const items = ref([
     },
     {
         label: 'Обновить',
-        icon: 'pi pi-plus',
+      //  icon: 'pi pi-plus',
         items: [
             {
                 label: 'Обновить',
