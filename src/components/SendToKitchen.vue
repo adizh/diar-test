@@ -1,7 +1,7 @@
 <template>
     <div>
-        <Button label="Отправить заказ на кухню" severity="info" @click="sendOrder" />
-        <Button label="Отправить заказ(самовывоз) на кухню" severity="info" @click="sendPickup" />
+        <!-- <Button label="Отправить заказ на кухню" severity="info" @click="sendOrder" />
+        <Button label="Отправить заказ(самовывоз) на кухню" severity="info" @click="sendPickup" /> -->
     </div>
 
 
@@ -17,7 +17,7 @@
             </div>
             <div class="flex justify-content-end gap-2">
                 <Button type="button" label="Отменить" severity="secondary" @click='isModalVisible = false'></Button>
-                <Button type="button" label="Добавить" @click="submitOrder"></Button>
+                <Button type="button" label="Добавить" ></Button>
             </div>
         </Dialog>
     </div>
@@ -59,13 +59,6 @@ const sendRequest = async (type: string) => {
     }
 }
 
-const submitOrder = () => {
-    if (header.value ==='Отравить заказ') {
-        sendRequest('send-to-kitchen')
-    } else {
-        sendRequest('send-to-kitchen-pickup-order')
-    }
-}
 
 </script>
 

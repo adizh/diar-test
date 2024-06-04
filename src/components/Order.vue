@@ -4,8 +4,6 @@
           <div class='flex flex-row gap-3 align-items-center'>
             <p>Номер заказа: {{ order?.orderNumber }}</p>
             <Button v-if="from==='kitchen'" label="Назначить курьера" severity="success" raised  @click="isDelegOpen=true"/>
-            <Button v-else-if="from==='awaiting'"  icon="pi pi-directions-alt" v-tooltip.top="'Отправить на кухню'" severity="success" raised  @click="sendToKitchen"/>
-            <Button v-else-if="from==='awaiting-pickup'" v-tooltip.top="'Отправить на кухню'"  icon="pi pi-directions-alt"severity="success" raised  @click="sendToKitchenPickup"/>
             <Button v-if="from==='awaiting-pickup' ||from==='awaiting' " v-tooltip.top="'Добавить еду'"  icon="pi pi-plus" severity="info" raised 
 
             @click="isAddNewFoodOpen=true"/>
@@ -113,22 +111,6 @@ if(response.status===200){
 }
 }
 
-const sendToKitchenPickup =async()=>{
-    try{
-const response =await http.post('admin/send-to-kitchen-pickup-order',{
-    orderNumber:props?.order?.orderNumber
-})
-
-if(response.status===200){
-    toast.add({severity:'success',detail:'Отправлено на кухню!',summary:'Успешно'});
-    setTimeout(()=>{
-window.location.reload()
-    },1000)
-}
-    }catch(err){
-        console.log(err)
-    }
-}
 
 const cancelOrder =async()=>{
     const url = props?.from==='awaiting' ? 'admin/cancel-order' :  props?.from==='awaiting-pickup' ? 'admin/cancel-pickup-order':'' 
@@ -146,21 +128,7 @@ window.location.reload()
     }
 }
 
-const sendToKitchen =async()=>{
-    try{
-const response =await http.post('admin/send-to-kitchen',{
-    orderNumber:props?.order?.orderNumber
-})
-if(response.status===200){
-    toast.add({severity:'success',detail:'Отправлено на кухню!',summary:'Успешно'});
-    setTimeout(()=>{
-window.location.reload()
-    },1000)
-}
-    }catch(err){
-        console.log(err)
-    }
-}
+
 
 
 const closeModal =()=>{
