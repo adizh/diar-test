@@ -55,9 +55,11 @@ const store: Store<State> = createStore({
 
           console.log("response refreshToken", response);
           localStorage.setItem("accessToken", response.data.accessToken);
+          window.location.reload();
+          
         } catch (err: any) {
           console.log(err);
-          // console.log("refresh token expired");
+        console.log("refresh token expired");
           if (
             err.response.data.code === "NP-000" &&
             err.response.data.developerMessage.includes("token is expired")

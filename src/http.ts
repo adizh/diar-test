@@ -1,6 +1,7 @@
-// http.js
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 
+
+import store from "./store";
 const url = "http://20.55.72.226:8080";
 
 const http: AxiosInstance = axios.create({
@@ -13,26 +14,24 @@ http.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
 
-http.interceptors.response.use((response: AxiosResponse) => {
-  return response;
-});
+http.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response;
+  },
+  async (error: AxiosError) => {
+    if (error.response && error.response.status === 401) {
+      console.log('401 error detected, dispatching refreshToken');
+      await store.dispatch('refreshToken');
+   
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default http;
 export { url as BaseUrl };
 
-// const httpBasic = axios.create({
-//   baseURL: url,
-// });
-
-// httpBasic.interceptors.request.use((config) => {
-//   return config;
-// });
-
-// httpBasic.interceptors.response.use((response: AxiosResponse) => {
-//   return response;
-// });
-
-// export { httpBasic };
