@@ -22,7 +22,7 @@ const confirmLogout=()=>{
                 localStorage.removeItem('refreshToken')
                 localStorage.removeItem('role');
 
-                window.location.reload()
+              //  window.location.reload()
 }
 
 const openSignOutModal=()=>{

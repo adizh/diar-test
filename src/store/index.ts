@@ -45,7 +45,7 @@ const store: Store<State> = createStore({
       if (!isRefreshToken) {
         localStorage.removeItem("accessToken");
         router.push("/");
-        window.location.href='/'
+     //   window.location.href='/'
       //  window.location.reload();
       } else {
         console.log("refresh token dispatch", isRefreshToken);
@@ -56,7 +56,7 @@ const store: Store<State> = createStore({
 
           console.log("response refreshToken", response);
           localStorage.setItem("accessToken", response.data.accessToken);
-          window.location.href='/'
+       //   window.location.href='/'
          // window.location.reload();
           
         } catch (err: any) {

@@ -151,7 +151,7 @@ const createPickupOrder =async()=>{
     toast.add({severity:'success',summary:"Успешно",detail:"Заказ на самовывоз создан!"});
     setTimeout(()=>{
 emit('closeModal');
-window.location.reload()
+//window.location.reload()
     },700)
  }
         }catch(err){
