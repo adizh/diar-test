@@ -25,6 +25,7 @@ const store: Store<State> = createStore({
    
   },
   actions: {
+
     async getAllCategoryNames({ state }) {
       try {
         const response = await http("categorys/get-all-category-with-foods");
@@ -32,7 +33,6 @@ const store: Store<State> = createStore({
         state.categoriesName = response.data.map((item: any) => item.Category);
         state.allFoodsNames = response.data
           .map((item: any) => item.Foods?.map((food: any) => food.name))
-
           .filter((eachFood: any) => Boolean(eachFood))
           .flat();
       } catch (err) {
@@ -42,23 +42,20 @@ const store: Store<State> = createStore({
 
     async refreshToken() {
       const isRefreshToken = localStorage.getItem("refreshToken");
-      if (!isRefreshToken) {
-        localStorage.removeItem("accessToken");
+      if (isRefreshToken) {
+
         router.push("/");
-     //   window.location.href='/'
-      //  window.location.reload();
+
       } else {
+        localStorage.removeItem("accessToken");
         console.log("refresh token dispatch", isRefreshToken);
         try {
           const response = await http.post("/auth/refresh-token", {
             refreshToken: isRefreshToken,
           });
-
           console.log("response refreshToken", response);
           localStorage.setItem("accessToken", response.data.accessToken);
-       //   window.location.href='/'
-         // window.location.reload();
-          
+          window.location.reload()          
         } catch (err: any) {
           console.log(err);
         console.log("refresh token expired");
@@ -68,7 +65,7 @@ const store: Store<State> = createStore({
           ) {
             console.log("refresh token expired");
             localStorage.removeItem("accessToken");
-           // window.location.reload();
+         
           }
         }
       }
