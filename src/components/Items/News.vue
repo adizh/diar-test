@@ -54,6 +54,9 @@ console.log('response',response);
 if(response.status===200){
   isDeleteOpen.value=false;
   toast.add({severity:'success',detail:'Новость удалена!',summary:'Успешно'})
+  setTimeout(()=>{
+window.location.reload()
+  },1000)
 
 }
     }catch(err){

@@ -85,7 +85,7 @@ const createCourier = async () => {
             const response = await http.post('admin/create-courier', body);
             console.log(response.status, 'response create a courier');
             if (response.status === 200) {
-                toast.add({ severity: 'success', summary: 'Курьер создан', detail: 'Courier has been created!' });
+                toast.add({ severity: 'success', summary: 'Курьер создан', detail: 'Курьер создан!' });
                 visible.value = false
             }
 

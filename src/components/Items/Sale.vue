@@ -51,7 +51,10 @@ data:{name:props?.sale?.name}
 console.log(response);
 if(response.status===200){
 toast.add({severity:'success',detail:'Акция удалена!',summary:'Успешно'});
-isDeleteOpen.value=false
+isDeleteOpen.value=false;
+setTimeout(()=>{
+  window.location.reload()
+},700)
 }
   }catch(err){
     console.log(err)
