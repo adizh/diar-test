@@ -116,10 +116,10 @@ type Status={
 }
 
 const statusOptions=ref([
-    { name: 'Отправить на кухню', code: 'Cooked' },
+    { name: 'Отправить на кухню', code: 'the order is being prepared' },
     { name: 'Закончить заказ', code: 'Finished' },
-    { name: 'Ожидаемый', code: 'Awaits' },
-    { name: 'Доставленный', code: 'Delivered' },
+    { name: 'Ожидаемый', code: 'awaiting confirmation from the operator' },
+    { name: 'Доставленный', code: 'order is being delivered' },
 ]);
 
 
@@ -138,6 +138,9 @@ const response = await http.put('/pickup-orders/update-pickup-order-status',{
 if(response.status===200){
     toast.add({severity:'success',detail:'Статус изменен',summary:'Успешно'});
 isStatusOpen.value=false
+setTimeout(()=>{
+window.location.reload()
+        },1500)
 }
 
 console.log('response updateStatusPickup',response)
@@ -155,6 +158,9 @@ const response = await http.put('/orders/update-order-status',{
 if(response.status===200){
     toast.add({severity:'success',detail:'Статус изменен',summary:'Успешно'});
 isStatusOpen.value=false
+setTimeout(()=>{
+window.location.reload()
+        },1500)
 }
 
 console.log('response updateStatus',response)
@@ -172,6 +178,8 @@ if(props?.from==='awaiting-pickup'){
     updateStatus()
 }
 }
+
+
 const delegateOrder =async()=>{
 if(selectedCourier?.value?.id){
 
@@ -200,7 +208,7 @@ const cancelOrder =async()=>{
     try{
         const response = await http.post(url,{orderNumber:props?.order?.orderNumber});
         if(response.status===200){
-            toast.add({severity:'success',detail:'Заказ отменен!',summary:'Успешно'});
+        toast.add({severity:'success',detail:'Заказ отменен!',summary:'Успешно'});
         setTimeout(()=>{
 window.location.reload()
         },1500)
