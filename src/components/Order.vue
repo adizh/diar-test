@@ -4,6 +4,15 @@
           <div class='flex flex-row gap-3 align-items-center'>
             <p>Номер заказа: {{ order?.orderNumber }}</p>
             <Button v-if="from==='kitchen'" label="Назначить курьера" severity="success" raised  @click="isDelegOpen=true"/>
+
+            <Dropdown v-model="selectedStatus" :options="statusOptions" optionLabel="name" placeholder="Выбрать статус" class="w-full md:w-14rem" @change="changeStatus"/>
+
+
+            <!-- <Select v-model="selectedStatus" :options="statusOptions" optionLabel="name" placeholder="Select a City" class="w-full md:w-56" @change="changeStatus" /> -->
+            
+            <!-- <Button v-else-if="from==='awaiting'"  icon="pi pi-directions-alt" v-tooltip.top="'Отправить на кухню'" severity="success" raised  @click="sendToKitchen"/>
+            <Button v-else-if="from==='awaiting-pickup'" v-tooltip.top="'Отправить на кухню'"  icon="pi pi-directions-alt"severity="success" raised  @click="sendToKitchenPickup"/> -->
+
             <Button v-if="from==='awaiting-pickup' ||from==='awaiting' " v-tooltip.top="'Добавить еду'"  icon="pi pi-plus" severity="info" raised 
 
             @click="isAddNewFoodOpen=true"/>
@@ -60,6 +69,18 @@
         <OrderAddFood :order="order" @closeModal="closeModal" :from='from'/>
     </Dialog>
 
+    <Dialog v-model:visible="isStatusOpen" modal header='Потверждение статуса' :style="{ width: '25rem' }">
+<div>
+
+    <p>Вы потверждаете данный статус <strong>{{ selectedStatus?.name }}</strong>?</p>
+    <div class='flex flex-row justify-content-end gap-2'>
+        <Button label="Нет" severity="danger" @click="isStatusOpen=false"/>
+        <Button label="Да" severity="success" @click="confirmStatus"/>
+    </div>
+
+
+</div>
+        </Dialog>
 
 
     <Toast/>
@@ -76,9 +97,11 @@ const props = defineProps<{
 }>()
 
 const isAddNewFoodOpen=ref(false);
+const isStatusOpen =ref(false)
 import OrderAddFood from '@/components/Orders/AddNew.vue'
 const store=useStore();
 const isDelegOpen=ref(false);
+const selectedStatus = ref({} as Status)
 const isCancelOpen=ref(false);
 import { useStore } from 'vuex';
 import { Courier } from '@/types/Courier';
@@ -87,8 +110,68 @@ import { useToast } from 'primevue/usetoast';
 const selectedCourier=ref({} as Courier)
 const toast=useToast();
 import ConfirmButtons from './UI/ConfirmButtons.vue';
+type Status={
+    name:string,
+    code:string
+}
+
+const statusOptions=ref([
+    { name: 'Отправить на кухню', code: 'Cooked' },
+    { name: 'Закончить заказ', code: 'Finished' },
+    { name: 'Ожидаемый', code: 'Awaits' },
+    { name: 'Доставленный', code: 'Delivered' },
+]);
 
 
+const changeStatus =(event:any)=>{
+    console.log('event',event)
+selectedStatus.value=event?.value;
+    isStatusOpen.value = true
+}
+
+const updateStatusPickup=async()=>{
+    try{
+const response = await http.put('/pickup-orders/update-pickup-order-status',{
+    orderNumber:props?.order?.orderNumber,
+    status:selectedStatus?.value?.code
+})
+if(response.status===200){
+    toast.add({severity:'success',detail:'Статус изменен',summary:'Успешно'});
+isStatusOpen.value=false
+}
+
+console.log('response updateStatusPickup',response)
+    }catch(err){
+        console.log(err)
+    }
+}
+
+const updateStatus=async()=>{
+    try{
+const response = await http.put('/orders/update-order-status',{
+    orderNumber:props?.order?.orderNumber,
+    status:selectedStatus?.value?.code
+})
+if(response.status===200){
+    toast.add({severity:'success',detail:'Статус изменен',summary:'Успешно'});
+isStatusOpen.value=false
+}
+
+console.log('response updateStatus',response)
+    }catch(err){
+        console.log(err)
+    }
+}
+
+
+const confirmStatus = ()=>{
+console.log('from.',props?.from)
+if(props?.from==='awaiting-pickup'){
+    updateStatusPickup()
+}else if (props?.from==='awaiting'){
+    updateStatus()
+}
+}
 const delegateOrder =async()=>{
 if(selectedCourier?.value?.id){
 
@@ -121,13 +204,45 @@ const cancelOrder =async()=>{
         setTimeout(()=>{
 window.location.reload()
         },1500)
-
         }
     }catch(err){
         console.log(err)
     }
 }
 
+const sendToKitchenPickup =async()=>{
+    try{
+const response =await http.post('admin/send-to-kitchen-pickup-order',{
+    orderNumber:props?.order?.orderNumber
+})
+
+if(response.status===200){
+    toast.add({severity:'success',detail:'Отправлено на кухню!',summary:'Успешно'});
+    setTimeout(()=>{
+window.location.reload()
+    },1000)
+}
+    }catch(err){
+        console.log(err)
+    }
+}
+
+
+const sendToKitchen =async()=>{
+    try{
+const response =await http.post('admin/send-to-kitchen',{
+    orderNumber:props?.order?.orderNumber
+})
+if(response.status===200){
+    toast.add({severity:'success',detail:'Отправлено на кухню!',summary:'Успешно'});
+    setTimeout(()=>{
+window.location.reload()
+    },1000)
+}
+    }catch(err){
+        console.log(err)
+    }
+}
 
 
 
@@ -139,6 +254,7 @@ const closeModal =()=>{
     },1000)
 
 }
+
 onMounted(async() => {
    await store.dispatch('fetchAllCouriers');
 });

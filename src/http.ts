@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 
 
 import store from "./store";
-const url = "http://20.55.72.226:8080";
+const url = "http://176.126.164.230:8088";
 
 const http: AxiosInstance = axios.create({
   baseURL: url,
