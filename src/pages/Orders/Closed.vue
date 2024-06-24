@@ -11,6 +11,8 @@ vbas3<template>
             <li v-for="order in orders" :key="order?.orderNumber">
                 <Order :order="order" />
             </li>
+
+            <Paginator :rows="10" :totalRecords="120"></Paginator>
         </ul>
     </div>
 </template>
@@ -28,7 +30,7 @@ const orders = ref<AwaitingOrder[]>([])
 
 const fetchOrders = async () => {
     try {
-        const response = await http.get('admin/get-all-closed-orders') as any;
+        const response = await http.get(`admin/get-all-closed-orders?page=${1}`) as any;
         console.log('response closed order', response)
         if (response.status === 204) {
             noOrder.value = response.statusText;

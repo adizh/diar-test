@@ -46,9 +46,9 @@ const store: Store<State> = createStore({
       // if (isRefreshToken) {
       //   router.push("/");
       // }
-      
-      // else {
-        localStorage.removeItem("accessToken");
+    //  else {
+       // localStorage.removeItem("accessToken");
+     //   window.location.reload()
         console.log("refresh token dispatch", isRefreshToken);
         try {
           const response = await http.post("/auth/refresh-token", {
@@ -66,10 +66,12 @@ const store: Store<State> = createStore({
           ) {
             console.log("refresh token expired");
             localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            window.location.reload()  
          
           }
-        }
-     // }
+      //  }
+      }
     },
     async fetchAllContainers({ state }) {
       try {
