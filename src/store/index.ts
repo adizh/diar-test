@@ -42,11 +42,12 @@ const store: Store<State> = createStore({
 
     async refreshToken() {
       const isRefreshToken = localStorage.getItem("refreshToken");
-      if (isRefreshToken) {
-
-        router.push("/");
-
-      } else {
+      console.log('isRefreshToken',isRefreshToken)
+      // if (isRefreshToken) {
+      //   router.push("/");
+      // }
+      
+      // else {
         localStorage.removeItem("accessToken");
         console.log("refresh token dispatch", isRefreshToken);
         try {
@@ -57,7 +58,7 @@ const store: Store<State> = createStore({
           localStorage.setItem("accessToken", response.data.accessToken);
           window.location.reload()          
         } catch (err: any) {
-          console.log(err);
+          console.log(err,'REFRESH TOKEN');
         console.log("refresh token expired");
           if (
             err.response.data.code === "NP-000" &&
@@ -68,7 +69,7 @@ const store: Store<State> = createStore({
          
           }
         }
-      }
+     // }
     },
     async fetchAllContainers({ state }) {
       try {
@@ -148,6 +149,7 @@ console.log('rresonse closed pickup',response)
       }
     }
   },
+
   getters: {
     categoriesName(state: State): Category[] {
       return state.categoriesName;
