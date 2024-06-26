@@ -12,8 +12,9 @@ vbas3<template>
                 <Order :order="order" />
             </li>
 
-            <Paginator :rows="10" :totalRecords="120"></Paginator>
+           
         </ul>
+        <Paginator :rows="10" :totalRecords="totalItems" @page="changePage"></Paginator>
     </div>
 </template>
 
@@ -27,17 +28,26 @@ import Order from '@/components/Order.vue';
 const noOrder = ref('');
 const orders = ref<AwaitingOrder[]>([])
 
-
+const totalPages=ref(0)
+const totalItems=ref(0)
+const currentPage=ref(1)
+const changePage =(event:{page:number,})=>{
+    currentPage.value = event?.page+1;
+    fetchOrders();
+    window.scrollTo(0,0)
+}
 const fetchOrders = async () => {
     try {
-        const response = await http.get(`admin/get-all-closed-orders?page=${1}`) as any;
+        const response = await http.get(`admin/get-all-closed-orders?page=${currentPage?.value}`) as any;
         console.log('response closed order', response)
         if (response.status === 204) {
             noOrder.value = response.statusText;
         }
 
         else if (response.status == 200) {
-            orders.value = response.data.orders
+            orders.value = response.data?.orderResponse
+            totalPages.value = response.data?.totalPages
+            totalItems.value = response.data?.totalItems
         }
 
     } catch (err) {
