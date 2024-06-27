@@ -9,7 +9,7 @@ vbas3<template>
 
         <ul v-else class="card-list">
             <li v-for="order in orders" :key="order?.orderNumber" class='card-list'>
-                <Order :order="order" type="delegated" />
+                <Order :order="order" type="delegated"  from="delegated"/>
             </li>
         </ul>
     </div>

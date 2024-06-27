@@ -87,6 +87,7 @@ const props = defineProps<{
     from?:string
 
 }>()
+console.log('Order componentfrom ',props?.from)
 
 const isAddNewFoodOpen=ref(false);
 const isStatusOpen =ref(false)
@@ -164,9 +165,9 @@ console.log('response updateStatus',response)
 
 const confirmStatus = ()=>{
 console.log('from.',props?.from)
-if(props?.from==='awaiting-pickup'){
+if(props?.from==='awaiting-pickup' || props?.from==='kitchen-pickup' || props?.from==='cancelled-pickup' || props?.from==='closed-pickup'){
     updateStatusPickup()
-}else if (props?.from==='awaiting'){
+}else if (props?.from==='awaiting' || props?.from==='kitchen' || props?.from==='cancelled' || props?.from==='closed' || props?.from==='delegated'){
     updateStatus()
 }
 }

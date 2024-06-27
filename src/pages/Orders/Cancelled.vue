@@ -7,7 +7,7 @@
 
         <ul v-else class='card-list'>
             <li v-for="order in awaitingOrders" :key="order?.orderNumber">
-                <Order :order="order" />
+                <Order :order="order" from="cancelled" />
             </li>
         </ul>
         <Paginator :rows="10" :totalRecords="totalItems" @page="changePage"></Paginator>
