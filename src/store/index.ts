@@ -146,6 +146,7 @@ console.log('rresonse closed pickup',response)
       if(response.status===200){
         state.cookedPickUpOrders=response.data.pickUpOrders;
       }
+      console.log('response fetchCookedPickUp',response)
       }catch(err){
         console.log(err)
       }
