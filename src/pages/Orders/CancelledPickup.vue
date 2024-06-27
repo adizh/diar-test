@@ -1,10 +1,9 @@
 <template>
     <div class="section">
        Отмененные заказы самовывоз
-        <Card v-if="noOrder?.length">
+        <Card v-if="!orders?.length">
 
-            <template #content>{{
-            noOrder }}</template>
+            <template #content>Нет данных</template>
         </Card>
         
         <ul v-else class="card-list">
@@ -38,11 +37,9 @@ const fetchOrders = async () => {
     try {
         const response = await http.get(`admin/get-all-cancel-pickup-orders?page=${currentPage?.value}`) as any;
         console.log('response cancelled pickup', response)
-        if (response.status === 204) {
-            noOrder.value = response.statusText;
-        }
+     
 
-        else if (response.status == 200) {
+         if (response.status == 200) {
             orders.value = response.data?.pickUpOrderResponse
             totalItems.value = response.data?.totalItems
         }

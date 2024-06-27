@@ -1,10 +1,8 @@
 vbas3<template>
     <div class="section">
         Закрытые заказы
-        <Card v-if="noOrder?.length">
-
-            <template #content>{{
-            noOrder }}</template>
+        <Card v-if="!orders?.length">
+            <template #content>Нет данных</template>
         </Card>
 
         <ul v-else class="card-list">
@@ -40,11 +38,7 @@ const fetchOrders = async () => {
     try {
         const response = await http.get(`admin/get-all-closed-orders?page=${currentPage?.value}`) as any;
         console.log('response closed order', response)
-        if (response.status === 204) {
-            noOrder.value = response.statusText;
-        }
-
-        else if (response.status == 200) {
+         if (response.status == 200) {
             orders.value = response.data?.orderResponse
             totalPages.value = response.data?.totalPages
             totalItems.value = response.data?.totalItems

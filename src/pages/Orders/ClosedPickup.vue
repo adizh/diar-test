@@ -1,13 +1,11 @@
 vbas3<template>
     <div class="section">
         Самовывоз закрытых заказов
-        <Card v-if="noOrder?.length">
-
-            <template #content>{{
-            noOrder }}</template>
+        <Card v-if="!orders?.length">
+            <template #content>Нет данных</template>
         </Card>
 
-        <ul v-else>
+        <ul v-else class="card-list">
             <li v-for="order in orders" :key="order?.orderNumber">
                 <Order :order="order" />
             </li>
@@ -38,11 +36,7 @@ const fetchOrders = async () => {
     try {
         const response = await http.get(`admin/get-all-closed-pickup-orders?page=${currentPage?.value}`) as any;
         console.log('response closed pickup', response)
-        if (response.status === 204) {
-            noOrder.value = response.statusText
-        }
-
-        else if (response.status == 200) {
+         if (response.status == 200) {
             orders.value = response.data?.pickUpOrderResponse
             totalItems.value = response.data?.totalItems
         }

@@ -1,11 +1,8 @@
 <template>
     <div class="section">
         Отмененные заказы
-
-       
         <Card v-if="!awaitingOrders?.length">
-            <template #content>{{
-            noOrder }}</template>
+            <template #content>Нет данных</template>
         </Card>
 
         <ul v-else class='card-list'>
@@ -40,14 +37,11 @@ const fetchAwaitingOrders = async () => {
     try {
         const response = await http.get(`admin/get-all-cancel-orders?page=${currentPage?.value}`) as any;
         console.log('response cancelled orders', response)
-        if (response.status === 204) {
-            noOrder.value = response.statusText
-        }
-
-        else if (response.status == 200) {
+        if (response.status == 200) {
             awaitingOrders.value = response.data.orderResponse
             totalItems.value =response.data?.totalItems
         }
+
     } catch (err) {
         console.log(err)
     }
