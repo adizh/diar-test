@@ -1,10 +1,8 @@
 vbas3<template>
     <div class="section">
        Делегированные заказы
-        <Card v-if="noOrder?.length">
-
-            <template #content>{{
-            noOrder }}</template>
+        <Card v-if="!orders?.length">
+            <template #content>Нет данных</template>
         </Card>
 
         <ul v-else class="card-list">

@@ -6,8 +6,7 @@
         <Button label="Создать заказ" @click="isOrderOpen=true" />
 
         <Card v-if="!store.getters.getAwaitingPickupOrders?.length">
-            <template #content>{{
-            noOrder }}</template>
+            <template #content>Нет данных</template>
         </Card>
 
         <ul v-else class="card-list">

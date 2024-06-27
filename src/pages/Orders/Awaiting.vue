@@ -4,7 +4,7 @@
         Заказы в ожидании
         <Button label="Создать заказ" @click="openCreateOrderModal" />
       </p>
-        <Card v-if="noOrder?.length">
+        <Card v-if="!awaitingOrders?.length">
             <template #content>Нет данных</template>
         </Card>
         <ul v-else class="card-list">
@@ -67,7 +67,6 @@
                     </div>
                 </div>
               
-                <!-- <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.foods" /> -->
             </div>
 
             <div class="flex flex-column gap-3 mb-5">
