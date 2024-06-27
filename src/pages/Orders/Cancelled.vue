@@ -4,7 +4,6 @@
 
        
         <Card v-if="!awaitingOrders?.length">
-
             <template #content>{{
             noOrder }}</template>
         </Card>
@@ -36,6 +35,7 @@ const changePage =(event:{page:number,})=>{
     fetchAwaitingOrders();
     window.scrollTo(0,0)
 }
+
 const fetchAwaitingOrders = async () => {
     try {
         const response = await http.get(`admin/get-all-cancel-orders?page=${currentPage?.value}`) as any;
@@ -48,7 +48,6 @@ const fetchAwaitingOrders = async () => {
             awaitingOrders.value = response.data.orderResponse
             totalItems.value =response.data?.totalItems
         }
-
     } catch (err) {
         console.log(err)
     }
@@ -58,7 +57,6 @@ onMounted(() => {
     fetchAwaitingOrders();
 
 })
-
 
 
 </script>

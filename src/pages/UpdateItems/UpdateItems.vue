@@ -2,6 +2,8 @@
     <div class="section">
         <Button label="Обновить еду" severity="secondary" rounded @click="isModalVisibleFood = !isModalVisibleFood" />
         <UpdatePopularFoor :isPopularOpen="isPopularOpen"/>
+
+<HideFood/>
      
     </div>
 
@@ -52,15 +54,13 @@
 
         </Dialog>
     </div>
-
-
-
     <Toast/>
 </template>
 
 <script setup lang="ts">
 import http from '@/http';
 import UpdatePopularFoor from '@/components/Update/PopularFood.vue'
+import HideFood from '@/components/Update/HideFood.vue'
 import { open } from 'fs/promises';
 import { useToast } from 'primevue/usetoast';
 import { ref ,onMounted,computed} from 'vue';
