@@ -1,6 +1,5 @@
 <template>
     <div class='sidebar'>
-        <Stats/>
         <PanelMenu :model="items" />
     </div>
 
@@ -8,7 +7,7 @@
        <div class="main-items">
 
         <div class="each-link-menu" @click="(event)=>toggle(event)">
-В ожидании <Badge :value="totalAwaitingCount" severity="info"></Badge>
+В ожидании <Badge :value="totalAwaitingCount" severity="danger"></Badge>
         </div>
         <div class="each-link-menu" @click="(event)=>toggleKitchen(event)">
             На кухне <Badge :value="totalKitchenCount" severity="info"></Badge>
@@ -31,8 +30,8 @@
                 {{ item?.label }}     
           
 
-                <Badge :value="store.getters.stats.awatingOrdersCount" severity="info" v-if="item?.label==='Заказы'"></Badge>
-                <Badge :value="store.getters.stats.awatingOrdersPickupCount" severity="info" v-if="item?.label==='Самовывоз'"></Badge>
+                <Badge :value="store.getters.stats.awatingOrdersCount" severity="danger" v-if="item?.label==='Заказы'"></Badge>
+                <Badge :value="store.getters.stats.awatingOrdersPickupCount" severity="danger" v-if="item?.label==='Самовывоз'"></Badge>
             </div>
           </OverlayPanel>
 
@@ -343,6 +342,7 @@ onMounted(async()=>{
 }
 .headerItems{
     margin-left: 320px;
+    margin-top: 30px;
 }
 .each-link-menu{
     padding:1px 10px;
