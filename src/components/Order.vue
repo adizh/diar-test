@@ -184,6 +184,9 @@ if(selectedCourier?.value?.id){
 const response = await http.post('admin/delegation-to-courier',body);
 if(response.status===200){
     toast.add({severity:'success','summary':'Успешно','detail':"Курьер назначен"}) 
+    setTimeout(()=>{
+window.location.reload()
+    },600)
 }
     }catch(err){
         console.log(err)

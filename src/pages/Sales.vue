@@ -54,7 +54,8 @@ const newsInfo=ref('')
 const sales=ref([] as Sale[])
 const saleDiscount=ref('')
 const toast=useToast();
-const isDescrDisabled = ref(false)
+const isDescrDisabled = ref(false);
+
 const fetchSales=async()=>{
     try{
 const response =await http('sale/get-all-sales');
@@ -71,6 +72,7 @@ if(response.status===200){
 const onUpload = async (event: any) => {
     uploadFile.value = event.target.files[0];
 }
+
 onMounted(() => {
     fetchSales()
 })
@@ -79,7 +81,7 @@ const handleDescr = (event: Event) => {
       const target = event.target as HTMLInputElement;
       let text = target.value;
       const valueWithoutSpaces = text.replace(/\s+/g, '');
-let maxLength = 225
+      let maxLength = 225
       if (valueWithoutSpaces.length > maxLength) {
         let trimmedText = '';
         let nonSpaceCount = 0;
