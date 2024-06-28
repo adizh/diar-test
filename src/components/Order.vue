@@ -4,7 +4,7 @@
           <div class='flex flex-row gap-3 align-items-center'>
             <p>Номер заказа: {{ order?.orderNumber }}</p>
             <Button v-if="from==='kitchen'" label="Назначить курьера" severity="success" raised  @click="isDelegOpen=true"/>
-            <Dropdown v-model="selectedStatus" :options="statusOptions" optionLabel="name" placeholder="Выбрать статус" class="w-full md:w-14rem" @change="changeStatus"/>
+            <Dropdown v-model="selectedStatus" :options="computedStatus" optionLabel="name" placeholder="Выбрать статус" class="w-full md:w-14rem" @change="changeStatus"/>
 
 
             <!-- <Select v-model="selectedStatus" :options="statusOptions" optionLabel="name" placeholder="Select a City" class="w-full md:w-56" @change="changeStatus" /> -->
@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref,onMounted} from 'vue';
+import {ref,onMounted, computed} from 'vue';
 import { AwaitingOrder } from '@/types/Order'
 const props = defineProps<{
     order: AwaitingOrder,
@@ -117,9 +117,15 @@ const statusOptions=ref([
 ]);
 
 
+
+const computedStatus = computed(()=>{
+    return props?.from?.includes('pickup') ? statusOptions?.value?.slice(0,3) : statusOptions?.value;
+});
+
+
 const changeStatus =(event:any)=>{
     console.log('event',event)
-selectedStatus.value=event?.value;
+    selectedStatus.value=event?.value;
     isStatusOpen.value = true
 }
 
@@ -136,7 +142,6 @@ setTimeout(()=>{
 window.location.reload()
         },1500)
 }
-
 console.log('response updateStatusPickup',response)
     }catch(err){
         console.log(err)
@@ -172,7 +177,6 @@ if(props?.from==='awaiting-pickup' || props?.from==='kitchen-pickup' || props?.f
 }
 }
 
-
 const delegateOrder =async()=>{
 if(selectedCourier?.value?.id){
 
@@ -205,7 +209,7 @@ const cancelOrder =async()=>{
         if(response.status===200){
         toast.add({severity:'success',detail:'Заказ отменен!',summary:'Успешно'});
         setTimeout(()=>{
-window.location.reload()
+        window.location.reload()
         },1500)
         }
     }catch(err){
@@ -213,10 +217,8 @@ window.location.reload()
     }
 }
 
-
 const closeModal =()=>{
     isAddNewFoodOpen.value=false;
-
     setTimeout(()=>{
      window.location.reload();
     },1000)

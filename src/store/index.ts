@@ -9,6 +9,12 @@ import { AwaitingOrder } from "@/types/Order";
 interface State {
   categoriesName: Category[];
   allFoodsNames: string[];
+  stats:{
+    awatingOrdersCount:number,
+    awatingOrdersPickupCount:number,
+    kitchenOrdersCount:number,
+    kitchenOrdersPickupCount:number,
+  }
 }
 
 const store: Store<State> = createStore({
@@ -19,10 +25,15 @@ const store: Store<State> = createStore({
     allFood:[],
     allCouriers:[]  as Courier[],
     allFoods:[] as Food[],
-   awaitingPickupOrders:[] as AwaitingOrder[],
-   closedPickUpOrders:[]as AwaitingOrder[],
-   cookedPickUpOrders:[] as AwaitingOrder[]
-   
+    awaitingPickupOrders:[] as AwaitingOrder[],
+    closedPickUpOrders:[]as AwaitingOrder[],
+    cookedPickUpOrders:[] as AwaitingOrder[],
+    stats:{
+     awatingOrdersCount:0,
+     awatingOrdersPickupCount:0,
+     kitchenOrdersCount:0,
+     kitchenOrdersPickupCount:0,
+   }
   },
   actions: {
 
@@ -43,12 +54,6 @@ const store: Store<State> = createStore({
     async refreshToken() {
       const isRefreshToken = localStorage.getItem("refreshToken");
       console.log('isRefreshToken',isRefreshToken)
-      // if (isRefreshToken) {
-      //   router.push("/");
-      // }
-    //  else {
-       // localStorage.removeItem("accessToken");
-     //   window.location.reload()
         console.log("refresh token dispatch", isRefreshToken);
         try {
           const response = await http.post("/auth/refresh-token", {
@@ -73,6 +78,7 @@ const store: Store<State> = createStore({
       //  }
       }
     },
+
     async fetchAllContainers({ state }) {
       try {
         const response = await http("containers/get-all-containers");
@@ -110,6 +116,7 @@ console.log('response get all food',response)
         console.log(err)
       }
     },
+
     async fetchAllFoods({state}){
       try{
   const response = await http('foods/get-all-foods')
@@ -120,18 +127,21 @@ state.allFoods=response.data
         console.log(err)
       }
     },
+
     async fetchAwaitingPickup({state}){
       try {
         const response = await http.get('admin/get-all-awaiting-pickup-orders') as any;
         console.log('response fetchAwaitingOrders', response)
-if(response.status===200){
-    state.awaitingPickupOrders=response.data?.pickUpOrders
-}
-    
+     if(response.status===200){
+      state.awaitingPickupOrders=response.data?.pickUpOrders
+      state.stats.awatingOrdersPickupCount=response?.data?.pickUpOrders?.length || 0
+      console.log('awatingOrdersPickupCount in vuex',state.stats.awatingOrdersPickupCount)
+    }
     } catch (err) {
         console.log(err)
     }
     },
+
     async fetchClosedPickUp({state}){
 try{
 const response = await http('admin/get-all-closed-pickup-orders');
@@ -140,22 +150,68 @@ console.log('rresonse closed pickup',response)
   console.log(err)
 }
     },
+
     async fetchCookedPickUp({state}){
       try{
       const response = await http('admin/get-all-cooked-pickup-orders');
       if(response.status===200){
         state.cookedPickUpOrders=response.data.pickUpOrders;
+        state.stats.kitchenOrdersPickupCount=response.data?.pickUpOrders?.length || 0
       }
       console.log('response fetchCookedPickUp',response)
       }catch(err){
         console.log(err)
       }
-    }
+    },
+
+    async fetchAwaitingOrders  ({state})  {
+      try {
+          const response = await http.get('admin/get-all-awaiting-orders') as any;
+          console.log('response', response)
+          if (response.status === 200) {
+
+            state.stats.awatingOrdersCount=  response.data.orders?.length || 0
+          } 
+  
+      } catch (err) {
+          console.log(err)
+      }
+  },
+
+  async fetchKitchenOrders  ({state})  {
+    try{
+      const response = await http('admin/get-all-cooked-orders');
+      console.log('response')
+      if(response.status===200){
+          state.stats.kitchenOrdersCount=response.data.orders?.length || 0;
+      }
+          }catch(err){
+              console.log(err)
+          }
+},
+
+
+async fetchStats({dispatch}){
+ await dispatch('fetchKitchenOrders')
+ await dispatch('fetchAwaitingPickup')
+ await dispatch('fetchAwaitingOrders')
+ await dispatch('fetchCookedPickUp')
+
+}
+
+
   },
 
   getters: {
     categoriesName(state: State): Category[] {
       return state.categoriesName;
+    },
+    stats(state:State){
+return state.stats
+    },
+
+    pickUpOrdersCount(state){
+       return state.stats.awatingOrdersPickupCount
     },
     allFoodsNames(state: State) {
       return state.allFoodsNames;

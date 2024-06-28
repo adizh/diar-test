@@ -175,7 +175,6 @@ const fetchAwaitingOrders = async () => {
     try {
         const response = await http.get('admin/get-all-awaiting-orders') as any;
         console.log('response', response)
-
         if (response.status === 204) {
             console.log('response status is 204')
             noOrder.value = response.statusText;
