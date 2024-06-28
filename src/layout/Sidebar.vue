@@ -1,6 +1,25 @@
 <template>
     <div class='sidebar'>
         <PanelMenu :model="items" />
+
+    </div>
+
+    <div class="card">
+        <Menubar :model="headerItems">
+            <!-- <template #item="{ item, props, hasSubmenu }">
+                <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                    <a v-ripple :href="href" v-bind="props.action" @click="navigate">
+                        <span :class="item.icon" />
+                        <span class="ml-2">{{ item.label }}</span>
+                    </a>
+                </router-link>
+                <a v-else v-ripple :href="item.url" :target="item.target" v-bind="props.action">
+                    <span :class="item.icon" />
+                    <span class="ml-2">{{ item.label }}</span>
+                    <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down ml-2" />
+                </a>
+            </template> -->
+        </Menubar>
     </div>
     <div class="sidebar-left">
         <router-view></router-view>
@@ -26,7 +45,6 @@ const confirmLogout=()=>{
 }
 
 const openSignOutModal=()=>{
-   // isSignOutOpen.value=true
    confirm.require({
         message: 'Вы действительно хотите выйти?',
         header: 'Выход',
@@ -37,51 +55,57 @@ const openSignOutModal=()=>{
         acceptClass: 'p-button-danger',
         accept: () => {
             confirmLogout()
-          //  toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
         },
         reject: () => {
-          //  toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
         }
     });
 }
-const router = useRouter()
-const items = ref([
-    {
-        label: 'Заказы',
 
+const router = useRouter()
+
+
+const headerItems = ref([
+    {
+        label: 'В ожидании',
         items: [
             {
-                label: 'Заказы в ожидании',
-
+                label: 'Заказы',
                 command: () => {
                     router.push('/awaiting-orders')
                     // toast.add({ severity: 'success', summary: 'Success', detail: 'File created', life: 3000 });
                 }
             },
             {
-                label: 'Заказы(самовывоз) в ожидании',
+                label: 'Самовывоз',
                 //   icon: 'pi pi-search',
                 command: () => {
                     router.push('/awaiting-orders-pickup')
                     //  toast.add({ severity: 'warn', summary: 'Search Results', detail: 'No results found', life: 3000 });
                 }
-            },
-            {
-                label: 'Заказы на кухне',
+            }
+        ],
+    },
+       {label:'На кухне',
+        items:[ 
+             {
+                label: 'Заказы',
                 command: () => {
                     router.push('/sent-to-kitchen')
                     // toast.add({ severity: 'success', summary: 'Success', detail: 'File created', life: 3000 });
                 }
             },
             {
-                label: 'Заказы на кухне (самовывоз)',
+                label: 'Самовывоз',
                 command: () => {
                     router.push('/sent-to-kitchen-pickup')
                     // toast.add({ severity: 'success', summary: 'Success', detail: 'File created', life: 3000 });
                 }
-            },
-            {
-                label: 'Отмененные',
+            }]
+        },
+
+            {label:'Отмененные',
+            items:[ {
+                label: 'Заказы',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/cancelled-orders')
@@ -89,15 +113,18 @@ const items = ref([
                 }
             },
             {
-                label: 'Отмененные (самовывоз)',
+                label: 'Самовывоз',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/cancelled-orders-pickup')
                     // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
                 }
-            },
+            },]},
+          
+          { label:'Закрытые',
+           items:[
             {
-                label: 'Закрытые заказы',
+                label: 'Заказы',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/closed-orders')
@@ -105,17 +132,18 @@ const items = ref([
                 }
             },
             {
-                label: 'Закрытые заказы(самовывоз)',
+                label: 'Самовывоз',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/closed-orders-pickup')
                     // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
                 }
             },
+        ],},
            
            
 
-            {
+        {
                 label: 'Делегированные заказы',
                 //   icon: 'pi pi-print',
                 command: () => {
@@ -124,8 +152,15 @@ const items = ref([
                 }
             }
 
-        ]
-    },
+        
+    
+]);
+
+
+const items = ref([
+   
+
+    
     {
         label: 'Курьеры',
 
@@ -226,6 +261,8 @@ const items = ref([
         }
     }
 ]);
+
+
 </script>
 
 <style scoped lang=scss>
@@ -247,5 +284,8 @@ const items = ref([
     border-radius: 5px;
     background: rgb(246, 246, 246);
 
+}
+:deep(.p-menubar){
+    margin-left: 320px;
 }
 </style>
