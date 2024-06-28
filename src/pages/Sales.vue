@@ -3,18 +3,14 @@
 <div class="mb-5">
 
     <div class="flex flex-row gap-4 align-items-start mb-5">
-        <p>    Распродажи</p>
+        <p> Распродажи</p>
         <Button type="button" label="Добавить распродажу" @click='isModalVisible=true'></Button>
     </div>
 
-
 <div class="sales flex gap-2">
-
 <SaleItem v-for="sale in sales" :key="sale?.id" :sale="sale" class="flex flex-column justify-content-center w-20rem"/>
 </div>
 </div>
-
-
     </div>
     <div class="card flex justify-content-center">
         <Dialog v-model:visible="isModalVisible" modal header="Создать распродажу" :style="{ width: '25rem' }">
@@ -24,7 +20,9 @@
             </div>
             <div class="flex flex-column gap-3 mb-5">
                 <label for="info" class="font-semibold">Описание</label>
-                <InputText id="info" class="flex-auto" autocomplete="off" v-model.trim="newsInfo" />
+                <InputText id="descrInputRef" class="flex-auto" autocomplete="off" v-model.trim="newsInfo"  ref="descrInputRef" @input="handleDescr"
+                :disabled="isDescrDisabled ? true :false"
+                />
             </div>
             <div class="flex flex-column gap-3 mb-5">
                 <label for="info" class="font-semibold">Скидка (в процентах)</label>
@@ -44,6 +42,7 @@
 import { ref,onMounted } from 'vue';
 import {News} from '@/types/News'
 import http from '@/http';
+const descrInputRef = ref<HTMLInputElement | null>(null);
 import { useToast } from 'primevue/usetoast';
 import SaleItem from '@/components/Items/Sale.vue'
 import {Sale} from '@/types/Sale'
@@ -54,7 +53,8 @@ const newsName=ref('')
 const newsInfo=ref('')
 const sales=ref([] as Sale[])
 const saleDiscount=ref('')
-const toast=useToast()
+const toast=useToast();
+const isDescrDisabled = ref(false)
 const fetchSales=async()=>{
     try{
 const response =await http('sale/get-all-sales');
@@ -68,13 +68,36 @@ if(response.status===200){
     }
 }
 
-
 const onUpload = async (event: any) => {
     uploadFile.value = event.target.files[0];
 }
 onMounted(() => {
     fetchSales()
 })
+
+const handleDescr = (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      let text = target.value;
+      const valueWithoutSpaces = text.replace(/\s+/g, '');
+let maxLength = 225
+      if (valueWithoutSpaces.length > maxLength) {
+        let trimmedText = '';
+        let nonSpaceCount = 0;
+
+        for (let i = 0; i < text.length; i++) {
+          if (text[i] !== ' ') {
+            nonSpaceCount++;
+          }
+          if (nonSpaceCount > maxLength) {
+            break;
+          }
+          trimmedText += text[i];
+        }
+        newsInfo.value = trimmedText;
+      } else {
+        newsInfo.value = text;
+      }
+    };
 
 const createSale=async()=>{
     if(newsName.value?.length && newsInfo.value?.length && uploadFile.value && saleDiscount.value){
@@ -87,18 +110,20 @@ const createSale=async()=>{
         const response = await http.post('admin/create-sale', formData);
         console.log('response create createSale', response);
         if (response.status === 200) {
-            toast.add({ severity: 'success', summary: 'Успешно', detail: 'Распродажа добавлена!' })
+            toast.add({ severity: 'success', summary: 'Успешно', detail: 'Распродажа добавлена!' });
         }
     } catch (err) {
-        console.log(err)
-    }finally{
-        isModalVisible.value=false
-        fetchSales()
+        console.log(err);
+    } finally{
+        isModalVisible.value=false;
+        fetchSales();
     }
-    }else{
+    }
+    else{
         toast.add({ severity: 'error', summary:'Ошибка', detail:'Заполните все поля!' });
     }
 }
+
 </script>
 
 <style scoped>
