@@ -75,6 +75,13 @@
     </div>
 </div>
         </Dialog>
+
+        <Dialog v-model:visible="isSelectCourier" modal header="Назначить курьера" :style="{ width: '25rem' }">
+            <div class='flex flex-column gap-5 align-items-center'>
+           <Dropdown v-model="selectedCourier" :options="store?.getters?.getCouriers" optionLabel="username" placeholder="Выбрать курьера" class="w-full md:w-14rem" />
+           <Button label="Назначить" icon="pi pi-check" severity="info"  @click="delegateOrder"/>
+           </div>
+           </Dialog>
     <Toast/>
 </template>
 
@@ -94,6 +101,8 @@ const isStatusOpen =ref(false)
 import OrderAddFood from '@/components/Orders/AddNew.vue'
 const store=useStore();
 const isDelegOpen=ref(false);
+
+const isSelectCourier=ref(false)
 const selectedStatus = ref({} as Status)
 const isCancelOpen=ref(false);
 import { useStore } from 'vuex';
@@ -101,6 +110,7 @@ import { Courier } from '@/types/Courier';
 import http from '@/http';
 import { useToast } from 'primevue/usetoast';
 const selectedCourier=ref({} as Courier)
+const selectedCourierForStatus=ref({} as Courier)
 const toast=useToast();
 import ConfirmButtons from './UI/ConfirmButtons.vue';
 
@@ -149,7 +159,8 @@ console.log('response updateStatusPickup',response)
 }
 
 const updateStatus=async()=>{
-    try{
+    if(selectedStatus?.value?.name!=='Доставленный' ){
+        try{
 const response = await http.put('/orders/update-order-status',{
     orderNumber:props?.order?.orderNumber,
     status:selectedStatus?.value?.code
@@ -166,10 +177,15 @@ console.log('response updateStatus',response)
     }catch(err){
         console.log(err)
     }
+    }
+   
 }
 
 const confirmStatus = ()=>{
-console.log('from.',props?.from)
+console.log('selectedStatus',selectedStatus)
+if(selectedStatus?.value?.name==='Доставленный'){
+    isSelectCourier.value=true
+}
 if(props?.from==='awaiting-pickup' || props?.from==='kitchen-pickup' || props?.from==='cancelled-pickup' || props?.from==='closed-pickup'){
     updateStatusPickup()
 }else if (props?.from==='awaiting' || props?.from==='kitchen' || props?.from==='cancelled' || props?.from==='closed' || props?.from==='delegated'){
@@ -179,7 +195,6 @@ if(props?.from==='awaiting-pickup' || props?.from==='kitchen-pickup' || props?.f
 
 const delegateOrder =async()=>{
 if(selectedCourier?.value?.id){
-
     try{
         const body={
             "courierId":selectedCourier?.value?.id,
