@@ -9,7 +9,7 @@
 
          <Button v-if="from==='awaiting-pickup' ||from==='awaiting' " v-tooltip.top="'Добавить еду'"  icon="pi pi-plus" severity="info" raised 
             @click="isAddNewFoodOpen=true"/>
-            <Button  icon="pi pi-pencil"  severity="success"  v-tooltip.top="'Редактировать'" @click="isEditOpen=true" />
+            <Button v-if="from==='awaiting' || from==='awaiting-pickup'"  icon="pi pi-pencil"  severity="success"  v-tooltip.top="'Редактировать'" @click="isEditOpen=true" />
 
             <!-- <Button v-if="from==='awaiting-pickup' || from==='awaiting'" icon="pi pi-times" severity="danger" v-tooltip.top="'Отменить заказ'"  @click="isCancelOpen=true"/> -->
        
@@ -81,7 +81,8 @@
            </Dialog>
 
            <Dialog v-model:visible="isEditOpen" modal :header="`Редактировать заказ ${order?.orderNumber}`" :style="{ width: '45rem' }">
-<EditOrder :order="order" @closeModal="isEditOpen=false"/>
+<EditOrder :order="order" @closeModal="isEditOpen=false" v-if="from==='awaiting'"/>
+<EditPickupOrder :order="order" @closeModal="isEditOpen=false" v-else-if="from==='awaiting-pickup'"/>
             </Dialog>
 
     <Toast/>
@@ -98,6 +99,7 @@ const props = defineProps<{
 }>()
 import ConfirmButtons from './UI/ConfirmButtons.vue';
 import EditOrder from '@/components/Update/EditOrder.vue'
+import EditPickupOrder from '@/components/Update/EditPickupOrder.vue'
 
 const isAddNewFoodOpen=ref(false);
 const isStatusOpen =ref(false)

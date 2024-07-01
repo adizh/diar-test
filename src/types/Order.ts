@@ -20,5 +20,6 @@ export type AwaitingOrder = {
   courierId: string;
   status: string;
   sdacha:number
-  deliveryPrice:number
+  deliveryPrice:number,
+  prepareFor?:string
 };

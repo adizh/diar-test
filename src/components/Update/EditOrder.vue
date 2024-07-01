@@ -1,4 +1,5 @@
 <template>
+  <section>
     <div class="grid mt-4 justify-content-center gap-3 align-items-center">
         <div class="flex flex-column gap-3 mb-5">
             <label for="address" class="font-semibold">Адрес</label>
@@ -88,12 +89,14 @@
             <InputMask id="phone" v-model.trim="orderValues.userPhone" mask="+996 (999) 99-99-99"
                 placeholder="+996 (700) 11-11-11" />
         </div>
-        <div class="flex justify-content-end gap-2">
-            <Button type="button" label="Отменить" severity="secondary" @click="emit('closeModal')"></Button>
-            <Button type="button" label="Изменить" @click='updateOrder'></Button>
-        </div>
+      
         <Toast/>
     </div>
+    <div class="flex justify-content-end gap-2">
+        <Button type="button" label="Отменить" severity="secondary" @click="emit('closeModal')"></Button>
+        <Button type="button" label="Изменить" @click='updateOrder'></Button>
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -153,13 +156,7 @@ const removeFood =(food:Food)=>{
         selectedFoods.value.splice(index,1)
     }
 }
-const removeOrderValues =(food:OrderFood)=>{
-    const index = orderValues.value.foods?.findIndex((item:OrderFood)=>item.name===food.name);
-    console.log('index',index)
-    if(index!==-1){
-        orderValues.value.foods.splice(index,1)
-    }
-}
+
 
 const increaseCount=(food:Food)=>{
 food.quantity++
@@ -171,6 +168,13 @@ if(food?.quantity>1){
 }
 }
 
+const removeOrderValues =(food:OrderFood)=>{
+    const index = orderValues.value.foods?.findIndex((item:OrderFood)=>item.name===food.name);
+    console.log('index',index)
+    if(index!==-1){
+        orderValues.value.foods.splice(index,1)
+    }
+}
 const increaseOrderValues =(food:OrderFood)=>{
     food.quantity++
 }
