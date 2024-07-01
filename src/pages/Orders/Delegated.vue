@@ -1,6 +1,6 @@
 vbas3<template>
     <div class="section">
-       Делегированные заказы
+       Переданные курьеру
         <Card v-if="!orders?.length">
             <template #content>Нет данных</template>
         </Card>

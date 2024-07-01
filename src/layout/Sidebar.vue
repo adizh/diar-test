@@ -12,16 +12,21 @@
         <div class="each-link-menu" @click="(event)=>toggleKitchen(event)">
             На кухне <Badge :value="totalKitchenCount" severity="info"></Badge>
                     </div>
+
+
+                    <div class="each-link-menu" @click="router.push('/delegated-orders')">
+                    Переданные курьеру
+                                </div>
+                                <div class="each-link-menu" @click="(event)=>toggleClosed(event)">
+                                    Доставленные
+                                            </div>
+
                     <div class="each-link-menu" @click="(event)=>toggleСancel(event)">
                         Отмененные
                                 </div>
-                                <div class="each-link-menu" @click="(event)=>toggleClosed(event)">
-                                    Закрытые
-                                            </div>
+                              
 
-                                            <div class="each-link-menu" @click="router.push('/delegated-orders')">
-                                                Делегированные
-                                                        </div>
+                                            
        </div>
         
         <OverlayPanel ref="countOverlay" class="countOverlay">
@@ -44,13 +49,13 @@
             </div>
           </OverlayPanel>
 
-          <OverlayPanel ref="countOverlayCancel" class="countOverlay">
+          <OverlayPanel ref="countOverlayClosed" class="countOverlay">
             <div class="subitem-link" v-for="item in headerItems[2]?.items" :key="item?.count" @click="item?.command">
                 {{ item?.label }} 
             </div>
           </OverlayPanel>
 
-          <OverlayPanel ref="countOverlayClosed" class="countOverlay">
+          <OverlayPanel ref="countOverlayCancel" class="countOverlay">
             <div class="subitem-link" v-for="item in headerItems[3]?.items" :key="item?.count" @click="item?.command">
                 {{ item?.label }}
             </div>
@@ -108,7 +113,7 @@ return store.getters.stats.kitchenOrdersCount + store.getters.stats.kitchenOrder
 
 
 const toggleClosed = (event: any) => {
-  countOverlayCancel.value.toggle(event);
+    countOverlayClosed.value.toggle(event);
 
 };
 
@@ -178,25 +183,9 @@ const headerItems = ref([
             }]
         },
 
-            {label:'Отмененные',
-            items:[ {
-                label: 'Заказы',
-                //   icon: 'pi pi-print',
-                command: () => {
-                    router.push('/cancelled-orders')
-                    // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
-                }
-            },
-            {
-                label: 'Самовывоз',
-                //   icon: 'pi pi-print',
-                command: () => {
-                    router.push('/cancelled-orders-pickup')
-                    // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
-                }
-            },]},
+         
           
-          { label:'Закрытые',
+          { label:'Доставленные',
            items:[
             {
                 label: 'Заказы',
@@ -215,6 +204,24 @@ const headerItems = ref([
                 }
             },
         ],},
+
+        {label:'Отмененные',
+            items:[ {
+                label: 'Заказы',
+                //   icon: 'pi pi-print',
+                command: () => {
+                    router.push('/cancelled-orders')
+                    // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
+                }
+            },
+            {
+                label: 'Самовывоз',
+                //   icon: 'pi pi-print',
+                command: () => {
+                    router.push('/cancelled-orders-pickup')
+                    // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
+                }
+            },]},
         {
                 label: 'Делегированные заказы',
                 //   icon: 'pi pi-print',

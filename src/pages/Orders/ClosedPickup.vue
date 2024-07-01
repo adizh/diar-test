@@ -1,6 +1,6 @@
 vbas3<template>
     <div class="section">
-        Самовывоз закрытых заказов
+        Самовывоз доставленных заказов
         <Card v-if="!orders?.length">
             <template #content>Нет данных</template>
         </Card>
