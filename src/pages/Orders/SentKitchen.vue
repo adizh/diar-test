@@ -1,7 +1,7 @@
 <template>
     <div class="section">
 <div class="mb-5">
-    <p>Заказы на кухне</p>
+    <p>Доставки на кухне</p>
 <div class="card-list" v-if="kitchedOrders?.length>0"> 
     <Order v-for="order in kitchedOrders" :key="order?.orderNumber" :order="order" from="kitchen"/>
 </div>

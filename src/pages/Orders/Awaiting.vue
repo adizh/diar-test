@@ -1,7 +1,7 @@
 <template>
     <div class="section">
       <p class="mb-3">
-        Заказы в ожидании
+        Доставки в ожидании
         <Button label="Создать заказ" @click="openCreateOrderModal" />
       </p>
         <Card v-if="!awaitingOrders?.length">

@@ -1,7 +1,7 @@
 <template>
     <div class="section">
         <div class="mb-5">
-            <p>Заказы на кухне (самовывоз)</p>
+            <p>Доставки на кухне (самовывоз)</p>
         <div class="card-list" v-if="store.getters.getCookedPickupOrders?.length>0">
             <Order v-for="order in store.getters.getCookedPickupOrders" :key="order?.orderNumber" :order="order" from="kitchen-pickup"/>
         </div>

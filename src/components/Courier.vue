@@ -5,7 +5,7 @@
             <div>
                 <Button icon="pi pi-file-edit" severity="info" class="mr-2" @click.capture="isEditOpen=true"/>
                 <Button icon="pi pi-trash" severity="danger" class="mr-2" @click="openDelete"/>
-                <Button icon="pi pi-history" severity="success" v-tooltip.top="'Посмотреть заказы'"
+                <Button icon="pi pi-history" severity="success" v-tooltip.top="'Посмотреть доставки'"
                 @click="()=>router.push({path:`/courier/${item?.id}`})"
                 />
             </div>

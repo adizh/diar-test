@@ -154,7 +154,7 @@ if(response.status===200){
     toast.add({severity:'success',detail:'Статус изменен',summary:'Успешно'});
 isStatusOpen.value=false
 setTimeout(()=>{
-//window.location.reload()
+window.location.reload()
         },2500)
 }
 console.log('response updateStatusPickup',response)
@@ -174,7 +174,7 @@ if(response.status===200){
     toast.add({severity:'success',detail:'Статус изменен',summary:'Успешно'});
 isStatusOpen.value=false
 setTimeout(()=>{
-//window.location.reload()
+window.location.reload()
         },2500)
 }
 

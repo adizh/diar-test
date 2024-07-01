@@ -1,7 +1,7 @@
 <template>
     <div class="section">
 
-        Заказы в ожидании на самовывоз
+        Доставки в ожидании на самовывоз
 
         <Button label="Создать заказ" @click="isOrderOpen=true" />
 

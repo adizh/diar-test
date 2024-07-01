@@ -178,7 +178,7 @@ return food && food !==null
         try{
             const body={
                 "comment": orderValues?.value?.comment,
-  "dishesCount": orderValues?.value?.dishesCount,
+                "dishesCount": orderValues?.value?.dishesCount,
   "foods":totalFoods,
   "prepareFor": orderValues?.value?.prepareFor,
   "price": orderValues?.value.price,
@@ -194,7 +194,6 @@ setTimeout(()=>{
     emit('closeModal');
     window.location.reload()
 },1000)
-
  }
         }catch(err){
             console.log(err)

@@ -34,8 +34,7 @@
  
                 {{ item?.label }}     
           
-
-                <Badge :value="store.getters.stats.awatingOrdersCount" severity="danger" v-if="item?.label==='Заказы'"></Badge>
+                <Badge :value="store.getters.stats.awatingOrdersCount" severity="danger" v-if="item?.label==='Доставки'"></Badge>
                 <Badge :value="store.getters.stats.awatingOrdersPickupCount" severity="danger" v-if="item?.label==='Самовывоз'"></Badge>
             </div>
           </OverlayPanel>
@@ -44,7 +43,7 @@
             <div class="subitem-link" v-for="item in headerItems[1]?.items" :key="item?.count" @click="item?.command">
                 {{ item?.label }}
 
-                <Badge :value="store.getters.stats.kitchenOrdersCount" severity="info" v-if="item?.label==='Заказы'"></Badge>
+                <Badge :value="store.getters.stats.kitchenOrdersCount" severity="info" v-if="item?.label==='Доставки'"></Badge>
                 <Badge :value="store.getters.stats.kitchenOrdersPickupCount" severity="info" v-if="item?.label==='Самовывоз'"></Badge>
             </div>
           </OverlayPanel>
@@ -149,7 +148,7 @@ const headerItems = ref([
         label:`В ожидании` ,
         items: [
             {
-                label: 'Заказы',
+                label: 'Доставки',
                 count:0,
                 command: () => {
                     router.push('/awaiting-orders')
@@ -168,7 +167,7 @@ const headerItems = ref([
        {label:'На кухне',
         items:[ 
              {
-                label: 'Заказы',
+                label: 'Доставки',
                 count:15,
                 command: () => {
                     router.push('/sent-to-kitchen')
@@ -188,7 +187,7 @@ const headerItems = ref([
           { label:'Доставленные',
            items:[
             {
-                label: 'Заказы',
+                label: 'Доставки',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/closed-orders')
@@ -207,7 +206,7 @@ const headerItems = ref([
 
         {label:'Отмененные',
             items:[ {
-                label: 'Заказы',
+                label: 'Доставки',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/cancelled-orders')
@@ -223,7 +222,7 @@ const headerItems = ref([
                 }
             },]},
         {
-                label: 'Делегированные заказы',
+                label: 'Делегированные',
                 //   icon: 'pi pi-print',
                 command: () => {
                     router.push('/delegated-orders')
