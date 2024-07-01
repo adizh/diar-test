@@ -24,3 +24,7 @@ li {
   width: 30%;
 }
 
+
+.controls{
+  @include flex(row,start,center);
+}

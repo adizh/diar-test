@@ -20,21 +20,17 @@
         <Dialog v-model:visible="isCreateModal" modal header="Создать заказ" :style="{ width: '25rem' }">
             <span class="p-text-secondary block mb-5">Создать заказ</span>
             <div class="flex flex-column gap-3 mb-5">
-
                 <label for="address" class="font-semibold">Адрес</label>
                 <InputText id="address" class="flex-auto" autocomplete="off" v-model.trim="orderValues.address" />
             </div>
-
             <div class="flex flex-column gap-3 mb-5">
                 <label for="comment" class="font-semibold">Комментарий</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.comment" />
             </div>
-
             <div class="flex flex-column gap-3 mb-5">
                 <label for="comment" class="font-semibold">Кол-во еды</label>
                 <InputNumber id="comment" class="flex-auto" autocomplete="off" v-model="orderValues.dishesCount" />
             </div>
-
             <div class="flex flex-column gap-3 mb-5">
                 <label for="comment" class="font-semibold">Вход</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.entrance" />
@@ -43,7 +39,6 @@
                 <label for="comment" class="font-semibold">Этаж</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.floor" />
             </div>
-
             <div class="flex flex-column gap-3 mb-5">
                 <label for="comment" class="font-semibold">Еда</label>
                 <Dropdown :options="updatedFoods"
@@ -68,7 +63,6 @@
                 </div>
               
             </div>
-
             <div class="flex flex-column gap-3 mb-5">
                 <label for="comment" class="font-semibold">Номер квартиры</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.houseNumber" />
@@ -85,7 +79,6 @@
                 <label for="comment" class="font-semibold">Метод оплаты</label>
                 <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.paymentMethod" />
             </div>
-
             <div class="flex flex-column gap-3 mb-5">
                 <label for="comment" class="font-semibold">Цена</label>
                 <InputNumber id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.price" />
@@ -203,8 +196,6 @@ setTimeout(()=>{
 
 
 const createOrder = async () => {
-    console.log('selectedFoods',selectedFoods)
-
     const foods= selectedFoods.value.map((item:{value:Food})=>{
         return {name:item?.value?.name,price:item?.value?.price,quantity:item?.value?.quantity}
     })
@@ -234,7 +225,6 @@ const createOrder = async () => {
         return value
     })
     if (!areFieldsFilled){
-        console.log('it this coed woring??')
         try {
             const response = await http.post('orders/create-order',
                 body

@@ -190,7 +190,6 @@ console.log('rresonse closed pickup',response)
           }
 },
 
-
 async fetchStats({dispatch}){
  await dispatch('fetchKitchenOrders')
  await dispatch('fetchAwaitingPickup')

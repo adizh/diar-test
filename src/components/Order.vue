@@ -7,14 +7,11 @@
             <Dropdown v-model="selectedStatus" :options="computedStatus" optionLabel="name" placeholder="Выбрать статус" class="w-full md:w-14rem" @change="changeStatus"/>
 
 
-            <!-- <Select v-model="selectedStatus" :options="statusOptions" optionLabel="name" placeholder="Select a City" class="w-full md:w-56" @change="changeStatus" /> -->
-            
-            <!-- <Button v-else-if="from==='awaiting'"  icon="pi pi-directions-alt" v-tooltip.top="'Отправить на кухню'" severity="success" raised  @click="sendToKitchen"/>
-            <Button v-else-if="from==='awaiting-pickup'" v-tooltip.top="'Отправить на кухню'"  icon="pi pi-directions-alt"severity="success" raised  @click="sendToKitchenPickup"/> -->
-
-            <Button v-if="from==='awaiting-pickup' ||from==='awaiting' " v-tooltip.top="'Добавить еду'"  icon="pi pi-plus" severity="info" raised 
+         <Button v-if="from==='awaiting-pickup' ||from==='awaiting' " v-tooltip.top="'Добавить еду'"  icon="pi pi-plus" severity="info" raised 
             @click="isAddNewFoodOpen=true"/>
-            <Button v-if="from==='awaiting-pickup' || from==='awaiting'" icon="pi pi-times" severity="danger" v-tooltip.top="'Отменить заказ'"  @click="isCancelOpen=true"/>
+            <Button  icon="pi pi-pencil"  severity="success"  v-tooltip.top="'Редактировать'" @click="isEditOpen=true" />
+
+            <!-- <Button v-if="from==='awaiting-pickup' || from==='awaiting'" icon="pi pi-times" severity="danger" v-tooltip.top="'Отменить заказ'"  @click="isCancelOpen=true"/> -->
        
         </div>
 
@@ -82,6 +79,11 @@
            <Button label="Назначить" icon="pi pi-check" severity="info"  @click="delegateOrder"/>
            </div>
            </Dialog>
+
+           <Dialog v-model:visible="isEditOpen" modal :header="`Редактировать заказ ${order?.orderNumber}`" :style="{ width: '45rem' }">
+<EditOrder :order="order" @closeModal="isEditOpen=false"/>
+            </Dialog>
+
     <Toast/>
 </template>
 
@@ -94,7 +96,8 @@ const props = defineProps<{
     from?:string
 
 }>()
-console.log('Order componentfrom ',props?.from)
+import ConfirmButtons from './UI/ConfirmButtons.vue';
+import EditOrder from '@/components/Update/EditOrder.vue'
 
 const isAddNewFoodOpen=ref(false);
 const isStatusOpen =ref(false)
@@ -112,7 +115,7 @@ import { useToast } from 'primevue/usetoast';
 const selectedCourier=ref({} as Courier)
 const selectedCourierForStatus=ref({} as Courier)
 const toast=useToast();
-import ConfirmButtons from './UI/ConfirmButtons.vue';
+const isEditOpen=ref(false)
 
 type Status={
     name:string,
@@ -123,13 +126,13 @@ const statusOptions=ref([
     { name: 'Отправить на кухню', code: 'the order is being prepared' },
     { name: 'Закончить заказ', code: 'Finished' },
     { name: 'Ожидаемый', code: 'awaiting confirmation from the operator' },
+    { name: 'Отменить', code: 'canceled order' },
     { name: 'Доставленный', code: 'order is being delivered' },
 ]);
 
 
-
 const computedStatus = computed(()=>{
-    return props?.from?.includes('pickup') ? statusOptions?.value?.slice(0,3) : statusOptions?.value;
+    return props?.from?.includes('pickup') ? statusOptions?.value?.slice(0,4) : statusOptions?.value;
 });
 
 
@@ -182,7 +185,7 @@ console.log('response updateStatus',response)
 }
 
 const confirmStatus = ()=>{
-console.log('selectedStatus',selectedStatus)
+
 if(selectedStatus?.value?.name==='Доставленный'){
     isSelectCourier.value=true
 }
@@ -191,6 +194,10 @@ if(props?.from==='awaiting-pickup' || props?.from==='kitchen-pickup' || props?.f
 }else if (props?.from==='awaiting' || props?.from==='kitchen' || props?.from==='cancelled' || props?.from==='closed' || props?.from==='delegated'){
     updateStatus()
 }
+
+store.dispatch('fetchStats')
+
+
 }
 
 const delegateOrder =async()=>{
