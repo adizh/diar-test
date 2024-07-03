@@ -23,12 +23,15 @@
             <label for="comment" class="font-semibold">Этаж</label>
             <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.floor" />
         </div>
+        <div class="flex flex-column gap-3 mb-5">
+            <label for="sdacha" class="font-semibold">Сдача</label>
+            <InputNumber id="sdacha" class="flex-auto" autocomplete="off" v-model.trim="orderValues.sdacha" />
+        </div>
 
         <div class="flex flex-column gap-3 mb-5 col-12">
             <label for="comment" class="font-semibold">Еда</label>
             <div class="selected-food" v-if="orderValues?.foods">
                 <div v-for="food in orderValues?.foods" :key="food?.name" class="each-food mb-3">
-          
                         <div class="flex align-items-center">{{ food?.name }}
 <Button label="X" severity="danger" small  @click="removeOrderValues(food)"/>
                         </div>
@@ -89,6 +92,13 @@
             <InputMask id="phone" v-model.trim="orderValues.userPhone" mask="+996 (999) 99-99-99"
                 placeholder="+996 (700) 11-11-11" />
         </div>
+       
+
+        <div class="flex flex-column gap-3 mb-5">
+            <label for="deliveryPrice" class="font-semibold">Цена за доставку</label>
+            <InputNumber id="deliveryPrice" class="flex-auto" autocomplete="off" v-model.trim="orderValues.deliveryPrice" />
+        </div>
+      
       
         <Toast/>
     </div>
@@ -127,7 +137,9 @@ const orderValues = ref({
     orderNumber:(0),
     price: (0),
     userName: (''),
-    userPhone: ('')
+    userPhone: (''),
+    sdacha:0,
+    deliveryPrice:0
 })
 
 const emit = defineEmits<{
@@ -210,8 +222,9 @@ console.log('totalFoods',totalFoods)
         "price": orderValues.value.price,
         "userName": orderValues.value.userName,
         "userPhone": orderValues.value.userPhone,
-        "sdacha":props?.order?.sdacha,
-        "orderNumber":props?.order?.orderNumber
+        "sdacha":orderValues.value?.sdacha,
+        "orderNumber":props?.order?.orderNumber,
+        deliveryPrice:orderValues?.value?.deliveryPrice
     }
 
     const areFieldsFilled=Object.entries(orderValues.value)
@@ -224,7 +237,7 @@ console.log('totalFoods',totalFoods)
 
     if (areFieldsFilled){
         console.log('body',body)
-      submitEdit(body)
+     submitEdit(body)
     }else{
 toast.add({severity:'error',summary:"Ошибка", detail:'Заполните обязательные поля!'})
     }
@@ -238,10 +251,11 @@ const submitEdit=async(body:any)=>{
     console.log('response update order',response)
     if(response.status===200){
         toast.add({severity:'success',summary:"Успешно", detail:'Заказ обновлен!'})
-
-
         emit('closeModal')
 
+        setTimeout(()=>{
+window.location.reload()
+        },600)
     }
     }catch(err){
         console.log(err)
@@ -279,6 +293,8 @@ onMounted(() => {
     orderValues.value.userPhone=props?.order?.userPhone
     orderValues.value.userPhone=props?.order?.userPhone;
 orderValues.value.foods=props?.order?.foods
+orderValues.value.sdacha=props?.order?.sdacha
+orderValues.value.deliveryPrice=props?.order?.deliveryPrice ? props?.order?.deliveryPrice : 0;
 
 })
 

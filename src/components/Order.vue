@@ -30,7 +30,7 @@
                 <span>Сдача: {{ order?.sdacha }}</span>
                 <span>Статус: {{ order?.status }}</span>
                 <span>Кол-во блюд: {{ order?.dishesCount }}</span>
-                <span v-if="order.deliveryPrice" >Цена за доставку :{{ order?.deliveryPrice }}</span>
+                <span v-if="order.deliveryPrice" >Цена за доставку: {{ order?.deliveryPrice }}</span>
                 <span>Комментарий: {{ order?.comment }}</span>
                 <span>Имя: {{ order?.userName }}</span>
                 <span>Номер телефона :{{ order?.userPhone }}</span>
