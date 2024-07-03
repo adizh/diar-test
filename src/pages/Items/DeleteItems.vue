@@ -4,10 +4,10 @@
         <Card class='w-25rem'>
             <template #content>
 
-                <div class="card flex align-items-center w-full">
+                <div class="card flex flex-column gap-3 w-full">
                     <label for="category" class="font-semibold w-full">Выбрать категорию</label>
                     <Dropdown v-model="selectedCategory" :options="store.getters.categoriesName" optionLabel="name"
-                        placeholder="Выбрать категорию" class="w-full md:w-14rem" id="category" />
+                        placeholder="Выбрать категорию" filter class="w-full md:w-14rem" id="category" />
 
                 </div>
                 <div class="flex justify-content-end mt-2" v-if="selectedCategory.name">
@@ -19,12 +19,15 @@
 
 
 
-        <Card class='w-25rem'>
+        <Card class='w-9 mt-3'>
             <template #content>
-                <div class="card flex align-items-center w-full">
+                <div class="card flex flex-column align-items-center w-full gap-3">
                     <label for="category" class="font-semibold w-full">Выбрать еду</label>
-                    <Dropdown v-model="selectedFood" :options="store.getters.allFoodsNames" placeholder="Выбрать еду"
-                        class="w-full md:w-14rem" id="category" />
+                    <!-- <Dropdown v-model="selectedFood" :options="store.getters.allFoodsNames" placeholder="Выбрать еду"
+                        class="w-full md:w-14rem" id="category" /> -->
+
+                        <MultiSelect display="chip" v-model="selectedFood" :options="store.getters.allFoodsNames" filter  placeholder="Выберите еду"
+                        :maxSelectedLabels="3"  :selectionLimit="3"    class="w-full" id="category"  />
 
                 </div>
                 <div class="flex justify-content-end mt-2" v-if="selectedFood">
@@ -37,13 +40,13 @@
         <Toast />
 
         <Dialog v-model:visible="isFoodDeleteOpen" modal header="Удалить еду" :style="{ width: '25rem' }">
-            <ConfirmButtons :descrText="`Вы действительно хотите удалить  + ${selectedFood}`"
+            <ConfirmButtons :descrText="`Вы действительно хотите удалить ${selectedFood}`"
             confirmText="Удалить" declineText='Отменить' @closeModal="isFoodDeleteOpen=false" @confirmAction="deleteFood"
             />
         </Dialog>
 
         <Dialog v-model:visible="isCategoryDeleteOpen" modal header="Удалить категорию" :style="{ width: '25rem' }">
-            <ConfirmButtons :descrText="`Вы действительно хотите удалить  + ${selectedCategory?.name}`"
+            <ConfirmButtons :descrText="`Вы действительно хотите удалить  ${selectedCategory?.name}`"
             confirmText="Удалить" declineText='Отменить' @closeModal="isCategoryDeleteOpen=false" @confirmAction="deleteCategory"
             />
         </Dialog>
@@ -69,24 +72,36 @@ const isFoodDeleteOpen=ref(false)
 const isCategoryDeleteOpen=ref(false)
 
 
-const selectedFood = ref('');
+const selectedFood = ref([]);
 
 const deleteFood = async () => {
-    try {
+    console.log('selectedFood',selectedFood)
+    if(selectedFood?.value?.length>0){
+        selectedFood?.value?.forEach(async(foodName:string)=>{
+ try {
         const response = await http({
             method: 'delete',
             url: `admin/delete-food`,
-            data: { name: selectedFood.value }
+            data: { name: foodName }
         });
         console.log('response', response);
         if (response.status) {
             toast.add({ severity: 'success', summary: 'Успешно', detail: 'Удалено', life: 3000 });
-            isFoodDeleteOpen.value=false
+            isFoodDeleteOpen.value=false;
+            selectedFood.value=[]
+            setTimeout(()=>{
+window.location.reload()
+            },700)
+
         }
     } catch (err: any) {
         console.log(err);
         toast.add({ severity: 'error', summary: 'Ошибка при удалении', detail: err.response.statusText, life: 3000 });
     }
+        })
+
+    }
+   
 }
 const confirmFood = () => {
     isFoodDeleteOpen.value=true;
@@ -139,6 +154,6 @@ onMounted(() => {
 @import '../../assets/mixins.scss';
 
 .section {
-    @include flex(row, space-around, start)
+    @include flex(column, space-around, start)
 }
 </style>

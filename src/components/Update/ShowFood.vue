@@ -76,7 +76,8 @@ const handleFoodFalse = (event:any)=>{
 
 const hideFood =()=>{
 const foodNames = selectedFoodFalse?.value?.map((item:Food)=>item?.name);
-foodNames.forEach(async(name:string)=>{
+if(foodNames?.length>0){
+    foodNames.forEach(async(name:string)=>{
     const body={
   "foodName": name,
   "status": !checked.value
@@ -99,6 +100,10 @@ window.location.reload()
     console.log(err)
 }
 })
+}else{
+    toast.add({severity:'error',summary:'Ошибка',detail:'Выберите блюдо!'})
+}
+
 
 
 }

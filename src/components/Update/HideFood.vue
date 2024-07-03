@@ -93,13 +93,16 @@ const handleFoodFalse = (event:any)=>{
 
 const hideFood =()=>{
 const foodNames = selectedFoodFalse?.value?.map((item:Food)=>item?.name);
-foodNames.forEach(async(name:string)=>{
+console.log('foodNames',foodNames)
+if(foodNames?.length>0){
+    foodNames.forEach(async(name:string)=>{
     const body={
   "foodName": name,
   "status": checked.value
 }
 console.log('body',body)
 try{
+    console.log('request is being sent')
 const response = await http.post('/admin/change-of-stop-list',body)
 console.log('hide food response',response)
 if(response.status===200){
@@ -116,6 +119,10 @@ window.location.reload()
     console.log(err)
 }
 })
+}else{
+    toast.add({severity:'error',summary:'Ошибка',detail:'Выберите блюдо!'})
+}
+
 
 
 }

@@ -14,7 +14,7 @@
                 placeholder="Выбрать еду" class="w-full md:w-14rem" optionLabel="name"  @change="changeFood"/> -->
                </div>
         
-              <div>
+              <div v-if="isOpen">
                 <Checkbox v-model="isPopular" inputId="popular" name="popular" value="Популярный"   :binary="true"/>
                 <label for="popular" class="ml-1"> Популярный </label>
               </div>
@@ -22,7 +22,7 @@
         
         </div>
 
-    <div class='flex flex-row justify-content-center mt-5'>
+    <div class='flex flex-row justify-content-center mt-5' v-if="isOpen">
     <Button label="Добавить" severity="info" @click="addPopularFood"/>
     </div>
             </Dialog>
@@ -42,15 +42,17 @@ const isPopularOpen =ref(false);
 import http from '@/http';
 import { useToast } from 'primevue/usetoast';
 const toast=useToast()
-
+const isOpen=ref(false)
 const changeFood =(event:any)=>{
+    isOpen.value = true
     // console.log('changeFood event',event)
     // isPopular.value=event.value[]?.isFeatured;
 }
 const addPopularFood = async() => {
    console.log('selectedFood',selectedFood)
 const names = selectedFood?.value?.map((food:Food)=>food?.name)
-names.forEach(async(name:string)=>{
+if(names?.length>0){
+    names.forEach(async(name:string)=>{
     const body ={
                "changeTo": isPopular.value,
             "foodName":name
@@ -67,9 +69,14 @@ names.forEach(async(name:string)=>{
         }finally{
             isPopularOpen.value=false;
             store.dispatch('fetchAllFoods')
+            isOpen.value= false
             
         }
 })
+}else{
+    toast.add({severity:'error',summary:'Ошибка',detail:'Выберите блюдо!'})
+}
+
 
     
     
