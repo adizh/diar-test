@@ -1,7 +1,7 @@
 <template>
     <div>
-        <Button label="Скрыть еду" severity="secondary" rounded @click="isModalVisibleFood = !isModalVisibleFood" />
-        <Dialog v-model:visible="isModalVisibleFood" modal header="Скрыть еду" :style="{ width: '35rem' }">
+        <Button label="Показать еду" severity="secondary" rounded @click="isModalVisibleFood = !isModalVisibleFood" />
+        <Dialog v-model:visible="isModalVisibleFood" modal header="Показать еду" :style="{ width: '35rem' }">
             <div class="card flex gap-3 mb-5  flex-column">
               <Dropdown v-model="selectedCategory" :options="categories" filter optionLabel="name" placeholder="Выберите категорию" @change="selectCategory">
                 <template #value="slotProps">
@@ -23,28 +23,10 @@
 
             <MultiSelect display="chip" v-model="selectedFoodFalse" v-if='isFoodOpen' :options="selectedFoods?.Foods" filter optionLabel="name" placeholder="Выберите еду"
             :maxSelectedLabels="3"  :selectionLimit="3"   @change="handleFoodFalse" />
-             <!-- <Dropdown v-model="selectedFoodFalse" v-if='isFoodOpen' placeholder="Выберите еду" filter :options="selectedFoods?.Foods" optionLabel="name"
-             @change="handleFoodFalse"
-             
-             >
-                <template #value="slotProps">
-                    <div v-if="slotProps.value" class="flex align-items-center">
-                        <div>{{ slotProps.value.name }}</div>
-                    </div>
-                    <span v-else>
-                        {{ slotProps.placeholder }}
-                    </span>
-                </template>
-                <template #option="slotProps">
-                    <div class="flex align-items-center">
-                        <div>{{ slotProps.option.name }}</div>
-                    </div>
-                </template>
-</Dropdown> -->
-
+          
 <div v-if="showCheck"  class="checkbox-hide">
     <Checkbox v-model="checked" :binary="true" id="hide-food" />
-    <label for="hide-food" class="ml-1"> Скрыть </label>
+    <label for="hide-food" class="ml-1"> Показать </label>
   </div> 
   <Button  v-if="showCheck" label="Изменить" severity="info" class="mt-5" @click="hideFood"/>   
               
@@ -97,7 +79,7 @@ const foodNames = selectedFoodFalse?.value?.map((item:Food)=>item?.name);
 foodNames.forEach(async(name:string)=>{
     const body={
   "foodName": name,
-  "status": checked.value
+  "status": !checked.value
 }
 console.log('body',body)
 try{
@@ -123,7 +105,7 @@ window.location.reload()
 
 const getStoppedFoods=async()=>{
     try{
-const response = await http('admin/get-all-foods-stoplist-false')
+const response = await http('admin/get-all-foods-stoplist-true')
 if(response.status===200){
     stoppedListFoodsFalse.value = response.data
     console.log('stopped list false response',response.data)

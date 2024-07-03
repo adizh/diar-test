@@ -4,6 +4,7 @@
         <UpdatePopularFoor :isPopularOpen="isPopularOpen"/>
 
 <HideFood/>
+<ShowFood/>
      
     </div>
 
@@ -61,6 +62,7 @@
 import http from '@/http';
 import UpdatePopularFoor from '@/components/Update/PopularFood.vue'
 import HideFood from '@/components/Update/HideFood.vue'
+import ShowFood from '@/components/Update/ShowFood.vue'
 import { open } from 'fs/promises';
 import { useToast } from 'primevue/usetoast';
 import { ref ,onMounted,computed} from 'vue';
