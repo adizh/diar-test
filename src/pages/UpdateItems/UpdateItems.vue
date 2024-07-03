@@ -10,11 +10,10 @@
 
 
     <div class="card flex justify-content-center ">
-        <Dialog v-model:visible="isModalVisibleFood" modal header="Обновить еду" :style="{ width: '25rem' }">
-            <span class="p-text-secondary block mb-5">Обновить еду</span>
+        <Dialog v-model:visible="isModalVisibleFood" modal header="Обновить еду" :style="{ width: '35rem' }">
             <div class="card flex gap-3 mb-5  flex-column">
                 <label for="category" class="font-semibold w-full">Старое название еды</label>
-                <Dropdown v-model="allFoodName" :options="store.getters.allFoodsNamesObj" optionLabel="name"
+                <Dropdown v-model="allFoodName" :options="store.getters.allFoodsNamesObj" optionLabel="name" filter
                     placeholder="Выберите еду" class="w-full md:w-14rem" id="category"  @change="selectOld"/>
             </div>
 

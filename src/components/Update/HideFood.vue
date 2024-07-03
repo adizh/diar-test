@@ -18,9 +18,8 @@
                     </div>
                 </template>
             </Dropdown>  
-              
 
-
+            
             <MultiSelect display="chip" v-model="selectedFoodFalse" v-if='isFoodOpen' :options="selectedFoods?.Foods" filter optionLabel="name" placeholder="Выберите еду"
             :maxSelectedLabels="3"  :selectionLimit="3"   @change="handleFoodFalse" />
              <!-- <Dropdown v-model="selectedFoodFalse" v-if='isFoodOpen' placeholder="Выберите еду" filter :options="selectedFoods?.Foods" optionLabel="name"
