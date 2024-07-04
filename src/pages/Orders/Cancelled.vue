@@ -1,58 +1,65 @@
 <template>
-    <div class="section">
-        Отмененные доставки
-        <Card v-if="!awaitingOrders?.length">
-            <template #content>Нет данных</template>
-        </Card>
+  <div class="section">
+    Отмененные доставки
+    <Card v-if="!awaitingOrders?.length">
+      <template #content>Нет данных</template>
+    </Card>
 
-        <ul v-else class='card-list'>
-            <li v-for="order in awaitingOrders" :key="order?.orderNumber">
-                <Order :order="order" from="cancelled" />
-            </li>
-        </ul>
-        <Paginator :rows="10" :totalRecords="totalItems" @page="changePage"></Paginator>
+    <div v-else class="card-list">
+
+      <Order v-for="order in awaitingOrders" :key="order?.orderNumber" :order="order" from="cancelled" />
     </div>
+<!-- 
+    <ul v-else class="card-list">
+      <li v-for="order in awaitingOrders" :key="order?.orderNumber">
+        <Order :order="order" from="cancelled" />
+      </li>
+    </ul> -->
+    <Paginator
+      :rows="10"
+      :totalRecords="totalItems"
+      @page="changePage"
+    ></Paginator>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import http from '@/http';
-import { AwaitingOrder } from '@/types/Order'
-import { onMounted } from 'vue';
-import Order from '@/components/Order.vue';
+import { ref } from "vue";
+import http from "@/http";
+import { AwaitingOrder } from "@/types/Order";
+import { onMounted } from "vue";
+import Order from "@/components/Order.vue";
 
-const noOrder = ref('');
-const awaitingOrders = ref<AwaitingOrder[]>([])
+const noOrder = ref("");
+const awaitingOrders = ref<AwaitingOrder[]>([]);
 
-const currentPage=ref(1)
-const totalItems=ref(1);
+const currentPage = ref(1);
+const totalItems = ref(1);
 
-const changePage =(event:{page:number,})=>{
-    currentPage.value = event?.page+1;
-    fetchAwaitingOrders();
-    window.scrollTo(0,0)
-}
+const changePage = (event: { page: number }) => {
+  currentPage.value = event?.page + 1;
+  fetchAwaitingOrders();
+  window.scrollTo(0, 0);
+};
 
 const fetchAwaitingOrders = async () => {
-    try {
-        const response = await http.get(`admin/get-all-cancel-orders?page=${currentPage?.value}`) as any;
-        console.log('response cancelled orders', response)
-        if (response.status == 200) {
-            awaitingOrders.value = response.data.orderResponse
-            totalItems.value =response.data?.totalItems
-        }
-
-    } catch (err) {
-        console.log(err)
+  try {
+    const response = (await http.get(
+      `admin/get-all-cancel-orders?page=${currentPage?.value}`,
+    )) as any;
+    console.log("response cancelled orders", response);
+    if (response.status == 200) {
+      awaitingOrders.value = response.data.orderResponse;
+      totalItems.value = response.data?.totalItems;
     }
-}
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 onMounted(() => {
-    fetchAwaitingOrders();
-
-})
-
-
+  fetchAwaitingOrders();
+});
 </script>
 
 <style scoped></style>

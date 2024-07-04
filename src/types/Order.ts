@@ -19,7 +19,7 @@ export type AwaitingOrder = {
   timeRequest: string;
   courierId: string;
   status: string;
-  sdacha:number
-  deliveryPrice:number,
-  prepareFor?:string
+  sdacha: number;
+  deliveryPrice: number;
+  prepareFor?: string;
 };

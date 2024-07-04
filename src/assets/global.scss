@@ -12,19 +12,22 @@ li {
 .card-list {
   @include flex(row, start, start, 1rem);
   flex-wrap: wrap;
+  li.open{
+
+  }
+
 }
 
 .p-panelmenu .p-panelmenu-panel .p-panelmenu-content {
   padding: 10px;
 }
-.list-img{
+.list-img {
   width: 100%;
 }
-.list-card{
+.list-card {
   width: 30%;
 }
 
-
-.controls{
-  @include flex(row,start,center);
+.controls {
+  @include flex(row, start, center);
 }

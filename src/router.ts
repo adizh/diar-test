@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import CourierOrder from '@/components/Courier/Order.vue'
+import CourierOrder from "@/components/Courier/Order.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -18,12 +18,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/pages/Orders/Awaiting.vue"),
       },
       {
-        path: '/sent-to-kitchen',
+        path: "/sent-to-kitchen",
         name: "SentToKitchen",
         component: () => import("@/pages/Orders/SentKitchen.vue"),
       },
       {
-        path: '/sent-to-kitchen-pickup',
+        path: "/sent-to-kitchen-pickup",
         name: "SentToKitchenPicktup",
         component: () => import("@/pages/SentToKitchenPickup.vue"),
       },

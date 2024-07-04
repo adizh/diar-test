@@ -1,2 +1,2 @@
 declare module "*.vue";
-declare module '*primevue/popover'
+declare module "*primevue/popover";
