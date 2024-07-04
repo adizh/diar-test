@@ -8,7 +8,7 @@
 
  <div>
 
-  <PhoneCodeFilters @handlePhone="handlePhone"  @handleOrderNumber="handleOrderNumber"/>
+  <PhoneCodeFilters @handlePhone="handlePhone"  @handleOrderNumber="handleOrderNumber" @changeOption="changeOption"/>
  </div>
   </div>
     <Card v-if="!awaitingOrders?.length">
@@ -263,12 +263,14 @@ const handlePhone = (event:string) => {
 const handleOrderNumber =(event:any)=>{
   const value = String(event?.value)
   const results = filterOrders?.value?.filter((item)=>String(item?.orderNumber)?.includes(value))
-  if(value && value?.length>0){
+  if(results && results?.length>0){
     awaitingOrders.value =results
   }else{
     awaitingOrders.value = filterOrders?.value
   }
 }
+
+
 
 const increaseCount = (food: Food) => {
   food.quantity++;
@@ -311,6 +313,9 @@ const selectFood = (event: any) => {
   }, 500);
 };
 
+const changeOption =()=>{
+  awaitingOrders.value = filterOrders?.value
+}
 const createOrder = async () => {
   const foods = selectedFoods.value.map((item: { value: Food }) => {
     return {

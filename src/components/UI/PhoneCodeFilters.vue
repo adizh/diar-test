@@ -14,6 +14,7 @@
         mask="999 99-99-99"
         placeholder="700 11-11-11"
         @update:modelValue="handlePhone"
+        :autoClear="false"
       />
   <Dropdown
           :options="options"
@@ -22,6 +23,7 @@
           id="category"
           optionLabel="name"
           v-model.trim="selectedOption"
+          @change="changeOption"
 
         />
     </div>
@@ -42,6 +44,8 @@ const options=ref([
 const emit = defineEmits<{
     handlePhone: [event:any]
     handleOrderNumber: [event:any]
+    changeOption:[]
+
  
 }>()
 const handlePhone =(event:any)=>{
@@ -52,6 +56,11 @@ const handleOrderNumber =(event:any)=>{
 emit('handleOrderNumber',event)
 }
 
+const changeOption =()=>{
+    filterPhone.value=null   
+    filterValue.value=null
+    emit('changeOption')
+}
 
 </script>
 
