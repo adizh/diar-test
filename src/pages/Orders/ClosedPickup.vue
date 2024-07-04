@@ -1,12 +1,19 @@
 vbas3
 <template>
   <div class="section">
-    Самовывоз доставленных заказов
+ <p class="mb-3">
+  Самовывоз доставленных заказов
+ </p>
     <Card v-if="!orders?.length">
       <template #content>Нет данных</template>
     </Card>
     <div v-else class="card-list">
-      <Order v-for="order in orders" :key="order?.orderNumber" :order="order" from="closed-pickup" />
+      <Order
+        v-for="order in orders"
+        :key="order?.orderNumber"
+        :order="order"
+        from="closed-pickup"
+      />
     </div>
 
     <!-- <ul v-else class="card-list">

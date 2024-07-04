@@ -3,16 +3,6 @@
     <div class="mb-5">
       <p>Доставки на кухне</p>
 
-      <!-- <ul class="card-list" v-if="kitchedOrders?.length > 0">
-        <li   v-for="order in kitchedOrders"
-        :key="order?.orderNumber">
-        <Order
-      
-        :order="order"
-        from="kitchen"
-      />
-      </li>
-      </ul> -->
       <div class="card-list" v-if="kitchedOrders?.length > 0">
         <Order
           v-for="order in kitchedOrders"

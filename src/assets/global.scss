@@ -9,12 +9,10 @@ li {
   list-style: none;
 }
 
-.filter-header{
-  @include flex(row,space-between,center);
+.filter-header {
+  @include flex(row, space-between, center);
   padding-right: 2rem;
 }
-
-
 
 .card-list {
   @include flex(row, start, start, 1rem);

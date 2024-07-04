@@ -1,13 +1,21 @@
 vbas3
 <template>
   <div class="section">
-    Переданные курьеру
+<p class="mb-3">
+  Переданные курьеру
+</p>
     <Card v-if="!orders?.length">
       <template #content>Нет данных</template>
     </Card>
 
     <div v-else class="card-list">
-      <Order v-for="order in orders" :key="order?.orderNumber" :order="order" type="delegated" from="delegated" />
+      <Order
+        v-for="order in orders"
+        :key="order?.orderNumber"
+        :order="order"
+        type="delegated"
+        from="delegated"
+      />
     </div>
 
     <!-- <ul v-else class="card-list">

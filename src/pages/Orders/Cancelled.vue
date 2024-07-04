@@ -1,15 +1,20 @@
 <template>
   <div class="section">
-    Отмененные доставки
+    <p class="mb-3">    Отмененные доставки</p>
+
     <Card v-if="!awaitingOrders?.length">
       <template #content>Нет данных</template>
     </Card>
 
     <div v-else class="card-list">
-
-      <Order v-for="order in awaitingOrders" :key="order?.orderNumber" :order="order" from="cancelled" />
+      <Order
+        v-for="order in awaitingOrders"
+        :key="order?.orderNumber"
+        :order="order"
+        from="cancelled"
+      />
     </div>
-<!-- 
+    <!-- 
     <ul v-else class="card-list">
       <li v-for="order in awaitingOrders" :key="order?.orderNumber">
         <Order :order="order" from="cancelled" />

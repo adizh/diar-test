@@ -1,5 +1,5 @@
 <template>
-  <Card :class="{'open':isOpen}">
+  <Card :class="{ open: isOpen }">
     <template #title>
       <div class="flex flex-row gap-3 align-items-center">
         <p>Номер заказа: {{ order?.orderNumber }}</p>
@@ -35,66 +35,105 @@
           @click="isEditOpen = true"
         />
       </div>
-      <Button :label="isOpen ? 'Свернуть':'Показать'" severity="secondary" @click="isOpen = !isOpen"/>
+      <Button
+        :label="isOpen ? 'Свернуть' : 'Показать'"
+        severity="secondary"
+        @click="isOpen = !isOpen"
+      />
     </template>
-
 
     <template #content>
       <Transition name="slide-fade">
-    <div v-if="isOpen">
-      <div>
-        Еда:
-        <DataTable
-          :value="order?.foods"
-          :tableStyle="{ minWidth: '100%' }"
-          class="mb-2"
-        >
-          <Column field="name" header="Название"></Column>
-          <Column field="quantity" header="Кол-во"></Column>
-          <Column field="price" header="Цена"></Column>
-        </DataTable>
-      </div>
-      <div class="m-0 order-info flex flex-row justify-content-between">
-      <p class="flex flex-column columns">
-        <span><span class="order-name">Цена</span>: {{ order?.price }}</span>
-        <span><span class="order-name">Сдача</span>: {{ order?.sdacha }}</span>
-        <span class="long-info-status"><span class="order-name">Статус</span>: <span >{{ order?.status }}</span></span>
-        <span><span class="order-name">Кол-во блюд</span>: {{ order?.dishesCount }}</span>
-        <span v-if="order.deliveryPrice"
-          ><span class="order-name">Цена за доставку</span>: {{ order?.deliveryPrice }}</span
-        >
-        <span><span class="order-name">Комментарий</span>: {{ order?.comment }}</span>
-        <span><span class="order-name">Имя</span>: {{ order?.userName }}</span>
-        <span><span class="order-name">Номер телефона</span> :{{ order?.userPhone }}</span>
-      </p>
-      <p class="columns">
-        <div class="order-info" v-if="order.address">
-     <span  class="long-info">
-      <span class="order-name">Адрес:</span>  <span>{{ order?.address }}</span>
-     </span>
-          <span v-if="order.entrance"><span class="order-name">Вход</span>: {{ order.entrance }}</span>
-          <span v-if="order.floor"><span class="order-name">Этаж</span>: {{ order?.floor }}</span>
-          <span v-if="order.houseNumber"
-            ><span class="order-name">Номер квартиры</span>: {{ order?.houseNumber }}</span
-          >
-          <span v-if="order.intercom"
-            ><span class="order-name">Внутренняя связь</span>: {{ order?.intercom }}</span
-          >
-          <span v-if="order.kvOffice"
-            ><span class="order-name">Квартира/Офис</span>: {{ order?.kvOffice }}</span
-          >
+        <div v-if="isOpen">
+          <div>
+            Еда:
+            <DataTable
+              :value="order?.foods"
+              :tableStyle="{ minWidth: '100%' }"
+              class="mb-2"
+            >
+              <Column field="name" header="Название"></Column>
+              <Column field="quantity" header="Кол-во"></Column>
+              <Column field="price" header="Цена"></Column>
+            </DataTable>
+          </div>
+          <div class="m-0 order-info flex flex-row justify-content-between">
+            <p class="flex flex-column columns">
+              <span
+                ><span class="order-name">Цена</span>: {{ order?.price }}</span
+              >
+              <span
+                ><span class="order-name">Сдача</span>:
+                {{ order?.sdacha }}</span
+              >
+              <span class="long-info-status"
+                ><span class="order-name">Статус</span>:
+                <span>{{ order?.status }}</span></span
+              >
+              <span
+                ><span class="order-name">Кол-во блюд</span>:
+                {{ order?.dishesCount }}</span
+              >
+              <span v-if="order.deliveryPrice"
+                ><span class="order-name">Цена за доставку</span>:
+                {{ order?.deliveryPrice }}</span
+              >
+              <span
+                ><span class="order-name">Комментарий</span>:
+                {{ order?.comment }}</span
+              >
+              <span
+                ><span class="order-name">Имя</span>:
+                {{ order?.userName }}</span
+              >
+              <span
+                ><span class="order-name">Номер телефона</span> :{{
+                  order?.userPhone
+                }}</span
+              >
+            </p>
+            <div class="columns">
+              <div class="order-info" v-if="order.address">
+                <span class="long-info">
+                  <span class="order-name">Адрес:</span>
+                  <span>{{ order?.address }}</span>
+                </span>
+                <span v-if="order.entrance"
+                  ><span class="order-name">Вход</span>:
+                  {{ order.entrance }}</span
+                >
+                <span v-if="order.floor"
+                  ><span class="order-name">Этаж</span>:
+                  {{ order?.floor }}</span
+                >
+                <span v-if="order.houseNumber"
+                  ><span class="order-name">Номер квартиры</span>:
+                  {{ order?.houseNumber }}</span
+                >
+                <span v-if="order.intercom"
+                  ><span class="order-name">Внутренняя связь</span>:
+                  {{ order?.intercom }}</span
+                >
+                <span v-if="order.kvOffice"
+                  ><span class="order-name">Квартира/Офис</span>:
+                  {{ order?.kvOffice }}</span
+                >
+              </div>
+              <span v-if="order.paymentMethod"
+                ><span class="order-name">Метод оплаты</span>:{{
+                  order?.paymentMethod
+                }}</span
+              >
+              <span
+                ><span class="order-name">Запрошенное время</span>:{{
+                  order?.timeRequest
+                }}</span
+              >
+            </div>
+          </div>
         </div>
-        <span v-if="order.paymentMethod"
-          ><span class="order-name">Метод оплаты</span>:{{ order?.paymentMethod }}</span
-        >
-        <span><span class="order-name">Запрошенное время</span>:{{ order?.timeRequest }}</span>
-      </p>
-      </div>
-    </div>
       </Transition>
-
     </template>
-
   </Card>
 
   <Dialog
@@ -239,7 +278,7 @@ type Status = {
   name: string;
   code: string;
 };
-const isOpen =ref(false)
+const isOpen = ref(false);
 const statusOptions = ref([
   { name: "Отправить на кухню", code: "the order is being prepared" },
   { name: "Закончить заказ", code: "Finished" },
@@ -412,21 +451,18 @@ onMounted(async () => {
   @include flex(column, center, start);
 }
 
-.order-name{
-opacity: .7;
-
+.order-name {
+  opacity: 0.7;
 }
-.columns{
-  gap:10px;
+.columns {
+  gap: 10px;
   display: flex;
-  flex-direction: column
+  flex-direction: column;
 }
 
-.long-info{
+.long-info {
   max-width: 400px;
 }
-
-
 
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
@@ -442,8 +478,7 @@ opacity: .7;
   opacity: 0;
 }
 
-
-.open{
-  width: 95%  !important
+.open {
+  width: 95% !important;
 }
 </style>

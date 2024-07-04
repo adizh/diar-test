@@ -138,7 +138,6 @@ const store: Store<State> = createStore({
           state.awaitingPickupOrdersFilter = response.data?.pickUpOrders;
           state.stats.awatingOrdersPickupCount =
             response?.data?.pickUpOrders?.length || 0;
-         
         }
       } catch (err) {
         console.log(err);
@@ -194,39 +193,39 @@ const store: Store<State> = createStore({
       }
     },
 
-    filterAwaitingPickupOrderNumber({state},orderNumber:number){
-  const value = String(orderNumber)
-  const results = state.awaitingPickupOrdersFilter?.filter((item)=>String(item?.orderNumber)?.includes(value))
-  state.awaitingPickupOrders =results;
+    filterAwaitingPickupOrderNumber({ state }, orderNumber: number) {
+      const value = String(orderNumber);
+      const results = state.awaitingPickupOrdersFilter?.filter((item) =>
+        String(item?.orderNumber)?.includes(value),
+      );
+      state.awaitingPickupOrders = results;
 
-  if(results?.length){
-    state.awaitingPickupOrders =results
-  }else{
-    state.awaitingPickupOrders = state.awaitingPickupOrdersFilter
-  }
-    },
-    filterAwaitingPickupOrderPhone({state},phone:string){
-      const normalizePhone = (phone:string) => {
-        return phone.replace(/[^\d]/g, '');
+      if (results?.length) {
+        state.awaitingPickupOrders = results;
+      } else {
+        state.awaitingPickupOrders = state.awaitingPickupOrdersFilter;
       }
+    },
+    filterAwaitingPickupOrderPhone({ state }, phone: string) {
+      const normalizePhone = (phone: string) => {
+        return phone.replace(/[^\d]/g, "");
+      };
       const normalizedInput = normalizePhone(phone);
-  const results = state.awaitingPickupOrdersFilter?.filter((item) => {
-    const normalizedUserPhone = normalizePhone(item?.userPhone);
-    return normalizedUserPhone.includes(normalizedInput);
-  });
+      const results = state.awaitingPickupOrdersFilter?.filter((item) => {
+        const normalizedUserPhone = normalizePhone(item?.userPhone);
+        return normalizedUserPhone.includes(normalizedInput);
+      });
 
-  if (phone?.length>0) {
-    state.awaitingPickupOrders = results;
-  } else {
-    state.awaitingPickupOrders = state.awaitingPickupOrdersFilter
-  }
+      if (phone?.length > 0) {
+        state.awaitingPickupOrders = results;
+      } else {
+        state.awaitingPickupOrders = state.awaitingPickupOrdersFilter;
+      }
+    },
 
-     
-        },
-
-        resetAwaitingPickup({state}){
-          state.awaitingPickupOrders = state.awaitingPickupOrdersFilter
-        },
+    resetAwaitingPickup({ state }) {
+      state.awaitingPickupOrders = state.awaitingPickupOrdersFilter;
+    },
 
     async fetchStats({ dispatch }) {
       await dispatch("fetchKitchenOrders");

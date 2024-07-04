@@ -1,27 +1,31 @@
 <template>
   <div class="section">
     <div class="mb-3 filter-header">
-    <div class="flex flex-column gap-3">
-      Доставки в ожидании
-      <Button label="Создать заказ" @click="openCreateOrderModal" />
+      <div class="flex flex-column gap-3">
+        Доставки в ожидании
+        <Button label="Создать заказ" @click="openCreateOrderModal" />
+      </div>
+
+      <div>
+        <PhoneCodeFilters
+          @handlePhone="handlePhone"
+          @handleOrderNumber="handleOrderNumber"
+          @changeOption="changeOption"
+        />
+      </div>
     </div>
-
- <div>
-
-  <PhoneCodeFilters @handlePhone="handlePhone"  @handleOrderNumber="handleOrderNumber" @changeOption="changeOption"/>
- </div>
-  </div>
     <Card v-if="!awaitingOrders?.length">
       <template #content>Нет данных</template>
     </Card>
 
-
     <div class="card-list" v-else>
-      <Order v-for="order in awaitingOrders" :key="order?.orderNumber" :order="order" from="awaiting" />
+      <Order
+        v-for="order in awaitingOrders"
+        :key="order?.orderNumber"
+        :order="order"
+        from="awaiting"
+      />
     </div>
-
- 
-
   </div>
 
   <div class="card flex justify-content-center">
@@ -200,7 +204,7 @@ import { onMounted } from "vue";
 import Order from "@/components/Order.vue";
 import { useStore } from "vuex";
 import { useToast } from "primevue/usetoast";
-import PhoneCodeFilters from '@/components/UI/PhoneCodeFilters.vue'
+import PhoneCodeFilters from "@/components/UI/PhoneCodeFilters.vue";
 const noOrder = ref("");
 const toast = useToast();
 const awaitingOrders = ref<AwaitingOrder[]>([]);
@@ -241,36 +245,36 @@ const removeFood = (food: Food) => {
   }
 };
 
-const normalizePhone = (phone:string) => {
-  return phone.replace(/[^\d]/g, '');
+const normalizePhone = (phone: string) => {
+  return phone.replace(/[^\d]/g, "");
 };
 
-const handlePhone = (event:string) => {
+const handlePhone = (event: string) => {
   const normalizedInput = normalizePhone(event);
-  
+
   const results = filterOrders?.value?.filter((item) => {
     const normalizedUserPhone = normalizePhone(item?.userPhone);
     return normalizedUserPhone.includes(normalizedInput);
   });
 
-  if (event?.length>0) {
+  if (event?.length > 0) {
     awaitingOrders.value = results;
   } else {
     awaitingOrders.value = filterOrders?.value;
   }
 };
 
-const handleOrderNumber =(event:any)=>{
-  const value = String(event?.value)
-  const results = filterOrders?.value?.filter((item)=>String(item?.orderNumber)?.includes(value))
-  if(results && results?.length>0){
-    awaitingOrders.value =results
-  }else{
-    awaitingOrders.value = filterOrders?.value
+const handleOrderNumber = (event: any) => {
+  const value = String(event?.value);
+  const results = filterOrders?.value?.filter((item) =>
+    String(item?.orderNumber)?.includes(value),
+  );
+  if (results && results?.length > 0) {
+    awaitingOrders.value = results;
+  } else {
+    awaitingOrders.value = filterOrders?.value;
   }
-}
-
-
+};
 
 const increaseCount = (food: Food) => {
   food.quantity++;
@@ -313,9 +317,9 @@ const selectFood = (event: any) => {
   }, 500);
 };
 
-const changeOption =()=>{
-  awaitingOrders.value = filterOrders?.value
-}
+const changeOption = () => {
+  awaitingOrders.value = filterOrders?.value;
+};
 const createOrder = async () => {
   const foods = selectedFoods.value.map((item: { value: Food }) => {
     return {
