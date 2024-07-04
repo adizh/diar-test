@@ -9,13 +9,16 @@ li {
   list-style: none;
 }
 
+.filter-header{
+  @include flex(row,space-between,center);
+  padding-right: 2rem;
+}
+
+
+
 .card-list {
   @include flex(row, start, start, 1rem);
   flex-wrap: wrap;
-  li.open{
-
-  }
-
 }
 
 .p-panelmenu .p-panelmenu-panel .p-panelmenu-content {

@@ -1,9 +1,16 @@
 <template>
   <div class="section">
-    <p class="mb-3">
+    <div class="mb-3 filter-header">
+    <div class="flex flex-column gap-3">
       Доставки в ожидании
       <Button label="Создать заказ" @click="openCreateOrderModal" />
-    </p>
+    </div>
+
+ <div>
+
+  <PhoneCodeFilters @handlePhone="handlePhone"  @handleOrderNumber="handleOrderNumber"/>
+ </div>
+  </div>
     <Card v-if="!awaitingOrders?.length">
       <template #content>Нет данных</template>
     </Card>
@@ -193,9 +200,11 @@ import { onMounted } from "vue";
 import Order from "@/components/Order.vue";
 import { useStore } from "vuex";
 import { useToast } from "primevue/usetoast";
+import PhoneCodeFilters from '@/components/UI/PhoneCodeFilters.vue'
 const noOrder = ref("");
 const toast = useToast();
 const awaitingOrders = ref<AwaitingOrder[]>([]);
+const filterOrders = ref<AwaitingOrder[]>([]);
 const isCreateModal = ref(false);
 const selectedFoods = ref([] as { value: Food }[]);
 const store = useStore();
@@ -232,6 +241,35 @@ const removeFood = (food: Food) => {
   }
 };
 
+const normalizePhone = (phone:string) => {
+  return phone.replace(/[^\d]/g, '');
+};
+
+const handlePhone = (event:string) => {
+  const normalizedInput = normalizePhone(event);
+  
+  const results = filterOrders?.value?.filter((item) => {
+    const normalizedUserPhone = normalizePhone(item?.userPhone);
+    return normalizedUserPhone.includes(normalizedInput);
+  });
+
+  if (event?.length>0) {
+    awaitingOrders.value = results;
+  } else {
+    awaitingOrders.value = filterOrders?.value;
+  }
+};
+
+const handleOrderNumber =(event:any)=>{
+  const value = String(event?.value)
+  const results = filterOrders?.value?.filter((item)=>String(item?.orderNumber)?.includes(value))
+  if(value && value?.length>0){
+    awaitingOrders.value =results
+  }else{
+    awaitingOrders.value = filterOrders?.value
+  }
+}
+
 const increaseCount = (food: Food) => {
   food.quantity++;
 };
@@ -253,6 +291,7 @@ const fetchAwaitingOrders = async () => {
       console.log("no order", noOrder);
     } else if (response.status == 200) {
       awaitingOrders.value = response.data.orders;
+      filterOrders.value = response.data.orders;
     }
   } catch (err) {
     console.log(err);
