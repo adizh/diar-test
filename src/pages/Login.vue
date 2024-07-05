@@ -1,13 +1,14 @@
 <template>
   <form @submit.prevent="adminLogin">
     <div class="flex flex-column gap-2 email">
-      <label for="username">Email</label>
-      <InputText
-        id="username"
-        v-model="email"
-        aria-describedby="username-help"
-      />
-      <small id="username-help">Введите свой email.</small>
+      <label for="username">Телефон</label>
+      <InputMask
+      id="phone"
+      v-model.trim="email"
+      mask="+996 (999) 99-99-99"
+      placeholder="+996 (700) 11-11-11"
+    />
+    
     </div>
 
     <div class="flex flex-column gap-2">
