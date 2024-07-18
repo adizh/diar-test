@@ -29,6 +29,7 @@
         placeholder="Выбрать еду"
         class="w-full md:w-14rem"
         id="category"
+        filter
         optionLabel="name"
         v-model.trim="orderValues.foods"
         @change="selectFood"

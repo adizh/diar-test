@@ -1,5 +1,5 @@
 <template>
-  <Card :class="{ open: isOpen }">
+  <Card :class="{ open: isOpen,newOrder:orderTime }" >
     <template #title>
       <div class="flex flex-row gap-3 align-items-center">
         <p>Номер заказа: {{ order?.orderNumber }}</p>
@@ -245,7 +245,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed,onBeforeUnmount } from "vue";
 import { AwaitingOrder } from "@/types/Order";
 const props = defineProps<{
   order: AwaitingOrder;
@@ -261,7 +261,7 @@ const isStatusOpen = ref(false);
 import OrderAddFood from "@/components/Orders/AddNew.vue";
 const store = useStore();
 const isDelegOpen = ref(false);
-
+let intervalId:any = null;
 const isSelectCourier = ref(false);
 const selectedStatus = ref({} as Status);
 const isCancelOpen = ref(false);
@@ -273,6 +273,9 @@ const selectedCourier = ref({} as Courier);
 const selectedCourierForStatus = ref({} as Courier);
 const toast = useToast();
 const isEditOpen = ref(false);
+const orderTime=ref(false)
+import {useOrderTimer} from '@/hooks/ordersTimer'
+
 
 type Status = {
   name: string;
@@ -442,7 +445,13 @@ const closeModal = () => {
 
 onMounted(async () => {
   await store.dispatch("fetchAllCouriers");
+   orderTime.value=useOrderTimer(props?.order?.timeRequest)
+
+
 });
+
+
+
 </script>
 
 <style scoped lang="scss">
@@ -450,7 +459,10 @@ onMounted(async () => {
 .order-info {
   @include flex(column, center, start);
 }
+.newOrder{
+  box-shadow:0 2px 12px #2dd6b1
 
+}
 .order-name {
   opacity: 0.7;
 }

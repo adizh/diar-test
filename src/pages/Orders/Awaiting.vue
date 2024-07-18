@@ -33,7 +33,7 @@
       v-model:visible="isCreateModal"
       modal
       header="Создать заказ"
-      :style="{ width: '25rem' }"
+      :style="{ width: '35rem' }"
     >
       <span class="p-text-secondary block mb-5">Создать заказ</span>
       <div class="flex flex-column gap-3 mb-5">
@@ -89,6 +89,7 @@
           class="w-full md:w-14rem"
           id="category"
           optionLabel="name"
+          filter
           v-model.trim="orderValues.foods"
           @change="selectFood"
         />
@@ -196,7 +197,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed,onBeforeUnmount } from "vue";
 import http from "@/http";
 import { AwaitingOrder } from "@/types/Order";
 import { OrderFood, Food } from "@/types/Food";
@@ -205,6 +206,7 @@ import Order from "@/components/Order.vue";
 import { useStore } from "vuex";
 import { useToast } from "primevue/usetoast";
 import PhoneCodeFilters from "@/components/UI/PhoneCodeFilters.vue";
+import { useRouter } from "vue-router";
 const noOrder = ref("");
 const toast = useToast();
 const awaitingOrders = ref<AwaitingOrder[]>([]);
@@ -212,6 +214,8 @@ const filterOrders = ref<AwaitingOrder[]>([]);
 const isCreateModal = ref(false);
 const selectedFoods = ref([] as { value: Food }[]);
 const store = useStore();
+
+
 const orderValues = ref({
   address: ref(""),
   comment: ref(""),
@@ -378,6 +382,16 @@ onMounted(() => {
   fetchAwaitingOrders();
   store.dispatch("fetchAllFood");
 });
+let intervalId:any=null;
+
+intervalId= setInterval(()=>{
+fetchAwaitingOrders()
+},5000)
+
+onBeforeUnmount(() => {
+  clearInterval(intervalId)
+})
+
 </script>
 
 <style scoped>

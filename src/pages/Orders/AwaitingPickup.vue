@@ -31,14 +31,14 @@
     v-model:visible="isOrderOpen"
     modal
     header="Создать заказ"
-    :style="{ width: '25rem' }"
+    :style="{ width: '35rem' }"
   >
     <OrdersCreate />
   </Dialog>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref,onBeforeUnmount } from "vue";
 import PhoneCodeFilters from "@/components/UI/PhoneCodeFilters.vue";
 import { onMounted } from "vue";
 import Order from "@/components/Order.vue";
@@ -46,6 +46,7 @@ import OrdersCreate from "@/components/Orders/Create.vue";
 import { useStore } from "vuex";
 const noOrder = ref("");
 const isOrderOpen = ref(false);
+let intervalId:any=null
 const store = useStore();
 
 const handlePhone = (event: string) => {
@@ -63,6 +64,14 @@ const changeOption = () => {
 onMounted(() => {
   store.dispatch("fetchAwaitingPickup");
 });
+
+intervalId = setInterval(()=>{
+  store.dispatch("fetchAwaitingPickup");
+},5000)
+
+onBeforeUnmount(() => {
+    clearInterval(intervalId);
+    });
 </script>
 
 <style scoped></style>
