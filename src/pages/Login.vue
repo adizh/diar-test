@@ -38,7 +38,7 @@ const adminLogin = async () => {
   } else {
     try {
       const body = {
-        email: email.value,
+        phone: email.value,
         password: password.value,
       };
       const response = await axios.post(`${BaseUrl}/auth/sign-in`, body);
