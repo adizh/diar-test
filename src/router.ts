@@ -9,11 +9,6 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "/",
-        name: "Main",
-        component: () => import("@/pages/Main.vue"),
-      },
-      {
-        path: "/awaiting-orders",
         name: "Awaiting",
         component: () => import("@/pages/Orders/Awaiting.vue"),
       },

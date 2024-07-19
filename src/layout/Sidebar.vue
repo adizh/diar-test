@@ -179,7 +179,7 @@ const headerItems = ref([
         label: "Доставки",
         count: 0,
         command: () => {
-          router.push("/awaiting-orders");
+          router.push("/");
         },
       },
       {
