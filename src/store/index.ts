@@ -1,10 +1,11 @@
 import http from "@/http";
 import router from "@/router";
-import { Category } from "@/types/Category";
+import { Category,CategoryWithFoods } from "@/types/Category";
 import { createStore, Store } from "vuex";
 import { Courier } from "@/types/Courier";
 import { Food, OrderFood } from "@/types/Food";
 import { AwaitingOrder } from "@/types/Order";
+import { useToast } from "primevue/usetoast";
 
 interface State {
   categoriesName: Category[];
@@ -25,6 +26,7 @@ const store: Store<State> = createStore({
     allFood: [],
     allCouriers: [] as Courier[],
     allFoods: [] as Food[],
+    categoriesWithFoods:[] as CategoryWithFoods[],
     awaitingPickupOrders: [] as AwaitingOrder[],
     awaitingPickupOrdersFilter: [] as AwaitingOrder[],
     closedPickUpOrders: [] as AwaitingOrder[],
@@ -37,10 +39,18 @@ const store: Store<State> = createStore({
     },
   },
   actions: {
+    
     async getAllCategoryNames({ state }) {
       try {
         const response = await http("categorys/get-all-category-with-foods");
         console.log("response category names", response.data);
+        if(response.status===200){
+          state.categoriesWithFoods=response.data?.map((item:CategoryWithFoods )=> ({
+            id: item.Category.id,
+            name: item.Category.name,
+            foods: item.Foods
+          }));
+        }
         state.categoriesName = response.data.map((item: any) => item.Category);
         state.allFoodsNames = response.data
           .map((item: any) => item.Foods?.map((food: any) => food.name))
@@ -233,6 +243,24 @@ const store: Store<State> = createStore({
       await dispatch("fetchAwaitingOrders");
       await dispatch("fetchCookedPickUp");
     },
+
+    async sendFoodToStopList({state},body:{foodName:string,status:boolean}){
+  if(body.foodName){
+    try {
+      console.log("request is being sent");
+      const response = await http.post("/admin/change-of-stop-list", body);
+      console.log("hide food response", response);
+      if (response.status === 200) {
+        // setTimeout(() => {
+        //  // window.location.reload();
+        // }, 700);
+      }
+      return response.status
+    } catch (err) {
+      console.log(err);
+    }
+  }
+    }
   },
 
   getters: {
@@ -243,6 +271,10 @@ const store: Store<State> = createStore({
       return state.stats;
     },
 
+
+    getCategoriesWithFoods(state){
+return state.categoriesWithFoods
+    },
     pickUpOrdersCount(state) {
       return state.stats.awatingOrdersPickupCount;
     },

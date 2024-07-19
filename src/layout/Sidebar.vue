@@ -1,20 +1,26 @@
 <template>
   <div class="sidebar">
+
     <PanelMenu :model="items" />
+
   </div>
 
   <div class="card headerItems">
+
     <div class="main-items">
+
       <div class="each-link-menu" @click="(event) => toggle(event)">
         В ожидании <Badge :value="totalAwaitingCount" severity="danger"></Badge>
       </div>
+
       <div class="each-link-menu" @click="(event) => toggleKitchen(event)">
         На кухне <Badge :value="totalKitchenCount" severity="info"></Badge>
       </div>
-
+      
       <div class="each-link-menu" @click="router.push('/delegated-orders')">
         Переданные курьеру
       </div>
+
       <div class="each-link-menu" @click="(event) => toggleClosed(event)">
         Доставленные
       </div>
@@ -22,6 +28,7 @@
       <div class="each-link-menu" @click="(event) => toggleСancel(event)">
         Отмененные
       </div>
+
     </div>
 
     <OverlayPanel ref="countOverlay" class="countOverlay">
@@ -206,7 +213,6 @@ const headerItems = ref([
         label: "Самовывоз",
         command: () => {
           router.push("/sent-to-kitchen-pickup");
-          // toast.add({ severity: 'success', summary: 'Success', detail: 'File created', life: 3000 });
         },
       },
     ],
@@ -265,104 +271,70 @@ const headerItems = ref([
   },
 ]);
 
-console.log("headerItems", headerItems);
 
 const items = ref([
   {
+    label: "Меню",
+    command: () => {
+          router.push("/menu");
+        },
+ 
+  },
+  {
     label: "Курьеры",
-    items: [
-      {
-        label: "Курьеры",
-        command: () => {
+    command: () => {
           router.push("/all-couriers");
         },
-      },
-    ],
   },
   {
     label: "Новости",
-    items: [
-      {
-        label: "Новости",
-        command: () => {
+    command: () => {
           router.push("/news");
         },
-      },
-    ],
   },
   {
     label: "Распродажа",
-    items: [
-      {
-        label: "Распродажи",
-        //   icon: 'pi pi-print',
-        command: () => {
+    command: () => {
           router.push("/sales");
-          // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
         },
-      },
-    ],
   },
   {
     label: "Добавить",
-    icon: "pi pi-plus",
-    items: [
-      {
-        label: "Добавить",
-        //   icon: 'pi pi-print',
-        command: () => {
+    command: () => {
           router.push("/add-items");
-          // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
         },
-      },
-    ],
   },
   {
     label: "Обновить",
-    //  icon: 'pi pi-plus',
-    items: [
-      {
-        label: "Обновить",
-        //   icon: 'pi pi-print',
-        command: () => {
+    command: () => {
           router.push("/update-items");
-          // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
         },
-      },
-    ],
   },
 
   {
     label: "Удалить",
-    icon: "pi pi-trash",
-    items: [
-      {
-        label: "Удалить",
-        //   icon: 'pi pi-print',
-        command: () => {
+    command: () => {
           router.push("/delete-items");
-          // toast.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
         },
-      },
-    ],
   },
   {
     label: "Выйти из аккаунта",
     icon: "pi pi-sign-out",
     command: () => {
       openSignOutModal();
-      //  toast.add({ severity: 'info', summary: 'Signed out', detail: 'User logged out', life: 3000 });
     },
   },
 ]);
 
 onMounted(async () => {
+
   await store.dispatch("fetchStats");
   store.dispatch("fetchAwaitingPickup");
   setTimeout(() => {
     isMenuBarOpen.value = true;
   }, 1000);
 });
+
 </script>
 
 <style scoped lang="scss">
@@ -381,6 +353,7 @@ onMounted(async () => {
   cursor: pointer;
   background: #f1f5f9;
 }
+
 .menubar-link {
   padding: 7px 3px;
 }
@@ -390,13 +363,16 @@ onMounted(async () => {
   flex-direction: column;
   gap: 10px;
 }
+
 .main-items {
   display: flex;
   justify-content: space-around;
 }
+
 .menubar-link:hover {
   cursor: pointer;
 }
+
 .sidebar {
   width: 300px;
   height: 100%;
@@ -411,6 +387,7 @@ onMounted(async () => {
   border-radius: 5px;
   background: rgb(246, 246, 246);
 }
+
 :deep(.p-menubar) {
   margin-left: 320px;
 }
@@ -424,4 +401,5 @@ onMounted(async () => {
   cursor: pointer;
   background: #f1f5f9;
 }
+
 </style>
