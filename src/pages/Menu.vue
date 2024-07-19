@@ -1,13 +1,19 @@
 
 <template>
-  <div class="card">
+  <div class="card mt-5">
       <DataTable v-model:expandedRows="expandedRows" :value="store.getters.getCategoriesWithFoods" dataKey="id"
-          tableStyle="min-width: 20rem">
+          tableStyle="width: 70rem ">
           <template #header>
-              <div class="flex flex-wrap justify-content-end gap-2">
+           <div class="flex justify-content-between mb-3">
+            <div class="flex flex-wrap gap-2">
+          
+
+          </div>
+              <div class="flex flex-wrap  gap-2">
                   <Button text icon="pi pi-plus" label="Открыть все" @click="expandAll" />
                   <Button text icon="pi pi-minus" label="Скрыть все" @click="collapseAll" />
               </div>
+           </div>
           </template>
           <Column expander style="width: 5rem" />
           <Column field="name" header="Категория"></Column>
@@ -42,6 +48,15 @@
                           @click="editItem(slotProps.data?.name,slotProps.data?.containerName)"/>
                         </template>
                       </Column>
+
+                      <Column>
+                        <template #body="slotProps">
+                          <Button icon="pi pi-trash"
+                          severity="danger"
+                          v-tooltip.top="'Удалить'"
+                          @click="openDeleteModal(slotProps.data?.name)"/>
+                        </template>
+                      </Column>
                     
                   </DataTable>
               </div>
@@ -56,9 +71,24 @@ header="Обновить еду"
 :style="{ width: '35rem' }"
 >
 <EditFood :editItemName='editItemValues.name' :editItenContainer="editItemValues.container" @closeModal="isEditOpen=false"/>
+
+</Dialog>
+
+<Dialog v-model:visible="isDeleteModalOpen"
+modal
+header="Удаление еды">
+
+  <ConfirmButtons
+  confirmText="Удалить"
+  declineText="Отменить"
+  :descrText="`Вы действительно хотите удалить ${deleteItem}`"
+  @confirmAction="confirmDeleteFood"
+  @closeModal="isDeleteModalOpen = false"
+/>
 </Dialog>
 
   </div>
+
 </template>
 
 <script setup lang="ts">
@@ -66,6 +96,7 @@ import { ref, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import {useStore} from 'vuex'
 import EditFood from '@/components/Update/EditFood.vue';
+import ConfirmButtons from '@/components/UI/ConfirmButtons.vue';
 const store= useStore()
 const expandedRows = ref();
 const toast = useToast();
@@ -74,7 +105,8 @@ const editItemValues=ref({
   name:"",
   container:''
 })
-
+const isDeleteModalOpen=ref(false)
+const deleteItem=ref('')
 const editItem =(itemName:string,itemContainer:string)=>{
   isEditOpen.value=true;
   editItemValues.value.name=itemName
@@ -84,9 +116,14 @@ const editItem =(itemName:string,itemContainer:string)=>{
 
 onMounted(() => {
   store.dispatch('getAllCategoryNames');
-  
 
 });
+
+const openDeleteModal =(itemName:string)=>{
+
+  deleteItem.value =itemName
+  isDeleteModalOpen.value=true
+}
 
 const sendToStopList = async(name:string)=>{
 const status=await store.dispatch('sendFoodToStopList',{foodName:name,status:true})
@@ -99,6 +136,28 @@ if(status===200){
 }
 }
 
+const confirmDeleteFood =async()=>{
+  console.log('delete fpod',deleteItem)
+  const status = await store.dispatch('deleteFood',deleteItem?.value)
+  if(status===200){
+    toast.add({
+            severity: "success",
+            summary: "Успешно",
+            detail: "Удалено",
+            life: 3000,
+          });
+          store.dispatch('getAllCategoryNames');
+          isDeleteModalOpen.value=false
+  }else{
+    toast.add({
+          severity: "error",
+          summary: "Ошибка",
+          detail:'Ошибка при удалении',
+          life: 3000,
+        });
+  }
+
+}
 
 const expandAll = () => {
   expandedRows.value =store.getters.getCategoriesWithFoods.reduce((acc:any, p:any) => (acc[p.id] = true) && acc, {});

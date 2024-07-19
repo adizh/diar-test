@@ -1,7 +1,5 @@
 <template>
-  
    <div>
-
     <div class="card flex gap-3 mb-5 flex-column">
       <label for="category" class="font-semibold w-full"
         >Старое название еды</label

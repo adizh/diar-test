@@ -39,7 +39,7 @@ const store: Store<State> = createStore({
     },
   },
   actions: {
-    
+
     async getAllCategoryNames({ state }) {
       try {
         const response = await http("categorys/get-all-category-with-foods");
@@ -250,16 +250,28 @@ const store: Store<State> = createStore({
       console.log("request is being sent");
       const response = await http.post("/admin/change-of-stop-list", body);
       console.log("hide food response", response);
-      if (response.status === 200) {
-        // setTimeout(() => {
-        //  // window.location.reload();
-        // }, 700);
-      }
       return response.status
     } catch (err) {
       console.log(err);
     }
   }
+    },
+    async  deleteFood({state},foodName:string)  {
+      if (foodName?.length > 0) {
+    
+          try {
+            const response = await http({
+              method: "delete",
+              url: `admin/delete-food`,
+              data: { name: foodName },
+            });
+            console.log("response delete food", response);
+            return response.status
+          } catch (err: any) {
+            console.log(err);
+          }
+      
+      }
     }
   },
 
