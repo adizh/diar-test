@@ -2,12 +2,10 @@
 <template>
   <div class="card mt-5">
       <DataTable v-model:expandedRows="expandedRows" :value="store.getters.getCategoriesWithFoods" dataKey="id"
-          tableStyle="width: 70rem ">
+          tableStyle="width: 66rem ">
           <template #header>
            <div class="flex justify-content-between mb-3">
             <div class="flex flex-wrap gap-2">
-          
-
           </div>
               <div class="flex flex-wrap  gap-2">
                   <Button text icon="pi pi-plus" label="Открыть все" @click="expandAll" />
@@ -15,17 +13,18 @@
               </div>
            </div>
           </template>
-          <Column expander style="width: 5rem" />
+          <Column expander style="width: 1rem" />
           <Column field="name" header="Категория"></Column>
           <template #expansion="slotProps">
-              <div class="p-3">
+              <div class="pt-0 pb-3 pl-3 pr-3">
                   <DataTable :value="slotProps?.data?.foods">
-                  
-                      <Column field="name" header="Название" style="width:2rem">
+                      <Column filters field="name" header="Название" style="width:2rem">
                         <template #body="slotProps">
                        <div class="flex align-items-center gap-1">
                         {{slotProps.data.name}}
-                        <img :src="`${slotProps.data.URLPhoto}`" :alt="slotProps.data.URLPhoto" class="w-6rem border-round" />
+                        <img v-tooltip.top="'Изменить'" :src="`${imgUrl(slotProps.data.URLPhoto)}`" :alt="slotProps.data.URLPhoto" class="w-6rem border-round"
+                        @click="updateFoodImage(slotProps.data?.name)" />
+                        <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;" accept="image/*"   />
                        </div>
                         </template>
                     </Column>
@@ -36,7 +35,7 @@
                       <Column field="containerCount" header="Кол-во конт"></Column>
                       <Column>
                         <template #body="slotProps">
-                          <Button label="Поставить на СТОП-ЛИСТ" @click="sendToStopList(slotProps.data.name)"/>
+                          <Button severity="danger" label="Поставить на СТОП-ЛИСТ" @click="sendToStopList(slotProps.data.name)"/>
                         </template>
                       </Column>
 
@@ -97,10 +96,13 @@ import { useToast } from 'primevue/usetoast';
 import {useStore} from 'vuex'
 import EditFood from '@/components/Update/EditFood.vue';
 import ConfirmButtons from '@/components/UI/ConfirmButtons.vue';
+import http from '@/http';
 const store= useStore()
 const expandedRows = ref();
 const toast = useToast();
 const isEditOpen=ref(false)
+const foodUpdateName=ref('')
+const fileInput = ref<HTMLInputElement | null>(null);
 const editItemValues=ref({
   name:"",
   container:''
@@ -112,12 +114,50 @@ const editItem =(itemName:string,itemContainer:string)=>{
   editItemValues.value.name=itemName
   editItemValues.value.container=itemContainer
 }
+const imgUrl =(url:string)=>{
+  return url;
+}
 
+const handleFileChange = async(event: Event) => {
+      const input = event.target as HTMLInputElement;
+      const file = input.files?.[0];
+      if (file) {
+          console.log('Selected image file:', file)
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("name", foodUpdateName.value);
 
+try{
+  const response = await http.put('/admin/update-food-image',formData)
+
+  console.log('response update food image',response)
+  if(response.status===200){
+    toast.add({
+          severity: "success",
+          summary: "Успешно",
+          detail:'Фотография обновлена',
+          life: 3000,
+        });
+  }
+}catch(err){
+  console.log(err)
+  toast.add({
+          severity: "error",
+          summary: "Ошибка",
+          detail:'Ошибка при загрузке фото',
+          life: 3000,
+        });
+}
+          
+        
+
+      }
+    };
 onMounted(() => {
   store.dispatch('getAllCategoryNames');
-
 });
+
+
 
 const openDeleteModal =(itemName:string)=>{
 
@@ -133,6 +173,7 @@ if(status===200){
             detail: "Видимость еды обновлена!",
             summary: "Успешно",
           });
+          store.dispatch('getAllCategoryNames');
 }
 }
 
@@ -167,6 +208,12 @@ const collapseAll = () => {
   expandedRows.value = null;
 };
 
+const updateFoodImage =(foodName:string)=>{
+  foodUpdateName.value=foodName
+if (fileInput.value) {
+        fileInput.value.click();
+      }
+}
 
 
 </script>
