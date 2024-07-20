@@ -1,11 +1,10 @@
 <template>
-   <div>
+  <div>
     <div class="card flex gap-3 mb-5 flex-column">
-   
-      <div class="flex gap-3 mb-5 flex-column" >
+      <div class="flex gap-3 mb-5 flex-column">
         <label for="category" class="font-semibold w-full"
-        >Старое название еды</label
-      >
+          >Старое название еды</label
+        >
 
         <InputText
           id="name"
@@ -15,10 +14,9 @@
           v-model.trim="allFoodName"
         />
       </div>
-    
     </div>
 
-    <div class="flex gap-3 mb-5 flex-column" >
+    <div class="flex gap-3 mb-5 flex-column">
       <label for="name" class="font-semibold">Новое название</label>
       <InputText
         id="name"
@@ -47,10 +45,10 @@
       />
     </div>
 
-    <div class="flex gap-3 mb-5 flex-column" >
+    <div class="flex gap-3 mb-5 flex-column">
       <label for="price" class="font-semibold">Новый контейнер</label>
       <Dropdown
-      filter
+        filter
         v-model="selectedContainerName"
         :options="store.getters.allContainers"
         optionLabel="name"
@@ -61,9 +59,7 @@
     </div>
 
     <div class="flex gap-3 mb-5 flex-column">
-      <label for="Weight" class="font-semibold"
-        >Новое кол-во контейнера</label
-      >
+      <label for="Weight" class="font-semibold">Новое кол-во контейнера</label>
       <InputNumber
         id="Weight"
         class="flex-auto"
@@ -81,31 +77,26 @@
       ></Button>
       <Button type="button" label="Обновить" @click="updateFood"></Button>
     </div>
-   </div>
-
+  </div>
 </template>
 
-
 <script setup lang="ts">
-import {ref,onMounted} from 'vue'
-import {Container} from '@/types/Container'
-import {useStore} from 'vuex'
-const store=useStore()
-import http from "@/http"
+import { ref, onMounted } from "vue";
+import { Container } from "@/types/Container";
+import { useStore } from "vuex";
+const store = useStore();
+import http from "@/http";
 import { useToast } from "primevue/usetoast";
-const props=defineProps({
-
-  editItemName:{
-    type:String
+const props = defineProps({
+  editItemName: {
+    type: String,
   },
-  editItenContainer:{
-    type:String
-  }
+  editItenContainer: {
+    type: String,
+  },
+});
 
-
-})
-
-const emit=defineEmits(['closeModal'])
+const emit = defineEmits(["closeModal"]);
 
 const allFoodName = ref(props.editItemName);
 const newFoodName = ref("");
@@ -115,7 +106,7 @@ const foodWeight = ref("");
 const selectedContainerName = ref({ name: "" } as { name: string });
 const newContainerName = ref("");
 const newContainerCount = ref(0);
-const toast=useToast();
+const toast = useToast();
 const updateFood = async () => {
   if (newFoodName.value?.length) {
     try {
@@ -139,8 +130,8 @@ const updateFood = async () => {
     } catch (err) {
       console.log(err);
     } finally {
-    emit('closeModal')
-    store.dispatch('getAllCategoryNames');
+      emit("closeModal");
+      store.dispatch("getAllCategoryNames");
     }
   } else {
     toast.add({
@@ -169,17 +160,16 @@ const getFoodByName = async (foodName: string) => {
   }
 };
 
-onMounted(async()=>{
- await store.dispatch("fetchAllContainers");
-  selectedContainerName.value = store.getters.allContainers?.find((item:Container)=>item.name===props?.editItenContainer);
+onMounted(async () => {
+  await store.dispatch("fetchAllContainers");
+  selectedContainerName.value = store.getters.allContainers?.find(
+    (item: Container) => item.name === props?.editItenContainer,
+  );
 
-  if(props?.editItemName){
-    getFoodByName(props?.editItemName)
+  if (props?.editItemName) {
+    getFoodByName(props?.editItemName);
   }
-
-})
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

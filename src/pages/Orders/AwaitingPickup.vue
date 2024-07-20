@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref,onBeforeUnmount } from "vue";
+import { ref, onBeforeUnmount } from "vue";
 import PhoneCodeFilters from "@/components/UI/PhoneCodeFilters.vue";
 import { onMounted } from "vue";
 import Order from "@/components/Order.vue";
@@ -46,7 +46,7 @@ import OrdersCreate from "@/components/Orders/Create.vue";
 import { useStore } from "vuex";
 const noOrder = ref("");
 const isOrderOpen = ref(false);
-let intervalId:any=null
+let intervalId: any = null;
 const store = useStore();
 
 const handlePhone = (event: string) => {
@@ -65,13 +65,13 @@ onMounted(() => {
   store.dispatch("fetchAwaitingPickup");
 });
 
-intervalId = setInterval(()=>{
+intervalId = setInterval(() => {
   store.dispatch("fetchAwaitingPickup");
-},5000)
+}, 5000);
 
 onBeforeUnmount(() => {
-    clearInterval(intervalId);
-    });
+  clearInterval(intervalId);
+});
 </script>
 
 <style scoped></style>

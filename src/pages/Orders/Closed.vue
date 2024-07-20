@@ -1,9 +1,7 @@
 vbas3
 <template>
   <div class="section">
-<p class="mb-3">
-  Доставленные
-</p>
+    <p class="mb-3">Доставленные</p>
     <Card v-if="!orders?.length">
       <template #content>Нет данных</template>
     </Card>

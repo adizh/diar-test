@@ -10,9 +10,8 @@ export type CategoryWithFoods = {
   Foods: Food[];
 };
 
-
-export type CategoryWithFoodsUpdated={
-  name:string,
-  id:string,
-  foods:Food[]
-}
+export type CategoryWithFoodsUpdated = {
+  name: string;
+  id: string;
+  foods: Food[];
+};

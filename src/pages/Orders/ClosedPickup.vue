@@ -1,9 +1,7 @@
 vbas3
 <template>
   <div class="section">
- <p class="mb-3">
-  Самовывоз доставленных заказов
- </p>
+    <p class="mb-3">Самовывоз доставленных заказов</p>
     <Card v-if="!orders?.length">
       <template #content>Нет данных</template>
     </Card>

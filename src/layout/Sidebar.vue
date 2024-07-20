@@ -1,14 +1,10 @@
 <template>
   <div class="sidebar">
-
     <PanelMenu :model="items" />
-
   </div>
 
   <div class="card headerItems">
-
     <div class="main-items">
-
       <div class="each-link-menu" @click="(event) => toggle(event)">
         В ожидании <Badge :value="totalAwaitingCount" severity="danger"></Badge>
       </div>
@@ -16,7 +12,7 @@
       <div class="each-link-menu" @click="(event) => toggleKitchen(event)">
         На кухне <Badge :value="totalKitchenCount" severity="info"></Badge>
       </div>
-      
+
       <div class="each-link-menu" @click="router.push('/delegated-orders')">
         Переданные курьеру
       </div>
@@ -28,7 +24,6 @@
       <div class="each-link-menu" @click="(event) => toggleСancel(event)">
         Отмененные
       </div>
-
     </div>
 
     <OverlayPanel ref="countOverlay" class="countOverlay">
@@ -271,51 +266,49 @@ const headerItems = ref([
   },
 ]);
 
-
 const items = ref([
   {
     label: "Меню",
     command: () => {
-          router.push("/menu");
-        },
- 
+      router.push("/menu");
+    },
   },
   {
     label: "Курьеры",
     command: () => {
-          router.push("/all-couriers");
-        },
+      router.push("/all-couriers");
+    },
   },
   {
     label: "Новости",
     command: () => {
-          router.push("/news");
-        },
+      router.push("/news");
+    },
   },
   {
     label: "Распродажа",
     command: () => {
-          router.push("/sales");
-        },
+      router.push("/sales");
+    },
   },
   {
     label: "Добавить",
     command: () => {
-          router.push("/add-items");
-        },
+      router.push("/add-items");
+    },
   },
   {
     label: "Обновить",
     command: () => {
-          router.push("/update-items");
-        },
+      router.push("/update-items");
+    },
   },
 
   {
     label: "Удалить",
     command: () => {
-          router.push("/delete-items");
-        },
+      router.push("/delete-items");
+    },
   },
   {
     label: "Выйти из аккаунта",
@@ -327,14 +320,12 @@ const items = ref([
 ]);
 
 onMounted(async () => {
-
   await store.dispatch("fetchStats");
   store.dispatch("fetchAwaitingPickup");
   setTimeout(() => {
     isMenuBarOpen.value = true;
   }, 1000);
 });
-
 </script>
 
 <style scoped lang="scss">
@@ -401,5 +392,4 @@ onMounted(async () => {
   cursor: pointer;
   background: #f1f5f9;
 }
-
 </style>

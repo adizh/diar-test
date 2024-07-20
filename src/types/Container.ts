@@ -1,6 +1,6 @@
-export type Container={
-    iDCTMax: number
-id: string
-name: string
-price: number
-}
+export type Container = {
+  iDCTMax: number;
+  id: string;
+  name: string;
+  price: number;
+};

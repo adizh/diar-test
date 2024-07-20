@@ -3,12 +3,11 @@
     <div class="flex flex-column gap-2 email">
       <label for="username">Телефон</label>
       <InputMask
-      id="phone"
-      v-model.trim="email"
-      mask="+996 (999) 99-99-99"
-      placeholder="+996 (700) 11-11-11"
-    />
-    
+        id="phone"
+        v-model.trim="email"
+        mask="+996 (999) 99-99-99"
+        placeholder="+996 (700) 11-11-11"
+      />
     </div>
 
     <div class="flex flex-column gap-2">

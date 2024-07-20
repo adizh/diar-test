@@ -181,7 +181,6 @@
           @change="($event: any) => onUpload($event)"
           id="uploadImage"
         />
-    
       </div>
 
       <div class="flex justify-content-end gap-2">

@@ -197,7 +197,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed,onBeforeUnmount } from "vue";
+import { ref, computed, onBeforeUnmount } from "vue";
 import http from "@/http";
 import { AwaitingOrder } from "@/types/Order";
 import { OrderFood, Food } from "@/types/Food";
@@ -214,7 +214,6 @@ const filterOrders = ref<AwaitingOrder[]>([]);
 const isCreateModal = ref(false);
 const selectedFoods = ref([] as { value: Food }[]);
 const store = useStore();
-
 
 const orderValues = ref({
   address: ref(""),
@@ -382,16 +381,15 @@ onMounted(() => {
   fetchAwaitingOrders();
   store.dispatch("fetchAllFood");
 });
-let intervalId:any=null;
+let intervalId: any = null;
 
-intervalId= setInterval(()=>{
-fetchAwaitingOrders()
-},5000)
+intervalId = setInterval(() => {
+  fetchAwaitingOrders();
+}, 5000);
 
 onBeforeUnmount(() => {
-  clearInterval(intervalId)
-})
-
+  clearInterval(intervalId);
+});
 </script>
 
 <style scoped>

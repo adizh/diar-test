@@ -1,6 +1,6 @@
 <template>
   <div class="section">
-    <p class="mb-3">    Отмененные доставки самовывоз</p>
+    <p class="mb-3">Отмененные доставки самовывоз</p>
 
     <Card v-if="!orders?.length">
       <template #content>Нет данных</template>

@@ -1,6 +1,6 @@
 <template>
   <div class="section">
-    <p class="mb-3">    Отмененные доставки</p>
+    <p class="mb-3">Отмененные доставки</p>
 
     <Card v-if="!awaitingOrders?.length">
       <template #content>Нет данных</template>

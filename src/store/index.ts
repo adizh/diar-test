@@ -1,11 +1,16 @@
 import http from "@/http";
 import router from "@/router";
-import { Category,CategoryWithFoods,CategoryWithFoodsUpdated } from "@/types/Category";
+import {
+  Category,
+  CategoryWithFoods,
+  CategoryWithFoodsUpdated,
+} from "@/types/Category";
 import { createStore, Store } from "vuex";
 import { Courier } from "@/types/Courier";
 import { Food, OrderFood } from "@/types/Food";
 import { AwaitingOrder } from "@/types/Order";
 import { useToast } from "primevue/usetoast";
+import { Container } from "@/types/Container";
 
 interface State {
   categoriesName: Category[];
@@ -26,12 +31,13 @@ const store: Store<State> = createStore({
     allFood: [],
     allCouriers: [] as Courier[],
     allFoods: [] as Food[],
-    categoriesWithFoods:[] as CategoryWithFoodsUpdated[],
-    filterCategoriesWithFoods:[] as CategoryWithFoodsUpdated[],
+    categoriesWithFoods: [] as CategoryWithFoodsUpdated[],
+    filterCategoriesWithFoods: [] as CategoryWithFoodsUpdated[],
     awaitingPickupOrders: [] as AwaitingOrder[],
     awaitingPickupOrdersFilter: [] as AwaitingOrder[],
     closedPickUpOrders: [] as AwaitingOrder[],
     cookedPickUpOrders: [] as AwaitingOrder[],
+
     stats: {
       awatingOrdersCount: 0,
       awatingOrdersPickupCount: 0,
@@ -40,19 +46,20 @@ const store: Store<State> = createStore({
     },
   },
   actions: {
-
     async getAllCategoryNames({ state }) {
       try {
         const response = await http("categorys/get-all-category-with-foods");
         console.log("response category names", response.data);
-        if(response.status===200){
-          state.categoriesWithFoods=response.data?.map((item:CategoryWithFoods )=> ({
-            id: item.Category.id,
-            name: item.Category.name,
-            foods: item.Foods
-          }));
+        if (response.status === 200) {
+          state.categoriesWithFoods = response.data?.map(
+            (item: CategoryWithFoods) => ({
+              id: item.Category.id,
+              name: item.Category.name,
+              foods: item.Foods,
+            }),
+          );
         }
-        state.filterCategoriesWithFoods=state.categoriesWithFoods
+        state.filterCategoriesWithFoods = state.categoriesWithFoods;
         state.categoriesName = response.data.map((item: any) => item.Category);
         state.allFoodsNames = response.data
           .map((item: any) => item.Foods?.map((food: any) => food.name))
@@ -246,57 +253,59 @@ const store: Store<State> = createStore({
       await dispatch("fetchCookedPickUp");
     },
 
-    async sendFoodToStopList({state},body:{foodName:string,status:boolean}){
-  if(body.foodName){
-    try {
-      console.log("request is being sent");
-      const response = await http.post("/admin/change-of-stop-list", body);
-      console.log("hide food response", response);
-      return response.status
-    } catch (err) {
-      console.log(err);
-    }
-  }
+    async sendFoodToStopList(
+      { state },
+      body: { foodName: string; status: boolean },
+    ) {
+      if (body.foodName) {
+        try {
+          console.log("request is being sent");
+          const response = await http.post("/admin/change-of-stop-list", body);
+          console.log("hide food response", response);
+          return response.status;
+        } catch (err) {
+          console.log(err);
+        }
+      }
     },
-    async  deleteFood({state},foodName:string)  {
+    async deleteFood({ state }, foodName: string) {
       if (foodName?.length > 0) {
-    
-          try {
-            const response = await http({
-              method: "delete",
-              url: `admin/delete-food`,
-              data: { name: foodName },
-            });
-            console.log("response delete food", response);
-            return response.status
-          } catch (err: any) {
-            console.log(err);
-          }
-      
+        try {
+          const response = await http({
+            method: "delete",
+            url: `admin/delete-food`,
+            data: { name: foodName },
+          });
+          console.log("response delete food", response);
+          return response.status;
+        } catch (err: any) {
+          console.log(err);
+        }
       }
     },
 
-    filterCategoriesWithFoods({state},search:string){
-    
+    filterCategoriesWithFoods({ state }, search: string) {
+      state.categoriesWithFoods = state.filterCategoriesWithFoods
+        ?.map((item) => {
+          const filteredFoods = item.foods.filter((foodItem) => {
+            const foodName = foodItem?.name?.toLowerCase();
+            if (
+              item?.name?.toLowerCase()?.includes(search) ||
+              foodName?.includes(search.toLowerCase())
+            ) {
+              return true;
+            }
+            return false;
+          });
 
-
-      state.categoriesWithFoods = state.filterCategoriesWithFoods?.map((item) => {
-        const filteredFoods = item.foods.filter((foodItem) => {
-          const foodName = foodItem?.name?.toLowerCase();
-          if (item?.name?.toLowerCase()?.includes(search) || foodName?.includes(search.toLowerCase())) {
-            return true;
-          }
-          return false;
-        });
-      
- 
-        return {
-          name: item.name,
-          id: item.id,
-          foods: filteredFoods
-        };
-      }).filter((category) => category.foods.length > 0); 
-    }
+          return {
+            name: item.name,
+            id: item.id,
+            foods: filteredFoods,
+          };
+        })
+        .filter((category) => category.foods.length > 0);
+    },
   },
 
   getters: {
@@ -307,9 +316,8 @@ const store: Store<State> = createStore({
       return state.stats;
     },
 
-
-    getCategoriesWithFoods(state){
-return state.categoriesWithFoods
+    getCategoriesWithFoods(state) {
+      return state.categoriesWithFoods;
     },
     pickUpOrdersCount(state) {
       return state.stats.awatingOrdersPickupCount;
