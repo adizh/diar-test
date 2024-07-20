@@ -9,3 +9,10 @@ export type CategoryWithFoods = {
   Category: Category;
   Foods: Food[];
 };
+
+
+export type CategoryWithFoodsUpdated={
+  name:string,
+  id:string,
+  foods:Food[]
+}

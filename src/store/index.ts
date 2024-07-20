@@ -1,6 +1,6 @@
 import http from "@/http";
 import router from "@/router";
-import { Category,CategoryWithFoods } from "@/types/Category";
+import { Category,CategoryWithFoods,CategoryWithFoodsUpdated } from "@/types/Category";
 import { createStore, Store } from "vuex";
 import { Courier } from "@/types/Courier";
 import { Food, OrderFood } from "@/types/Food";
@@ -26,7 +26,8 @@ const store: Store<State> = createStore({
     allFood: [],
     allCouriers: [] as Courier[],
     allFoods: [] as Food[],
-    categoriesWithFoods:[] as CategoryWithFoods[],
+    categoriesWithFoods:[] as CategoryWithFoodsUpdated[],
+    filterCategoriesWithFoods:[] as CategoryWithFoodsUpdated[],
     awaitingPickupOrders: [] as AwaitingOrder[],
     awaitingPickupOrdersFilter: [] as AwaitingOrder[],
     closedPickUpOrders: [] as AwaitingOrder[],
@@ -51,6 +52,7 @@ const store: Store<State> = createStore({
             foods: item.Foods
           }));
         }
+        state.filterCategoriesWithFoods=state.categoriesWithFoods
         state.categoriesName = response.data.map((item: any) => item.Category);
         state.allFoodsNames = response.data
           .map((item: any) => item.Foods?.map((food: any) => food.name))
@@ -272,6 +274,28 @@ const store: Store<State> = createStore({
           }
       
       }
+    },
+
+    filterCategoriesWithFoods({state},search:string){
+    
+
+
+      state.categoriesWithFoods = state.filterCategoriesWithFoods?.map((item) => {
+        const filteredFoods = item.foods.filter((foodItem) => {
+          const foodName = foodItem?.name?.toLowerCase();
+          if (item?.name?.toLowerCase()?.includes(search) || foodName?.includes(search.toLowerCase())) {
+            return true;
+          }
+          return false;
+        });
+      
+ 
+        return {
+          name: item.name,
+          id: item.id,
+          foods: filteredFoods
+        };
+      }).filter((category) => category.foods.length > 0); 
     }
   },
 

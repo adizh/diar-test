@@ -1,11 +1,44 @@
 
 <template>
   <div class="card mt-5">
-      <DataTable v-model:expandedRows="expandedRows" :value="store.getters.getCategoriesWithFoods" dataKey="id"
-          tableStyle="width: 66rem ">
+
+
+
+<div class="menu-operation flex justify-content-end gap-2 w-full pr-3">
+
+<AddItems/>
+
+<!-- <Dropdown
+v-model="selectedOptionDelete"
+:options="deleteOptions"
+optionLabel="name"
+placeholder="Удалить"
+class="w-full md:w-15rem mb-4 mt-4"
+
+/> -->
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <DataTable  v-model:expandedRows="expandedRows"  v-model:filters="filtersСategory" filterDisplay="row" :value="store.getters.getCategoriesWithFoods" dataKey="id"
+          >
           <template #header>
+           
            <div class="flex justify-content-between mb-3">
             <div class="flex flex-wrap gap-2">
+              <InputText v-model="globalSearch" type="text" @input="handleGlobalSearch" class="w-30rem p-column-filter" placeholder="Поиск" />
+
           </div>
               <div class="flex flex-wrap  gap-2">
                   <Button text icon="pi pi-plus" label="Открыть все" @click="expandAll" />
@@ -14,19 +47,38 @@
            </div>
           </template>
           <Column expander style="width: 1rem" />
-          <Column field="name" header="Категория"></Column>
+          <Column field="name" header="Категория">
+            <template #filter="{ filterModel, filterCallback }">
+              <InputText v-model="filterModel.value" type="text" @input="filterCallback()" class="w-30rem p-column-filter" placeholder="Поиск по категориям" />
+          </template>
+            
+          </Column>
           <template #expansion="slotProps">
               <div class="pt-0 pb-3 pl-3 pr-3">
-                  <DataTable :value="slotProps?.data?.foods">
-                      <Column filters field="name" header="Название" style="width:2rem">
-                        <template #body="slotProps">
+                  <DataTable :value="slotProps?.data?.foods" v-model:filters="filters" filterDisplay="row"
+                  style="margin-right:-20px"
+                  >
+                    
+                    <Column  field="name" header="Название" style="width:18rem" class="flex nameSearch">
+                      <template #filter="{ filterModel, filterCallback }">
+                        <InputText v-model="filterModel.value" type="text" @input="filterCallback()" class="w-full p-column-filter" placeholder="Поиск по имени" />
+                    </template>
+                      
+                      
+                    
+                      <template #body="slotProps">
+                          
                        <div class="flex align-items-center gap-1">
                         {{slotProps.data.name}}
+
+                    
+
                         <img v-tooltip.top="'Изменить'" :src="`${imgUrl(slotProps.data.URLPhoto)}`" :alt="slotProps.data.URLPhoto" class="w-6rem border-round"
                         @click="updateFoodImage(slotProps.data?.name)" />
                         <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;" accept="image/*"   />
                        </div>
                         </template>
+                      
                     </Column>
                       <Column  field="price" header="Цена"></Column>
                       <Column field="weight" header="Вес"></Column>
@@ -39,7 +91,7 @@
                         </template>
                       </Column>
 
-                      <Column>
+                      <Column class="buttons-cell)">
                         <template #body="slotProps">
                           <Button icon="pi pi-pencil"
                           severity="success"
@@ -48,7 +100,7 @@
                         </template>
                       </Column>
 
-                      <Column>
+                      <Column class="buttons-cell)">
                         <template #body="slotProps">
                           <Button icon="pi pi-trash"
                           severity="danger"
@@ -76,7 +128,6 @@ header="Обновить еду"
 <Dialog v-model:visible="isDeleteModalOpen"
 modal
 header="Удаление еды">
-
   <ConfirmButtons
   confirmText="Удалить"
   declineText="Отменить"
@@ -84,7 +135,11 @@ header="Удаление еды">
   @confirmAction="confirmDeleteFood"
   @closeModal="isDeleteModalOpen = false"
 />
-</Dialog>
+</Dialog >
+
+
+
+
 
   </div>
 
@@ -96,9 +151,19 @@ import { useToast } from 'primevue/usetoast';
 import {useStore} from 'vuex'
 import EditFood from '@/components/Update/EditFood.vue';
 import ConfirmButtons from '@/components/UI/ConfirmButtons.vue';
+import { FilterMatchMode } from 'primevue/api';
 import http from '@/http';
+import AddItems from '@/components/Add/AddItems.vue'
 const store= useStore()
 const expandedRows = ref();
+const filters = ref({
+    name: { value: null, matchMode: FilterMatchMode.CONTAINS  },
+  
+});
+const filtersСategory = ref({
+    name: { value: null, matchMode: FilterMatchMode.CONTAINS  },
+  
+});
 const toast = useToast();
 const isEditOpen=ref(false)
 const foodUpdateName=ref('')
@@ -107,6 +172,7 @@ const editItemValues=ref({
   name:"",
   container:''
 })
+const  globalSearch=ref('')
 const isDeleteModalOpen=ref(false)
 const deleteItem=ref('')
 const editItem =(itemName:string,itemContainer:string)=>{
@@ -118,6 +184,17 @@ const imgUrl =(url:string)=>{
   return url;
 }
 
+
+
+
+const handleGlobalSearch=()=>{
+  if(globalSearch && globalSearch?.value?.length>0){
+    const value = globalSearch?.value?.toLocaleLowerCase()
+store.dispatch('filterCategoriesWithFoods',value)
+    
+  }
+
+}
 const handleFileChange = async(event: Event) => {
       const input = event.target as HTMLInputElement;
       const file = input.files?.[0];
@@ -217,3 +294,17 @@ if (fileInput.value) {
 
 
 </script>
+
+
+<style scoped>
+
+:deep(.p-datatable .p-datatable-thead > tr > th.nameSearch),:deep(.p-datatable .p-datatable-tbody > tr > td.nameSearch){
+margin-top: 41px !important;
+}
+</style>
+
+
+
+
+
+

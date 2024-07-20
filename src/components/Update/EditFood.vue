@@ -1,12 +1,12 @@
 <template>
    <div>
     <div class="card flex gap-3 mb-5 flex-column">
-      <label for="category" class="font-semibold w-full"
+   
+      <div class="flex gap-3 mb-5 flex-column" >
+        <label for="category" class="font-semibold w-full"
         >Старое название еды</label
       >
 
-      <div class="flex gap-3 mb-5 flex-column" >
-        <label for="name" class="font-semibold">Новое название</label>
         <InputText
           id="name"
           disabled="true"

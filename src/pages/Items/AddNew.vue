@@ -181,8 +181,7 @@
           @change="($event: any) => onUpload($event)"
           id="uploadImage"
         />
-        <!-- <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000"
-                    @select="($event: any) => onUpload($event)" /> -->
+    
       </div>
 
       <div class="flex justify-content-end gap-2">
@@ -217,8 +216,9 @@ const foodWeight = ref("");
 const foodiDCTMax = ref("");
 const foodContainerCount = ref("");
 const foodName = ref("");
-const containerName = ref("");
+
 const uploadFile = ref();
+const containerName = ref("");
 const containerPrice = ref(0);
 const containeriDCTMax = ref(0);
 
