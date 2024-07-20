@@ -273,6 +273,13 @@ const items = ref([
       router.push("/menu");
     },
   },
+
+  {
+    label: "СТОП-ЛИСТ",
+    command: () => {
+      router.push("/update-items");
+    },
+  },
   {
     label: "Курьеры",
     command: () => {
@@ -291,25 +298,9 @@ const items = ref([
       router.push("/sales");
     },
   },
-  {
-    label: "Добавить",
-    command: () => {
-      router.push("/add-items");
-    },
-  },
-  {
-    label: "Обновить",
-    command: () => {
-      router.push("/update-items");
-    },
-  },
 
-  {
-    label: "Удалить",
-    command: () => {
-      router.push("/delete-items");
-    },
-  },
+
+
   {
     label: "Выйти из аккаунта",
     icon: "pi pi-sign-out",
