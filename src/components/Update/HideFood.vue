@@ -142,7 +142,7 @@
                     {{ slotProps.data.name }}
                   </span>
                   <Button
-                    icon="pi pi-check"
+                    icon="pi pi-arrow-right"
                     severity="info"
                     v-tooltip.top="'Отправить на СТОП-ЛИСТ'"
                     @click="sendToStopList(slotProps.data.name)"

@@ -242,7 +242,6 @@ const removeFood = (food: Food) => {
   const index = selectedFoods.value.findIndex(
     (item: { value: Food }) => item.value.id === food.id,
   );
-  console.log("index", index);
   if (index !== -1) {
     selectedFoods.value.splice(index, 1);
   }
@@ -254,12 +253,12 @@ const normalizePhone = (phone: string) => {
 
 const handlePhone = (event: string) => {
   const normalizedInput = normalizePhone(event);
-
   const results = filterOrders?.value?.filter((item) => {
     const normalizedUserPhone = normalizePhone(item?.userPhone);
     return normalizedUserPhone.includes(normalizedInput);
   });
 
+  
   if (event?.length > 0) {
     awaitingOrders.value = results;
   } else {
@@ -268,14 +267,20 @@ const handlePhone = (event: string) => {
 };
 
 const handleOrderNumber = (event: any) => {
+
   const value = String(event?.value);
+
   const results = filterOrders?.value?.filter((item) =>
-    String(item?.orderNumber)?.includes(value),
+    String(item?.orderNumber)?.includes(value)
   );
-  if (results && results?.length > 0) {
+
+
+  if (value && value?.length > 0) {
     awaitingOrders.value = results;
-  } else {
-    awaitingOrders.value = filterOrders?.value;
+  } 
+    if(value==='null'){
+
+    awaitingOrders.value = filterOrders.value;
   }
 };
 
@@ -295,9 +300,7 @@ const fetchAwaitingOrders = async () => {
     const response = (await http.get("admin/get-all-awaiting-orders")) as any;
     console.log("response", response);
     if (response.status === 204) {
-      console.log("response status is 204");
       noOrder.value = response.statusText;
-      console.log("no order", noOrder);
     } else if (response.status == 200) {
       awaitingOrders.value = response.data.orders;
       filterOrders.value = response.data.orders;
@@ -331,7 +334,6 @@ const createOrder = async () => {
       quantity: item?.value?.quantity,
     };
   });
-  console.log("foods", foods);
   const body = {
     address: orderValues.value.address,
     comment: orderValues.value.comment,
@@ -367,6 +369,7 @@ const createOrder = async () => {
           severity: "success",
           summary: "Успешно",
           detail: "Заказ создан!",
+          life:3000
         });
       }
     } catch (err) {
@@ -378,18 +381,22 @@ const createOrder = async () => {
 };
 
 onMounted(() => {
+
   fetchAwaitingOrders();
   store.dispatch("fetchAllFood");
+
 });
+
 let intervalId: any = null;
 
 intervalId = setInterval(() => {
-  fetchAwaitingOrders();
+ // fetchAwaitingOrders();
 }, 5000);
 
 onBeforeUnmount(() => {
   clearInterval(intervalId);
 });
+
 </script>
 
 <style scoped>

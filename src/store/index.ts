@@ -290,9 +290,7 @@ const store: Store<State> = createStore({
     },
 
     filterCategoriesWithFoods({ state }, search) {
-
       if (search.length > 0) {
-
         const searchLower = search.toLowerCase();
         const result = state.filterCategoriesWithFoods
           .map((item) => {
@@ -300,7 +298,6 @@ const store: Store<State> = createStore({
               const foodName = foodItem?.name?.toLowerCase();
               return item?.name?.toLowerCase()?.includes(searchLower) || foodName?.includes(searchLower);
             });
-    
             return {
               ...item,
               foods: filteredFoods,
@@ -313,8 +310,6 @@ const store: Store<State> = createStore({
         state.categoriesWithFoods = state.filterCategoriesWithFoods
       }
     }
-    
-    
   },
 
   getters: {
