@@ -66,10 +66,10 @@
     </Dialog>
   </div> -->
 
-<div>
-<h3>Отправить на СТОП-ЛИСТ</h3>
+  <div>
+    <h3>Отправить на СТОП-ЛИСТ</h3>
 
-  <DataTable
+    <DataTable
       v-model:expandedRows="expandedRows"
       v-model:filters="filtersСategory"
       filterDisplay="row"
@@ -123,11 +123,7 @@
             filterDisplay="row"
             style="margin-right: -20px"
           >
-            <Column
-              field="name"
-              header="Название"
-              class="flex nameSearch"
-            >
+            <Column field="name" header="Название" class="flex nameSearch">
               <template #filter="{ filterModel, filterCallback }">
                 <InputText
                   v-model="filterModel.value"
@@ -139,13 +135,18 @@
               </template>
 
               <template #body="slotProps">
-                <div class="flex align-items-center gap-5 justify-content-between">
+                <div
+                  class="flex align-items-center gap-5 justify-content-between"
+                >
                   <span>
                     {{ slotProps.data.name }}
                   </span>
-                  <Button icon="pi pi-check" severity="info" v-tooltip.top="'Отправить на СТОП-ЛИСТ'" @click="sendToStopList(slotProps.data.name)"></Button>
-
-               
+                  <Button
+                    icon="pi pi-check"
+                    severity="info"
+                    v-tooltip.top="'Отправить на СТОП-ЛИСТ'"
+                    @click="sendToStopList(slotProps.data.name)"
+                  ></Button>
                 </div>
               </template>
             </Column>
@@ -154,34 +155,35 @@
       </template>
     </DataTable>
 
-
     <Dialog modal header="СТОП-ЛИСТ" v-model:visible="openStopListModal">
-
       <ConfirmButtons
-      confirmText="Потвердить"
-      declineText="Отменить"
-      :descrText="`Вы действительно хотите отправить на СТОП-ЛИСТ ${selectedItemStopList}`"
-      @confirmAction="confirmSendStopList"
-      @closeModal="openStopListModal = false"
-    />
-
+        confirmText="Потвердить"
+        declineText="Отменить"
+        :descrText="`Вы действительно хотите отправить на СТОП-ЛИСТ ${selectedItemStopList}`"
+        @confirmAction="confirmSendStopList"
+        @closeModal="openStopListModal = false"
+      />
     </Dialog>
-    <Toast/>
-</div>
+    <Toast />
+  </div>
 </template>
 
 <script setup lang="ts">
 import http from "@/http";
 import { useToast } from "primevue/usetoast";
-import ConfirmButtons from '@/components/UI/ConfirmButtons.vue'
+import ConfirmButtons from "@/components/UI/ConfirmButtons.vue";
 import { ref, onMounted } from "vue";
-import { Category, CategoryWithFoods ,CategoryWithFoodsUpdated} from "@/types/Category";
+import {
+  Category,
+  CategoryWithFoods,
+  CategoryWithFoodsUpdated,
+} from "@/types/Category";
 import { useStore } from "vuex";
 import { Food } from "@/types/Food";
 const isModalVisibleFood = ref(false);
 const store = useStore();
 const showCheck = ref(false);
-const globalSearch =ref('')
+const globalSearch = ref("");
 import { FilterMatchMode } from "primevue/api";
 const expandedRows = ref();
 const checked = ref(false);
@@ -193,8 +195,8 @@ const categories = ref([] as Category[]);
 const isFoodOpen = ref(false);
 const stoppedListFoodsFalse = ref([] as CategoryWithFoodsUpdated[]);
 const filteredFoods = ref([] as CategoryWithFoodsUpdated[]);
-const openStopListModal=ref(false)
-const selectedItemStopList=ref('')
+const openStopListModal = ref(false);
+const selectedItemStopList = ref("");
 const selectCategory = (event: any) => {
   console.log("event", event);
   isFoodOpen.value = true;
@@ -204,8 +206,8 @@ const selectCategory = (event: any) => {
   }
 };
 
-const confirmSendStopList =async()=>{
-    const status = await store.dispatch("sendFoodToStopList", {
+const confirmSendStopList = async () => {
+  const status = await store.dispatch("sendFoodToStopList", {
     foodName: selectedItemStopList?.value,
     status: true,
   });
@@ -215,48 +217,42 @@ const confirmSendStopList =async()=>{
       detail: "Видимость еды обновлена!",
       summary: "Успешно",
     });
-    openStopListModal.value= false;
+    openStopListModal.value = false;
     store.dispatch("getAllCategoryNames");
-    setTimeout(()=>{
-      window.location.reload()
-    },500)
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   }
-
-}
-const sendToStopList = (foodName:string)=>{
-  openStopListModal.value = true
-  selectedItemStopList.value=foodName
-
-}
-
+};
+const sendToStopList = (foodName: string) => {
+  openStopListModal.value = true;
+  selectedItemStopList.value = foodName;
+};
 
 const handleGlobalSearch = () => {
-  if (globalSearch && globalSearch?.value?.length > 0) {
-    const value = globalSearch?.value?.toLocaleLowerCase();
-
-   stoppedListFoodsFalse.value = filteredFoods.value
-        ?.map((item) => {
+  if (globalSearch) {
+    const value = globalSearch.value.toLowerCase();
+    if (value.length > 0) {
+      const result = filteredFoods.value
+        .map((item) => {
           const filteredFoods = item.foods.filter((foodItem) => {
-            const foodName = foodItem?.name?.toLowerCase();
-            if (
-              item?.name?.toLowerCase()?.includes(value) ||
-              foodName?.includes(value.toLowerCase())
-            ) {
-              return true;
-            }
-            return false;
+            const foodName = foodItem.name.toLowerCase();
+            return item.name.toLowerCase().includes(value) || foodName.includes(value);
           });
 
           return {
-            name: item.name,
-            id: item.id,
+            ...item,
             foods: filteredFoods,
           };
         })
         .filter((category) => category.foods.length > 0);
+
+      stoppedListFoodsFalse.value = result;
+    } else {
+      stoppedListFoodsFalse.value = [...filteredFoods.value];
+    }
   }
 };
-
 
 const filters = ref({
   name: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -268,20 +264,18 @@ const handleFoodFalse = (event: any) => {
   showCheck.value = true;
 };
 
-
-
 const getStoppedFoods = async () => {
   try {
     const response = await http("admin/get-all-foods-stoplist-false");
     if (response.status === 200) {
       stoppedListFoodsFalse.value = response.data?.map(
-            (item: CategoryWithFoods) => ({
-              id: item.Category.id,
-              name: item.Category.name,
-              foods: item.Foods,
-            }),
-          );
-          filteredFoods.value=stoppedListFoodsFalse.value
+        (item: CategoryWithFoods) => ({
+          id: item.Category.id,
+          name: item.Category.name,
+          foods: item.Foods,
+        }),
+      );
+      filteredFoods.value = stoppedListFoodsFalse.value;
       console.log("stopped list false response", stoppedListFoodsFalse);
       categories.value = response.data?.map(
         (item: CategoryWithFoods) => item?.Category,

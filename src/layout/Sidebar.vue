@@ -299,8 +299,6 @@ const items = ref([
     },
   },
 
-
-
   {
     label: "Выйти из аккаунта",
     icon: "pi pi-sign-out",

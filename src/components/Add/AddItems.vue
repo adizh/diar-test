@@ -339,7 +339,7 @@ const addFood = async () => {
       }
     } catch (err) {
       console.log(err);
-    }finally{
+    } finally {
       store.dispatch("getAllCategoryNames");
     }
   }

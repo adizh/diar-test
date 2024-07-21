@@ -1,11 +1,9 @@
 <template>
   <div class="section flex gap-3">
-   
     <HideFood />
     <Divider layout="vertical" />
     <ShowFood />
   </div>
-
 
   <Toast />
 </template>
@@ -22,8 +20,6 @@ import { useStore } from "vuex";
 
 const store = useStore();
 const toast = useToast();
-
-
 
 onMounted(async () => {
   await store.dispatch("getAllCategoryNames");

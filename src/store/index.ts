@@ -59,7 +59,13 @@ const store: Store<State> = createStore({
             }),
           );
         }
-        state.filterCategoriesWithFoods = state.categoriesWithFoods;
+        state.filterCategoriesWithFoods = response.data?.map(
+          (item: CategoryWithFoods) => ({
+            id: item.Category.id,
+            name: item.Category.name,
+            foods: item.Foods,
+          }),
+        );
         state.categoriesName = response.data.map((item: any) => item.Category);
         state.allFoodsNames = response.data
           .map((item: any) => item.Foods?.map((food: any) => food.name))
@@ -259,7 +265,6 @@ const store: Store<State> = createStore({
     ) {
       if (body.foodName) {
         try {
-
           const response = await http.post("/admin/change-of-stop-list", body);
           console.log("hide food response", response);
           return response.status;
@@ -284,28 +289,32 @@ const store: Store<State> = createStore({
       }
     },
 
-    filterCategoriesWithFoods({ state }, search: string) {
-      state.categoriesWithFoods = state.filterCategoriesWithFoods
-        ?.map((item) => {
-          const filteredFoods = item.foods.filter((foodItem) => {
-            const foodName = foodItem?.name?.toLowerCase();
-            if (
-              item?.name?.toLowerCase()?.includes(search) ||
-              foodName?.includes(search.toLowerCase())
-            ) {
-              return true;
-            }
-            return false;
-          });
+    filterCategoriesWithFoods({ state }, search) {
 
-          return {
-            name: item.name,
-            id: item.id,
-            foods: filteredFoods,
-          };
-        })
-        .filter((category) => category.foods.length > 0);
-    },
+      if (search.length > 0) {
+
+        const searchLower = search.toLowerCase();
+        const result = state.filterCategoriesWithFoods
+          .map((item) => {
+            const filteredFoods = item.foods.filter((foodItem) => {
+              const foodName = foodItem?.name?.toLowerCase();
+              return item?.name?.toLowerCase()?.includes(searchLower) || foodName?.includes(searchLower);
+            });
+    
+            return {
+              ...item,
+              foods: filteredFoods,
+            };
+          })
+          .filter((category) => category?.foods?.length > 0);
+    
+        state.categoriesWithFoods = result;
+      } else {
+        state.categoriesWithFoods = state.filterCategoriesWithFoods
+      }
+    }
+    
+    
   },
 
   getters: {

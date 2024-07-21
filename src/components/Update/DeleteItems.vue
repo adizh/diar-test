@@ -103,54 +103,62 @@
       />
     </Dialog>
 
-    <Dialog v-model:visible="containerModal" header="Удалить контейнер" style="width:35rem" modal>
-     <div class="flex flex-column gap-3">
+    <Dialog
+      v-model:visible="containerModal"
+      header="Удалить контейнер"
+      style="width: 35rem"
+      modal
+    >
+      <div class="flex flex-column gap-3">
         <label for="category" class="font-semibold w-full"
-        >Выбрать контейнер</label
-      >
-      <Dropdown
-        v-model="selectedContainer"
-        :options="store.getters.allContainers"
-        optionLabel="name"
-        placeholder="Выбрать контейнер"
-        filter
-        class="w-full md:w-14rem"
-        id="container"
-        @change="handleContainer"
-      />
+          >Выбрать контейнер</label
+        >
+        <Dropdown
+          v-model="selectedContainer"
+          :options="store.getters.allContainers"
+          optionLabel="name"
+          placeholder="Выбрать контейнер"
+          filter
+          class="w-full md:w-14rem"
+          id="container"
+          @change="handleContainer"
+        />
 
-      <div class="flex justify-content-end mt-2" v-if="selectedContainer?.name">
-        <Button
-          @click="confirm3()"
-          label="Удалить"
-          severity="danger"
-          outlined
-        ></Button>
+        <div
+          class="flex justify-content-end mt-2"
+          v-if="selectedContainer?.name"
+        >
+          <Button
+            @click="confirm3()"
+            label="Удалить"
+            severity="danger"
+            outlined
+          ></Button>
+        </div>
       </div>
-     </div>
-</Dialog>
+    </Dialog>
 
-<Dialog
-v-model:visible="isDeleteContainer"
-modal
-header="Удалить контейнер"
-:style="{ width: '25rem' }"
->
-<ConfirmButtons
-  :descrText="`Вы действительно хотите удалить  ${selectedContainer?.name}`"
-  confirmText="Удалить"
-  declineText="Отменить"
-  @closeModal="isDeleteContainer = false"
-  @confirmAction="deleteContainer"
-/>
-</Dialog>
+    <Dialog
+      v-model:visible="isDeleteContainer"
+      modal
+      header="Удалить контейнер"
+      :style="{ width: '25rem' }"
+    >
+      <ConfirmButtons
+        :descrText="`Вы действительно хотите удалить  ${selectedContainer?.name}`"
+        confirmText="Удалить"
+        declineText="Отменить"
+        @closeModal="isDeleteContainer = false"
+        @confirmAction="deleteContainer"
+      />
+    </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import http from "@/http";
 import { useToast } from "primevue/usetoast";
-import {Container} from '@/types/Container'
+import { Container } from "@/types/Container";
 import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import ConfirmButtons from "../UI/ConfirmButtons.vue";
@@ -162,8 +170,8 @@ const containerModal = ref(false);
 const categoryModal = ref(false);
 const isCategoryDeleteOpen = ref(false);
 const isFoodDeleteOpen = ref(false);
-const selectedContainer = ref({} as Container)
-const isDeleteContainer=ref(false)
+const selectedContainer = ref({} as Container);
+const isDeleteContainer = ref(false);
 const selectedFood = ref([]);
 const store = useStore();
 const toast = useToast();
@@ -177,9 +185,9 @@ const confirmFood = () => {
   isFoodDeleteOpen.value = true;
 };
 
-const confirm3 =()=>{
-    isDeleteContainer.value=true
-}
+const confirm3 = () => {
+  isDeleteContainer.value = true;
+};
 type Event = {
   value: Option;
 };
@@ -202,9 +210,9 @@ const handleDelete = (event: Event) => {
   }
 };
 
-const handleContainer =()=>{
-    console.log('handleContainer',selectedContainer)
-}
+const handleContainer = () => {
+  console.log("handleContainer", selectedContainer);
+};
 const deleteFood = async () => {
   console.log("selectedFood", selectedFood);
   if (selectedFood?.value?.length > 0) {
@@ -237,8 +245,8 @@ const deleteFood = async () => {
           detail: err.response.statusText,
           life: 3000,
         });
-      }finally{
-        foodModal.value=false
+      } finally {
+        foodModal.value = false;
         isFoodDeleteOpen.value = false;
         store.dispatch("getAllCategoryNames");
       }
@@ -267,46 +275,43 @@ const deleteCategory = async () => {
       summary: "Ошибка",
       detail: err.response.statusText,
     });
-  }finally{
+  } finally {
     isCategoryDeleteOpen.value = false;
-    categoryModal.value=false
+    categoryModal.value = false;
     store.dispatch("getAllCategoryNames");
-
   }
 };
 
-
-const deleteContainer =async()=>{
-    try{
-        const response= await http({
-            method:'delete',
-            url:'/admin/delete-container-by-name',
-            data: { containerName: selectedContainer.value.name }
-        })
-
-        console.log('response delete container',response)
-        if(response.status===200){
-            toast.add({
-      severity: "success",
-      summary: "Успешно",
-      detail: 'Контейнер удален',
+const deleteContainer = async () => {
+  try {
+    const response = await http({
+      method: "delete",
+      url: "/admin/delete-container-by-name",
+      data: { containerName: selectedContainer.value.name },
     });
-        }
 
-    }catch(err:any){
-        console.log(err)
-        toast.add({
+    console.log("response delete container", response);
+    if (response.status === 200) {
+      toast.add({
+        severity: "success",
+        summary: "Успешно",
+        detail: "Контейнер удален",
+      });
+    }
+  } catch (err: any) {
+    console.log(err);
+    toast.add({
       severity: "error",
       summary: "Ошибка",
       detail: err.response.statusText,
     });
-    }finally{
-        isDeleteContainer.value= false;
-        containerModal.value=false
-        store.dispatch("getAllCategoryNames");
-        store.dispatch("fetchAllContainers");
-    }
-}
+  } finally {
+    isDeleteContainer.value = false;
+    containerModal.value = false;
+    store.dispatch("getAllCategoryNames");
+    store.dispatch("fetchAllContainers");
+  }
+};
 onMounted(() => {
   store.dispatch("getAllCategoryNames");
   store.dispatch("fetchAllContainers");

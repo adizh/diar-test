@@ -114,10 +114,20 @@
             <Column>
               <template #body="slotProps">
                 <Button
-                :icon="!slotProps.data?.isFeatured ?  'pi pi-star':'pi pi-star-fill'"
+                  :icon="
+                    !slotProps.data?.isFeatured
+                      ? 'pi pi-star'
+                      : 'pi pi-star-fill'
+                  "
                   severity="warning"
-                  v-tooltip.top="!slotProps.data?.isFeatured ? 'Добавить в популярное':'Убрать из популярного'"
-                  @click="addToPopular(slotProps.data.name,slotProps.data.isFeatured)"
+                  v-tooltip.top="
+                    !slotProps.data?.isFeatured
+                      ? 'Добавить в популярное'
+                      : 'Убрать из популярного'
+                  "
+                  @click="
+                    addToPopular(slotProps.data.name, slotProps.data.isFeatured)
+                  "
                 />
               </template>
             </Column>
@@ -181,23 +191,20 @@
       <ConfirmButtons
         confirmText="Потвердить"
         declineText="Отменить"
-        :descrText="`Вы действительно хотите ${itemSelectedPopuler.isFeatured ? 'убрать из популярного' :'добавить в популярное'} ${itemSelectedPopuler?.name}`"
+        :descrText="`Вы действительно хотите ${itemSelectedPopuler.isFeatured ? 'убрать из популярного' : 'добавить в популярное'} ${itemSelectedPopuler?.name}`"
         @confirmAction="confirmFoodStatus"
         @closeModal="openPopularModal = false"
       />
     </Dialog>
 
-
     <Dialog modal header="СТОП-ЛИСТ" v-model:visible="openStopListModal">
-
       <ConfirmButtons
-      confirmText="Потвердить"
-      declineText="Отменить"
-      :descrText="`Вы действительно хотите отправить на СТОП-ЛИСТ ${selectedItemForStopList}`"
-      @confirmAction="confirmSendStopList"
-      @closeModal="openStopListModal = false"
-    />
-
+        confirmText="Потвердить"
+        declineText="Отменить"
+        :descrText="`Вы действительно хотите отправить на СТОП-ЛИСТ ${selectedItemForStopList}`"
+        @confirmAction="confirmSendStopList"
+        @closeModal="openStopListModal = false"
+      />
     </Dialog>
   </div>
 </template>
@@ -214,8 +221,8 @@ import http from "@/http";
 import AddItems from "@/components/Add/AddItems.vue";
 const store = useStore();
 const expandedRows = ref();
-const itemSelectedPopuler=ref({name:'',isFeatured:false})
-const openPopularModal=ref(false)
+const itemSelectedPopuler = ref({ name: "", isFeatured: false });
+const openPopularModal = ref(false);
 const filters = ref({
   name: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
@@ -233,8 +240,8 @@ const editItemValues = ref({
 const globalSearch = ref("");
 const isDeleteModalOpen = ref(false);
 const deleteItem = ref("");
-const openStopListModal=ref(false)
-const selectedItemForStopList=ref('')
+const openStopListModal = ref(false);
+const selectedItemForStopList = ref("");
 
 const editItem = (itemName: string, itemContainer: string) => {
   isEditOpen.value = true;
@@ -246,10 +253,10 @@ const imgUrl = (url: string) => {
 };
 
 const handleGlobalSearch = () => {
-  if (globalSearch && globalSearch?.value?.length > 0) {
+
     const value = globalSearch?.value?.toLocaleLowerCase();
     store.dispatch("filterCategoriesWithFoods", value);
-  }
+
 };
 const handleFileChange = async (event: Event) => {
   const input = event.target as HTMLInputElement;
@@ -292,9 +299,8 @@ const openDeleteModal = (itemName: string) => {
   isDeleteModalOpen.value = true;
 };
 
-
-const confirmSendStopList=async()=>{
- const status = await store.dispatch("sendFoodToStopList", {
+const confirmSendStopList = async () => {
+  const status = await store.dispatch("sendFoodToStopList", {
     foodName: selectedItemForStopList.value,
     status: true,
   });
@@ -304,15 +310,14 @@ const confirmSendStopList=async()=>{
       detail: "Видимость еды обновлена!",
       summary: "Успешно",
     });
-    openStopListModal.value=false
+    openStopListModal.value = false;
     store.dispatch("getAllCategoryNames");
-
   }
-}
+};
 
 const sendToStopList = async (name: string) => {
-  openStopListModal.value=true;
-  selectedItemForStopList.value=name
+  openStopListModal.value = true;
+  selectedItemForStopList.value = name;
 };
 
 const confirmDeleteFood = async () => {
@@ -355,42 +360,39 @@ const updateFoodImage = (foodName: string) => {
   }
 };
 
-
-const confirmFoodStatus =async()=>{
+const confirmFoodStatus = async () => {
   const body = {
-        changeTo: !itemSelectedPopuler.value.isFeatured,
-        foodName: itemSelectedPopuler.value.name,
-      };
-      try{
-  const response = await http.post("admin/change-is-featured", body);
-  if(response.status===200){
+    changeTo: !itemSelectedPopuler.value.isFeatured,
+    foodName: itemSelectedPopuler.value.name,
+  };
+  try {
+    const response = await http.post("admin/change-is-featured", body);
+    if (response.status === 200) {
+      toast.add({
+        severity: "success",
+        detail: "Статус еды изменен!",
+        summary: "Успешно",
+      });
+    }
+  } catch (err) {
+    console.log(err);
     toast.add({
-            severity: "success",
-            detail: "Статус еды изменен!",
-            summary: "Успешно",
-          });
-  }
-
-}catch(err){
-  console.log(err)
-  toast.add({
       severity: "error",
       summary: "Ошибка",
       detail: "Произошла ошибка",
       life: 3000,
     });
-}finally{
-  openPopularModal.value=false;
-  store.dispatch("getAllCategoryNames");
-}
+  } finally {
+    openPopularModal.value = false;
+    store.dispatch("getAllCategoryNames");
+  }
+};
 
-}
-
-const addToPopular = (foodName:string,value:boolean)=>{
-  openPopularModal.value=true;
-  itemSelectedPopuler.value.name=foodName;
-  itemSelectedPopuler.value.isFeatured=value;
-}
+const addToPopular = (foodName: string, value: boolean) => {
+  openPopularModal.value = true;
+  itemSelectedPopuler.value.name = foodName;
+  itemSelectedPopuler.value.isFeatured = value;
+};
 </script>
 
 <style scoped>
@@ -399,11 +401,11 @@ const addToPopular = (foodName:string,value:boolean)=>{
   margin-top: 41px !important;
 }
 
-:deep(.p-datatable-table){
+:deep(.p-datatable-table) {
   margin-left: -40p !important;
 }
 
-:deep(.p-datatable .p-datatable-tbody > tr > td){
-  padding:0.5rem 0.8rem 0.5rem 0.3rem !important;
+:deep(.p-datatable .p-datatable-tbody > tr > td) {
+  padding: 0.5rem 0.8rem 0.5rem 0.3rem !important;
 }
 </style>
