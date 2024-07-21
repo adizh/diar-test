@@ -78,7 +78,7 @@
           <template #body="slotProps">
             <div class="flex align-items-center gap-5">
               {{ slotProps.data.name }}
-              <Button icon="pi pi-times" severity="danger" v-tooltip.top="'Снять с СТОП-ЛИСТА'"></Button>
+              <Button icon="pi pi-times" severity="danger" v-tooltip.top="'Снять с СТОП-ЛИСТА'" @click="removeFromList(slotProps.data.name)"></Button>
 
            
             </div>
@@ -93,6 +93,17 @@
     </div>
   </template>
 </DataTable>
+<Dialog modal header="СТОП-ЛИСТ" v-model:visible="openStopListModal">
+
+  <ConfirmButtons
+  confirmText="Потвердить"
+  declineText="Отменить"
+  :descrText="`Вы действительно хотите снять с СТОП-ЛИСТА ${selectedFoodList}`"
+  @confirmAction="confirmRemoveStopList"
+  @closeModal="openStopListModal = false"
+/>
+
+</Dialog>
 </div>
 </template>
 
@@ -108,6 +119,7 @@ const store = useStore();
 const showCheck = ref(false);
 const globalSearch =ref('')
 import { FilterMatchMode } from "primevue/api";
+import ConfirmButtons from "../UI/ConfirmButtons.vue";
 const expandedRows = ref();
 const checked = ref(false);
 const selectedCategory = ref();
@@ -118,7 +130,8 @@ const categories = ref([] as Category[]);
 const isFoodOpen = ref(false);
 const stoppedListFoodsFalse = ref([] as CategoryWithFoodsUpdated[]);
 const filteredFoods = ref([] as CategoryWithFoodsUpdated[]);
-
+const selectedFoodList=ref('')
+const openStopListModal=ref(false)
 const selectCategory = (event: any) => {
   console.log("event", event);
   isFoodOpen.value = true;
@@ -133,6 +146,11 @@ const selectCategory = (event: any) => {
   //   selectedFoods.value = filteredFoods;
   // }
 };
+
+const removeFromList =(foodName:string)=>{
+  openStopListModal.value=true
+  selectedFoodList.value=foodName
+}
 
 const filters = ref({
   name: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -182,45 +200,26 @@ const collapseAll = () => {
   expandedRows.value = null;
 };
 
-const hideFood = () => {
-  const foodNames = selectedFoodFalse?.value?.map((item: Food) => item?.name);
 
-  if (foodNames?.length > 0) {
-    foodNames.forEach(async (name: string) => {
-      const body = {
-        foodName: name,
-        status: !checked.value,
-      };
-      console.log("body", body);
-      try {
-        const response = await http.post("/admin/change-of-stop-list", body);
-        console.log("hide food response", response);
-        if (response.status === 200) {
-          toast.add({
-            severity: "success",
-            detail: "Видимость еды обновлена!",
-            summary: "Успешно",
-          });
-          isModalVisibleFood.value = false;
-          showCheck.value = false;
-          selectedFoodFalse.value = null;
-          selectedCategory.value = null;
-          setTimeout(() => {
-            window.location.reload();
-          }, 700);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    });
-  } else {
+const confirmRemoveStopList =async()=>{
+  const status = await store.dispatch("sendFoodToStopList", {
+    foodName: selectedFoodList?.value,
+    status: false,
+  });
+  if (status === 200) {
     toast.add({
-      severity: "error",
-      summary: "Ошибка",
-      detail: "Выберите блюдо!",
+      severity: "success",
+      detail: "Видимость еды обновлена!",
+      summary: "Успешно",
     });
+    openStopListModal.value= false;
+    store.dispatch("getAllCategoryNames");
+    setTimeout(()=>{
+      window.location.reload()
+    },500)
   }
-};
+}
+
 
 const getStoppedFoods = async () => {
   try {

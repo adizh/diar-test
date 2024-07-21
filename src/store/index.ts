@@ -259,7 +259,7 @@ const store: Store<State> = createStore({
     ) {
       if (body.foodName) {
         try {
-          console.log("request is being sent");
+
           const response = await http.post("/admin/change-of-stop-list", body);
           console.log("hide food response", response);
           return response.status;
