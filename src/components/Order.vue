@@ -1,8 +1,16 @@
 <template>
   <Card :class="{ open: isOpen, newOrder: orderTime }">
     <template #title>
-      <div class="flex flex-row gap-3 align-items-center">
-        <p>Номер заказа: {{ order?.orderNumber }}</p>
+      <div class="flex flex-row gap-3 align-items-start">
+     <div class="flex flex-column mb-2">
+      <p>№ {{ order?.orderNumber }}</p>
+
+      <span
+      ><span class="order-name">Тел</span> :{{
+        order?.userPhone
+      }}</span
+    >
+     </div>
         <Button
           v-if="from === 'kitchen'"
           label="Назначить курьера"
@@ -86,11 +94,7 @@
                 ><span class="order-name">Имя</span>:
                 {{ order?.userName }}</span
               >
-              <span
-                ><span class="order-name">Номер телефона</span> :{{
-                  order?.userPhone
-                }}</span
-              >
+             
             </p>
             <div class="columns">
               <div class="order-info" v-if="order.address">

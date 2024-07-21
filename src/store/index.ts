@@ -37,6 +37,7 @@ const store: Store<State> = createStore({
     awaitingPickupOrdersFilter: [] as AwaitingOrder[],
     closedPickUpOrders: [] as AwaitingOrder[],
     cookedPickUpOrders: [] as AwaitingOrder[],
+    filterCookedPickUpOrders: [] as AwaitingOrder[],
 
     stats: {
       awatingOrdersCount: 0,
@@ -178,11 +179,48 @@ const store: Store<State> = createStore({
       }
     },
 
+
+    filterKitchkenPickup({state},payload:{filterType:'phone'|'orderNumber',value:string}){
+if(payload.filterType==='orderNumber'){
+  const results = state.filterCookedPickUpOrders?.filter((item) =>
+    String(item?.orderNumber)?.includes(payload.value)
+  );
+
+
+  if (payload.value && payload.value?.length > 0) {
+  state.cookedPickUpOrders = results;
+  } 
+    if(payload.value==='null'){
+      state.cookedPickUpOrders= state.filterCookedPickUpOrders
+  }
+}else{
+  const normalizePhone = (phone: string) => {
+    return phone.replace(/[^\d]/g, "");
+  };
+
+  
+   const results = state.filterCookedPickUpOrders?.filter((item) => {
+    const normalizedUserPhone = normalizePhone(item?.userPhone);
+    return normalizedUserPhone.includes(payload.value);
+  });
+
+
+  if (payload.value?.length > 0) {
+    state.cookedPickUpOrders = results;
+  } else if(payload.filterType==='phone') {
+   state.cookedPickUpOrders= state.filterCookedPickUpOrders
+  }else{
+    state.cookedPickUpOrders=state.filterCookedPickUpOrders
+  }
+}
+    },
+
     async fetchCookedPickUp({ state }) {
       try {
         const response = await http("admin/get-all-cooked-pickup-orders");
         if (response.status === 200) {
           state.cookedPickUpOrders = response.data.pickUpOrders;
+          state.filterCookedPickUpOrders = response.data.pickUpOrders;
           state.stats.kitchenOrdersPickupCount =
             response.data?.pickUpOrders?.length || 0;
         }

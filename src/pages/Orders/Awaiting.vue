@@ -251,38 +251,7 @@ const normalizePhone = (phone: string) => {
   return phone.replace(/[^\d]/g, "");
 };
 
-const handlePhone = (event: string) => {
-  const normalizedInput = normalizePhone(event);
-  const results = filterOrders?.value?.filter((item) => {
-    const normalizedUserPhone = normalizePhone(item?.userPhone);
-    return normalizedUserPhone.includes(normalizedInput);
-  });
 
-  
-  if (event?.length > 0) {
-    awaitingOrders.value = results;
-  } else {
-    awaitingOrders.value = filterOrders?.value;
-  }
-};
-
-const handleOrderNumber = (event: any) => {
-
-  const value = String(event?.value);
-
-  const results = filterOrders?.value?.filter((item) =>
-    String(item?.orderNumber)?.includes(value)
-  );
-
-
-  if (value && value?.length > 0) {
-    awaitingOrders.value = results;
-  } 
-    if(value==='null'){
-
-    awaitingOrders.value = filterOrders.value;
-  }
-};
 
 const increaseCount = (food: Food) => {
   food.quantity++;
@@ -323,9 +292,42 @@ const selectFood = (event: any) => {
   }, 500);
 };
 
+const handlePhone = (event: string) => {
+  const normalizedInput = normalizePhone(event);
+  const results = filterOrders?.value?.filter((item) => {
+    const normalizedUserPhone = normalizePhone(item?.userPhone);
+    return normalizedUserPhone.includes(normalizedInput);
+  });
+
+
+  if (event?.length > 0) {
+    awaitingOrders.value = results;
+  } else {
+    awaitingOrders.value = filterOrders?.value;
+  }
+};
+
+const handleOrderNumber = (event: any) => {
+
+  const value = String(event?.value);
+
+  const results = filterOrders?.value?.filter((item) =>
+    String(item?.orderNumber)?.includes(value)
+  );
+
+
+  if (value && value?.length > 0) {
+    awaitingOrders.value = results;
+  } 
+    if(value==='null'){
+
+    awaitingOrders.value = filterOrders.value;
+  }
+};
 const changeOption = () => {
   awaitingOrders.value = filterOrders?.value;
 };
+
 const createOrder = async () => {
   const foods = selectedFoods.value.map((item: { value: Food }) => {
     return {
@@ -390,7 +392,7 @@ onMounted(() => {
 let intervalId: any = null;
 
 intervalId = setInterval(() => {
- // fetchAwaitingOrders();
+ fetchAwaitingOrders();
 }, 5000);
 
 onBeforeUnmount(() => {
