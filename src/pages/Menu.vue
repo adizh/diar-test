@@ -186,6 +186,19 @@
         @closeModal="openPopularModal = false"
       />
     </Dialog>
+
+
+    <Dialog modal header="СТОП-ЛИСТ" v-model:visible="openStopListModal">
+
+      <ConfirmButtons
+      confirmText="Потвердить"
+      declineText="Отменить"
+      :descrText="`Вы действительно хотите отправить на СТОП-ЛИСТ ${selectedItemForStopList}`"
+      @confirmAction="confirmSendStopList"
+      @closeModal="openStopListModal = false"
+    />
+
+    </Dialog>
   </div>
 </template>
 
@@ -220,6 +233,9 @@ const editItemValues = ref({
 const globalSearch = ref("");
 const isDeleteModalOpen = ref(false);
 const deleteItem = ref("");
+const openStopListModal=ref(false)
+const selectedItemForStopList=ref('')
+
 const editItem = (itemName: string, itemContainer: string) => {
   isEditOpen.value = true;
   editItemValues.value.name = itemName;
@@ -276,9 +292,10 @@ const openDeleteModal = (itemName: string) => {
   isDeleteModalOpen.value = true;
 };
 
-const sendToStopList = async (name: string) => {
-  const status = await store.dispatch("sendFoodToStopList", {
-    foodName: name,
+
+const confirmSendStopList=async()=>{
+ const status = await store.dispatch("sendFoodToStopList", {
+    foodName: selectedItemForStopList.value,
     status: true,
   });
   if (status === 200) {
@@ -287,8 +304,15 @@ const sendToStopList = async (name: string) => {
       detail: "Видимость еды обновлена!",
       summary: "Успешно",
     });
+    openStopListModal.value=false
     store.dispatch("getAllCategoryNames");
+
   }
+}
+
+const sendToStopList = async (name: string) => {
+  openStopListModal.value=true;
+  selectedItemForStopList.value=name
 };
 
 const confirmDeleteFood = async () => {
