@@ -47,21 +47,17 @@
   
         <div v-else>
             <div class="flex gap-1 align-items-center mb-3">Заказы в ожидании (самовывоз)
-
                 <Badge :value="store.getters.getAwaitingPickupOrders.length" severity="danger"></Badge>
-
             </div>
           <Order
           v-for="order in store.getters.getAwaitingPickupOrders"
             :key="order?.orderNumber"
             :order="order"
-            from="awaiting"
+            from="awaiting-pickup"
           />
         </div>
       </div>
   </main>
-
-
   </div>
 </template>
 
