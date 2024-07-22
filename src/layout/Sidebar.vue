@@ -4,8 +4,16 @@
        <template #item="{ item }">
         <a v-ripple class="flex align-items-center px-3 py-2 cursor-pointer" @click="selecteRoute(item)"
         :class="{'active-route-item':selectedRoute === item?.label}"
+
         >
-            <span :class="['ml-2','font-semibold' ]" >{{ item.label }}</span>
+            <span :class="['ml-2','font-semibold' ]" >{{ item.label }}
+
+              <Badge
+              :value="`(${stopListCount})`"
+              severity="danger"
+              v-if="item?.label === 'СТОП-ЛИСТ'"
+            ></Badge>
+            </span>
         </a>
     </template>
     </PanelMenu>
@@ -117,12 +125,15 @@ import { useConfirm } from "primevue/useconfirm";
 import { useRouter } from "vue-router";
 
 import { useStore } from "vuex";
+import { CategoryWithFoods, CategoryWithFoodsUpdated } from "@/types/Category";
+import http from "@/http";
 const confirm = useConfirm();
 const store = useStore();
 const isMenuBarOpen = ref(false);
 const countOverlay = ref();
 let intervalId: any = null;
 const countOverlayKitchen = ref();
+const stopListCount =ref(0)
 const countOverlayCancel = ref();
 const countOverlayClosed = ref();
 const selectedRoute=ref('')
@@ -165,6 +176,27 @@ const totalKitchenCount = computed(() => {
     store.getters.stats.kitchenOrdersPickupCount
   );
 });
+
+const getStoppedFoods = async () => {
+  try {
+    const response = await http("admin/get-all-foods-stoplist-true");
+    if (response.status === 200) {
+      const result = response.data?.map((item: CategoryWithFoods) => ({
+        id: item.Category.id,
+        name: item.Category.name,
+        foods: item.Foods,
+      }));
+
+      stopListCount.value = result?.filter(
+        (item: CategoryWithFoodsUpdated) => item?.foods !== null,
+      )?.length  
+
+      console.log('stopListCount',stopListCount)
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 const toggleClosed = (event: any) => {
   countOverlayClosed.value.toggle(event);
@@ -298,7 +330,7 @@ const items = ref([
   },
 
   {
-    label: "СТОП-ЛИСТ",
+    label: `СТОП-ЛИСТ`,
     command: () => {
       router.push("/update-items");
     },
@@ -332,11 +364,13 @@ const items = ref([
 ]);
 
 onMounted(async () => {
+  await getStoppedFoods()
   await store.dispatch("fetchStats");
   store.dispatch("fetchAwaitingPickup");
   setTimeout(() => {
     isMenuBarOpen.value = true;
   }, 1000);
+
 });
 </script>
 

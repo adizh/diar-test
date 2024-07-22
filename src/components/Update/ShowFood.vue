@@ -2,9 +2,7 @@
   <div class="w-6">
     <h3>Снять с СТОП-ЛИСТА</h3>
     <DataTable
-      v-model:expandedRows="expandedRows"
-      v-model:filters="filtersСategory"
-      filterDisplay="row"
+  
       :value="stoppedListFoodsFalse"
       dataKey="id"
     >
@@ -35,58 +33,24 @@
           </div>
         </div>
       </template>
-      <Column expander style="width: 1rem" />
+
       <Column field="name" header="Категория">
         <template #body="slotProps">
-          <span>{{ slotProps.data.name }}</span>
+      <div class='flex gap-2 align-items-center'>
+
+        <span>{{ slotProps.data.name }}</span>
+        <Button
+        icon="pi pi-times"
+        severity="danger"
+        v-tooltip.top="'Снять с СТОП-ЛИСТА'"
+        @click="removeFromList(slotProps.data.name)"
+      ></Button>
+      </div>
         </template>
-        <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            @input="filterCallback()"
-            class="w-20rem p-column-filter"
-            placeholder="Поиск по категориям"
-          />
-        </template>
+      
       </Column>
-      <template #expansion="slotProps">
-        <div class="pt-0 pb-3 pl-3 pr-3">
-          <DataTable
-            :value="slotProps?.data?.foods"
-            v-model:filters="filters"
-            filterDisplay="row"
-            style="margin-right: -20px"
-          >
-            <Column field="name" header="Название" class="flex nameSearch">
-              <template #filter="{ filterModel, filterCallback }">
-                <InputText
-                  v-model="filterModel.value"
-                  type="text"
-                  @input="filterCallback()"
-                  class="w-full p-column-filter"
-                  placeholder="Поиск по имени"
-                />
-              </template>
-
-              <template #body="slotProps">
-                <div class="flex align-items-center gap-5">
-                  {{ slotProps.data.name }}
-                  <Button
-                    icon="pi pi-times"
-                    severity="danger"
-                    v-tooltip.top="'Снять с СТОП-ЛИСТА'"
-                    @click="removeFromList(slotProps.data.name)"
-                  ></Button>
-                </div>
-              </template>
-            </Column>
-
-            <template #empty> Нет данных. </template>
-          </DataTable>
-        </div>
-      </template>
     </DataTable>
+
     <Dialog modal header="СТОП-ЛИСТ" v-model:visible="openStopListModal">
       <ConfirmButtons
         confirmText="Потвердить"
@@ -110,22 +74,21 @@ import {
 } from "@/types/Category";
 import { useStore } from "vuex";
 import { Food } from "@/types/Food";
-const isModalVisibleFood = ref(false);
+
 const store = useStore();
 const showCheck = ref(false);
 const globalSearch = ref("");
-import { FilterMatchMode } from "primevue/api";
+
 import ConfirmButtons from "../UI/ConfirmButtons.vue";
 const expandedRows = ref();
-const checked = ref(false);
-const selectedCategory = ref();
+
 const toast = useToast();
 const selectedFoodFalse = ref();
-const selectedFoods = ref({} as CategoryWithFoods);
+
 const categories = ref([] as Category[]);
 const isFoodOpen = ref(false);
-const stoppedListFoodsFalse = ref([] as CategoryWithFoodsUpdated[]);
-const filteredFoods = ref([] as CategoryWithFoodsUpdated[]);
+const stoppedListFoodsFalse = ref([] as Food[]);
+const filteredFoods = ref([] as Food[]);
 const selectedFoodList = ref("");
 const openStopListModal = ref(false);
 const selectCategory = (event: any) => {
@@ -135,12 +98,6 @@ const selectCategory = (event: any) => {
     selectedFoodFalse.value = null;
     showCheck.value = false;
   }
-  // const filteredFoods = stoppedListFoodsFalse?.value?.find(
-  //   (item) => item?.Category?.id === event?.value?.id,
-  // );
-  // if (filteredFoods !== undefined && filteredFoods) {
-  //   selectedFoods.value = filteredFoods;
-  // }
 };
 
 const removeFromList = (foodName: string) => {
@@ -148,16 +105,6 @@ const removeFromList = (foodName: string) => {
   selectedFoodList.value = foodName;
 };
 
-const filters = ref({
-  name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-});
-const filtersСategory = ref({
-  name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-});
-
-const handleFoodFalse = (event: any) => {
-  showCheck.value = true;
-};
 
 const expandAll = () => {
   expandedRows.value = stoppedListFoodsFalse.value?.reduce(
@@ -170,29 +117,15 @@ const handleGlobalSearch = () => {
   if (globalSearch) {
     const value = globalSearch.value.toLowerCase();
     if (value.length > 0) {
-      const result = filteredFoods.value
-        .map((item) => {
-          const filteredFoods = item.foods.filter((foodItem) => {
-            const foodName = foodItem.name.toLowerCase();
-            return (
-              item.name.toLowerCase().includes(value) ||
-              foodName.includes(value)
-            );
-          });
-
-          return {
-            ...item,
-            foods: filteredFoods,
-          };
-        })
-        .filter((category) => category.foods.length > 0);
-
+      const result = filteredFoods.value?.filter((item)=>item?.name?.toLowerCase()?.includes(value))
       stoppedListFoodsFalse.value = result;
     } else {
       stoppedListFoodsFalse.value = [...filteredFoods.value];
     }
   }
 };
+
+
 
 const collapseAll = () => {
   expandedRows.value = null;
@@ -229,10 +162,10 @@ const getStoppedFoods = async () => {
 
       stoppedListFoodsFalse.value = result?.filter(
         (item: CategoryWithFoodsUpdated) => item?.foods !== null,
-      );
-      filteredFoods.value = result?.filter(
-        (item: CategoryWithFoodsUpdated) => item?.foods !== null,
-      );
+      )?.map((item:CategoryWithFoodsUpdated)=>item?.foods)?.flat()
+
+      console.log('stoppedListFoodsFalse',stoppedListFoodsFalse)
+      filteredFoods.value = stoppedListFoodsFalse.value
       console.log("filteredFoods", filteredFoods.value);
       categories.value = response.data?.map(
         (item: CategoryWithFoods) => item?.Category,
