@@ -50,6 +50,7 @@ const changePage = (event: { page: number }) => {
   fetchOrders();
   window.scrollTo(0, 0);
 };
+
 const fetchOrders = async () => {
   try {
     const response = (await http.get(
@@ -99,6 +100,7 @@ const handleOrderNumber = (event: any) => {
       orders.value = filteredOrders.value;
   }
 };
+
 const changeOption = () => {
   orders.value = filteredOrders?.value;
 };
