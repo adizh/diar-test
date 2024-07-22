@@ -101,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, onBeforeUnmount } from "vue";
 import PanelMenu from "primevue/panelmenu";
 
 import { useConfirm } from "primevue/useconfirm";
@@ -113,10 +113,20 @@ const confirm = useConfirm();
 const store = useStore();
 const isMenuBarOpen = ref(false);
 const countOverlay = ref();
-
+let intervalId: any = null;
 const countOverlayKitchen = ref();
 const countOverlayCancel = ref();
 const countOverlayClosed = ref();
+
+
+intervalId = setInterval(() => {
+store.dispatch('fetchAwaitingOrders')
+store.dispatch('fetchAwaitingPickup')
+}, 5000);
+
+onBeforeUnmount(() => {
+  clearInterval(intervalId);
+});
 
 const toggle = (event: any) => {
   countOverlay.value.toggle(event);

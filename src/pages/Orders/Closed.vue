@@ -1,10 +1,13 @@
 vbas3
 <template>
-
   <div class="section">
-    <div class='flex justify-content-between'>
+    <div class="flex justify-content-between">
       <p class="mb-3">Доставленные</p>
-      <PhoneCodeFilters @changeOption="changeOption" @handlePhone="handlePhone" @handleOrderNumber="handleOrderNumber"/>
+      <PhoneCodeFilters
+        @changeOption="changeOption"
+        @handlePhone="handlePhone"
+        @handleOrderNumber="handleOrderNumber"
+      />
     </div>
     <Card v-if="!orders?.length">
       <template #content>Нет данных</template>
@@ -24,9 +27,7 @@ vbas3
       :totalRecords="totalItems"
       @page="changePage"
     ></Paginator>
-
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -40,7 +41,6 @@ import PhoneCodeFilters from "@/components/UI/PhoneCodeFilters.vue";
 const noOrder = ref("");
 const orders = ref<AwaitingOrder[]>([]);
 const filteredOrders = ref<AwaitingOrder[]>([]);
-
 
 const totalPages = ref(0);
 const totalItems = ref(0);
@@ -67,7 +67,6 @@ const fetchOrders = async () => {
   }
 };
 
-
 const normalizePhone = (phone: string) => {
   return phone.replace(/[^\d]/g, "");
 };
@@ -79,7 +78,6 @@ const handlePhone = (event: string) => {
     return normalizedUserPhone.includes(normalizedInput);
   });
 
-
   if (event?.length > 0) {
     orders.value = results;
   } else {
@@ -90,15 +88,14 @@ const handlePhone = (event: string) => {
 const handleOrderNumber = (event: any) => {
   const value = String(event?.value);
   const results = filteredOrders?.value?.filter((item) =>
-    String(item?.orderNumber)?.includes(value)
+    String(item?.orderNumber)?.includes(value),
   );
-
 
   if (value && value?.length > 0) {
     orders.value = results;
-  } 
-    if(value==='null'){
-      orders.value = filteredOrders.value;
+  }
+  if (value === "null") {
+    orders.value = filteredOrders.value;
   }
 };
 const changeOption = () => {

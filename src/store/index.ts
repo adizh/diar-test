@@ -179,40 +179,39 @@ const store: Store<State> = createStore({
       }
     },
 
+    filterKitchkenPickup(
+      { state },
+      payload: { filterType: "phone" | "orderNumber"; value: string },
+    ) {
+      if (payload.filterType === "orderNumber") {
+        const results = state.filterCookedPickUpOrders?.filter((item) =>
+          String(item?.orderNumber)?.includes(payload.value),
+        );
 
-    filterKitchkenPickup({state},payload:{filterType:'phone'|'orderNumber',value:string}){
-if(payload.filterType==='orderNumber'){
-  const results = state.filterCookedPickUpOrders?.filter((item) =>
-    String(item?.orderNumber)?.includes(payload.value)
-  );
+        if (payload.value && payload.value?.length > 0) {
+          state.cookedPickUpOrders = results;
+        }
+        if (payload.value === "null") {
+          state.cookedPickUpOrders = state.filterCookedPickUpOrders;
+        }
+      } else {
+        const normalizePhone = (phone: string) => {
+          return phone.replace(/[^\d]/g, "");
+        };
 
+        const results = state.filterCookedPickUpOrders?.filter((item) => {
+          const normalizedUserPhone = normalizePhone(item?.userPhone);
+          return normalizedUserPhone.includes(payload.value);
+        });
 
-  if (payload.value && payload.value?.length > 0) {
-  state.cookedPickUpOrders = results;
-  } 
-    if(payload.value==='null'){
-      state.cookedPickUpOrders= state.filterCookedPickUpOrders
-  }
-}else{
-  const normalizePhone = (phone: string) => {
-    return phone.replace(/[^\d]/g, "");
-  };
-
-  
-   const results = state.filterCookedPickUpOrders?.filter((item) => {
-    const normalizedUserPhone = normalizePhone(item?.userPhone);
-    return normalizedUserPhone.includes(payload.value);
-  });
-
-
-  if (payload.value?.length > 0) {
-    state.cookedPickUpOrders = results;
-  } else if(payload.filterType==='phone') {
-   state.cookedPickUpOrders= state.filterCookedPickUpOrders
-  }else{
-    state.cookedPickUpOrders=state.filterCookedPickUpOrders
-  }
-}
+        if (payload.value?.length > 0) {
+          state.cookedPickUpOrders = results;
+        } else if (payload.filterType === "phone") {
+          state.cookedPickUpOrders = state.filterCookedPickUpOrders;
+        } else {
+          state.cookedPickUpOrders = state.filterCookedPickUpOrders;
+        }
+      }
     },
 
     async fetchCookedPickUp({ state }) {
@@ -241,6 +240,7 @@ if(payload.filterType==='orderNumber'){
         }
       } catch (err) {
         console.log(err);
+        
       }
     },
 
@@ -334,7 +334,10 @@ if(payload.filterType==='orderNumber'){
           .map((item) => {
             const filteredFoods = item.foods.filter((foodItem) => {
               const foodName = foodItem?.name?.toLowerCase();
-              return item?.name?.toLowerCase()?.includes(searchLower) || foodName?.includes(searchLower);
+              return (
+                item?.name?.toLowerCase()?.includes(searchLower) ||
+                foodName?.includes(searchLower)
+              );
             });
             return {
               ...item,
@@ -342,12 +345,12 @@ if(payload.filterType==='orderNumber'){
             };
           })
           .filter((category) => category?.foods?.length > 0);
-    
+
         state.categoriesWithFoods = result;
       } else {
-        state.categoriesWithFoods = state.filterCategoriesWithFoods
+        state.categoriesWithFoods = state.filterCategoriesWithFoods;
       }
-    }
+    },
   },
 
   getters: {

@@ -251,19 +251,20 @@ const normalizePhone = (phone: string) => {
   return phone.replace(/[^\d]/g, "");
 };
 
-
-
 const increaseCount = (food: Food) => {
   food.quantity++;
 };
+
 const decreaseCount = (food: Food) => {
   if (food.quantity > 1) {
     food.quantity--;
   }
 };
+
 const openCreateOrderModal = () => {
   isCreateModal.value = true;
 };
+
 const fetchAwaitingOrders = async () => {
   try {
     const response = (await http.get("admin/get-all-awaiting-orders")) as any;
@@ -278,6 +279,7 @@ const fetchAwaitingOrders = async () => {
     console.log(err);
   }
 };
+
 const selectFood = (event: any) => {
   console.log(event);
   console.log(event);
@@ -299,7 +301,6 @@ const handlePhone = (event: string) => {
     return normalizedUserPhone.includes(normalizedInput);
   });
 
-
   if (event?.length > 0) {
     awaitingOrders.value = results;
   } else {
@@ -308,19 +309,16 @@ const handlePhone = (event: string) => {
 };
 
 const handleOrderNumber = (event: any) => {
-
   const value = String(event?.value);
 
   const results = filterOrders?.value?.filter((item) =>
-    String(item?.orderNumber)?.includes(value)
+    String(item?.orderNumber)?.includes(value),
   );
-
 
   if (value && value?.length > 0) {
     awaitingOrders.value = results;
-  } 
-    if(value==='null'){
-
+  }
+  if (value === "null") {
     awaitingOrders.value = filterOrders.value;
   }
 };
@@ -371,7 +369,7 @@ const createOrder = async () => {
           severity: "success",
           summary: "Успешно",
           detail: "Заказ создан!",
-          life:3000
+          life: 3000,
         });
       }
     } catch (err) {
@@ -383,22 +381,19 @@ const createOrder = async () => {
 };
 
 onMounted(() => {
-
   fetchAwaitingOrders();
   store.dispatch("fetchAllFood");
-
 });
 
 let intervalId: any = null;
 
 intervalId = setInterval(() => {
- fetchAwaitingOrders();
+  fetchAwaitingOrders();
 }, 5000);
 
 onBeforeUnmount(() => {
   clearInterval(intervalId);
 });
-
 </script>
 
 <style scoped>

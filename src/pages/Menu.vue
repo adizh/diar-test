@@ -59,6 +59,13 @@
             filterDisplay="row"
             style="margin-right: -20px"
           >
+            <!-- <template #header>
+
+            <div style="text-align:left">
+              <MultiSelect :modelValue="selectedColumns" :options="foodTogglCol" optionLabel="header" @update:modelValue="onToggle"
+                  display="chip" placeholder="Выбрать столбцы" />
+          </div>
+          </template> -->
             <Column
               field="name"
               header="Название"
@@ -219,8 +226,12 @@ import { FilterMatchMode } from "primevue/api";
 import DeleteItems from "@/components/Update/DeleteItems.vue";
 import http from "@/http";
 import AddItems from "@/components/Add/AddItems.vue";
+import { CategoryWithFoodsUpdated } from "@/types/Category";
+import { Food } from "@/types/Food";
 const store = useStore();
 const expandedRows = ref();
+const selectedColumns = ref();
+const foodsColumns = ref([] as Food[]);
 const itemSelectedPopuler = ref({ name: "", isFeatured: false });
 const openPopularModal = ref(false);
 const filters = ref({
@@ -253,11 +264,10 @@ const imgUrl = (url: string) => {
 };
 
 const handleGlobalSearch = () => {
-
-    const value = globalSearch?.value?.toLocaleLowerCase();
-    store.dispatch("filterCategoriesWithFoods", value);
-
+  const value = globalSearch?.value?.toLocaleLowerCase();
+  store.dispatch("filterCategoriesWithFoods", value);
 };
+
 const handleFileChange = async (event: Event) => {
   const input = event.target as HTMLInputElement;
   const file = input.files?.[0];
@@ -290,8 +300,32 @@ const handleFileChange = async (event: Event) => {
     }
   }
 };
-onMounted(() => {
-  store.dispatch("getAllCategoryNames");
+
+const foodTogglCol = [
+  { header: "Название" },
+  { header: "Цена" },
+  { header: "Вес" },
+  { header: "iDCTMax" },
+  { header: "Контейнер" },
+  { header: "Кол-во конт" },
+];
+
+// const onToggle = (val) => {
+//     selectedColumns.value = foodTogglCol.filter(col => val.includes(col));
+// };
+
+onMounted(async () => {
+  await store.dispatch("getAllCategoryNames");
+  //selectedColumns.value = store.getters.getCategoriesWithFoods?.map((item:CategoryWithFoodsUpdated)=>item?.foods);
+  selectedColumns.value = foodTogglCol;
+  foodsColumns.value = store.getters.getCategoriesWithFoods?.map(
+    (item: CategoryWithFoodsUpdated) => {
+      return item?.foods;
+    },
+  );
+
+  console.log("foodsColumns", foodsColumns);
+  console.log("selectedColumns", selectedColumns);
 });
 
 const openDeleteModal = (itemName: string) => {

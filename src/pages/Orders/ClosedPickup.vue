@@ -1,11 +1,14 @@
 vbas3
 <template>
   <div class="section">
-
-    <div class='flex justify-content-between'>
+    <div class="flex justify-content-between">
       <p class="mb-3">Самовывоз доставленных заказов</p>
 
-      <PhoneCodeFilters @changeOption="changeOption" @handlePhone="handlePhone" @handleOrderNumber="handleOrderNumber"/>
+      <PhoneCodeFilters
+        @changeOption="changeOption"
+        @handlePhone="handlePhone"
+        @handleOrderNumber="handleOrderNumber"
+      />
     </div>
 
     <Card v-if="!orders?.length">
@@ -13,14 +16,12 @@ vbas3
     </Card>
 
     <div v-else class="card-list">
-
       <Order
         v-for="order in orders"
         :key="order?.orderNumber"
         :order="order"
         from="closed-pickup"
       />
-
     </div>
     <Paginator
       :rows="10"
@@ -78,7 +79,6 @@ const handlePhone = (event: string) => {
     return normalizedUserPhone.includes(normalizedInput);
   });
 
-
   if (event?.length > 0) {
     orders.value = results;
   } else {
@@ -89,15 +89,14 @@ const handlePhone = (event: string) => {
 const handleOrderNumber = (event: any) => {
   const value = String(event?.value);
   const results = filteredOrders?.value?.filter((item) =>
-    String(item?.orderNumber)?.includes(value)
+    String(item?.orderNumber)?.includes(value),
   );
-
 
   if (value && value?.length > 0) {
     orders.value = results;
-  } 
-    if(value==='null'){
-      orders.value = filteredOrders.value;
+  }
+  if (value === "null") {
+    orders.value = filteredOrders.value;
   }
 };
 

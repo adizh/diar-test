@@ -1,14 +1,14 @@
 <template>
   <div class="section">
-
-
-
-    <div class='flex justify-content-between'>
+    <div class="flex justify-content-between">
       <p class="mb-3">Отмененные доставки</p>
 
-      <PhoneCodeFilters @changeOption="changeOption" @handlePhone="handlePhone" @handleOrderNumber="handleOrderNumber"/>
+      <PhoneCodeFilters
+        @changeOption="changeOption"
+        @handlePhone="handlePhone"
+        @handleOrderNumber="handleOrderNumber"
+      />
     </div>
-
 
     <Card v-if="!awaitingOrders?.length">
       <template #content>Нет данных</template>
@@ -22,7 +22,7 @@
         from="cancelled"
       />
     </div>
- 
+
     <Paginator
       :rows="10"
       :totalRecords="totalItems"
@@ -42,7 +42,6 @@ import PhoneCodeFilters from "@/components/UI/PhoneCodeFilters.vue";
 const noOrder = ref("");
 const awaitingOrders = ref<AwaitingOrder[]>([]);
 const filteredOrders = ref<AwaitingOrder[]>([]);
-
 
 const currentPage = ref(1);
 const totalItems = ref(1);
@@ -69,11 +68,9 @@ const fetchAwaitingOrders = async () => {
   }
 };
 
-
 const normalizePhone = (phone: string) => {
   return phone.replace(/[^\d]/g, "");
 };
-
 
 const handlePhone = (event: string) => {
   const normalizedInput = normalizePhone(event);
@@ -91,22 +88,20 @@ const handlePhone = (event: string) => {
 const handleOrderNumber = (event: any) => {
   const value = String(event?.value);
   const results = filteredOrders?.value?.filter((item) =>
-    String(item?.orderNumber)?.includes(value)
+    String(item?.orderNumber)?.includes(value),
   );
-
 
   if (value && value?.length > 0) {
     awaitingOrders.value = results;
-  } 
-    if(value==='null'){
-      awaitingOrders.value = filteredOrders.value;
+  }
+  if (value === "null") {
+    awaitingOrders.value = filteredOrders.value;
   }
 };
 
 const changeOption = () => {
   awaitingOrders.value = filteredOrders?.value;
 };
-
 
 onMounted(() => {
   fetchAwaitingOrders();

@@ -174,7 +174,10 @@ const handleGlobalSearch = () => {
         .map((item) => {
           const filteredFoods = item.foods.filter((foodItem) => {
             const foodName = foodItem.name.toLowerCase();
-            return item.name.toLowerCase().includes(value) || foodName.includes(value);
+            return (
+              item.name.toLowerCase().includes(value) ||
+              foodName.includes(value)
+            );
           });
 
           return {
@@ -190,7 +193,6 @@ const handleGlobalSearch = () => {
     }
   }
 };
-
 
 const collapseAll = () => {
   expandedRows.value = null;
