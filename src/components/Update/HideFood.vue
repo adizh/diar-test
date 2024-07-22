@@ -66,7 +66,8 @@
     </Dialog>
   </div> -->
 
-  <div>
+  <div class="w-6">
+
     <h3>Отправить на СТОП-ЛИСТ</h3>
 
     <DataTable
@@ -289,6 +290,7 @@ const getStoppedFoods = async () => {
     console.log(err);
   }
 };
+
 const expandAll = () => {
   expandedRows.value = stoppedListFoodsFalse.value?.reduce(
     (acc: any, p: any) => (acc[p.id] = true) && acc,
@@ -299,10 +301,12 @@ const expandAll = () => {
 const collapseAll = () => {
   expandedRows.value = null;
 };
+
 onMounted(async () => {
   await store.dispatch("getAllCategoryNames");
   getStoppedFoods();
 });
+
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-6">
     <h3>Снять с СТОП-ЛИСТА</h3>
     <DataTable
       v-model:expandedRows="expandedRows"

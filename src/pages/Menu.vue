@@ -12,6 +12,7 @@
       :value="store.getters.getCategoriesWithFoods"
       dataKey="id"
     >
+
       <template #header>
         <div class="flex justify-content-between mb-3">
           <div class="flex flex-wrap gap-2">
@@ -39,6 +40,7 @@
           </div>
         </div>
       </template>
+
       <Column expander style="width: 1rem" />
       <Column field="name" header="Категория">
         <template #filter="{ filterModel, filterCallback }">
@@ -59,13 +61,12 @@
             filterDisplay="row"
             style="margin-right: -20px"
           >
-            <!-- <template #header>
-
+            <template #header>
             <div style="text-align:left">
               <MultiSelect :modelValue="selectedColumns" :options="foodTogglCol" optionLabel="header" @update:modelValue="onToggle"
                   display="chip" placeholder="Выбрать столбцы" />
           </div>
-          </template> -->
+          </template>
             <Column
               field="name"
               header="Название"
@@ -83,16 +84,21 @@
               </template>
 
               <template #body="slotProps">
-                <div class="flex align-items-center gap-1">
+                <div class="flex align-items-center gap-1 w-100">
+                <p>
                   {{ slotProps.data.name }}
-
+                </p>
+                <div>
                   <img
-                    v-tooltip.top="'Изменить'"
-                    :src="`${imgUrl(slotProps.data.URLPhoto)}`"
-                    :alt="slotProps.data.URLPhoto"
-                    class="w-6rem border-round"
-                    @click="updateFoodImage(slotProps.data?.name)"
-                  />
+                  v-tooltip.top="'Изменить'"
+                  :src="`${imgUrl(slotProps.data.URLPhoto)}`"
+                  :alt="slotProps.data.URLPhoto"
+                  class="w-6rem border-round"
+                  @click="updateFoodImage(slotProps.data?.name)"
+                />
+
+                </div>
+
                   <input
                     type="file"
                     ref="fileInput"
@@ -103,11 +109,12 @@
                 </div>
               </template>
             </Column>
-            <Column field="price" header="Цена"></Column>
+            <Column v-for="(col, index) of selectedColumns" :field="col.field" :header="col.header" :key="col.field + '_' + index"></Column>
+            <!-- <Column field="price" header="Цена"></Column>
             <Column field="weight" header="Вес"></Column>
             <Column field="iDCTMax" header="iDCTMax"></Column>
             <Column field="containerName" header="Контейнер"></Column>
-            <Column field="containerCount" header="Кол-во конт"></Column>
+            <Column field="containerCount" header="Кол-во конт"></Column> -->
             <Column>
               <template #body="slotProps">
                 <Button
@@ -139,7 +146,7 @@
               </template>
             </Column>
 
-            <Column class="buttons-cell)">
+            <Column class="buttons-cell">
               <template #body="slotProps">
                 <Button
                   icon="pi pi-pencil"
@@ -301,23 +308,21 @@ const handleFileChange = async (event: Event) => {
   }
 };
 
-const foodTogglCol = [
-  { header: "Название" },
-  { header: "Цена" },
-  { header: "Вес" },
-  { header: "iDCTMax" },
-  { header: "Контейнер" },
-  { header: "Кол-во конт" },
-];
+const foodTogglCol = ref([
+  { header: "Цена",field:'price' },
+  { header: "Вес" ,field:'weight' },
+  { header: "iDCTMax",field:'iDCTMax'  },
+  { header: "Контейнер",field:'containerName'  },
+  { header: "Кол-во конт",field:'containerCount'  },
+])
 
-// const onToggle = (val) => {
-//     selectedColumns.value = foodTogglCol.filter(col => val.includes(col));
-// };
+const onToggle = (val:any) => {
+    selectedColumns.value = foodTogglCol.value.filter(col => val.includes(col));
+};
 
 onMounted(async () => {
   await store.dispatch("getAllCategoryNames");
-  //selectedColumns.value = store.getters.getCategoriesWithFoods?.map((item:CategoryWithFoodsUpdated)=>item?.foods);
-  selectedColumns.value = foodTogglCol;
+  selectedColumns.value = foodTogglCol?.value
   foodsColumns.value = store.getters.getCategoriesWithFoods?.map(
     (item: CategoryWithFoodsUpdated) => {
       return item?.foods;
@@ -326,6 +331,7 @@ onMounted(async () => {
 
   console.log("foodsColumns", foodsColumns);
   console.log("selectedColumns", selectedColumns);
+
 });
 
 const openDeleteModal = (itemName: string) => {
@@ -427,6 +433,7 @@ const addToPopular = (foodName: string, value: boolean) => {
   itemSelectedPopuler.value.name = foodName;
   itemSelectedPopuler.value.isFeatured = value;
 };
+
 </script>
 
 <style scoped>

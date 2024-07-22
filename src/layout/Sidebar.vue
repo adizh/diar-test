@@ -1,6 +1,15 @@
 <template>
   <div class="sidebar">
-    <PanelMenu :model="items" />
+    <PanelMenu :model="items" >
+       <template #item="{ item }">
+        <a v-ripple class="flex align-items-center px-3 py-2 cursor-pointer" @click="selecteRoute(item)"
+        :class="{'active-route-item':selectedRoute === item?.label}"
+        >
+            <span :class="['ml-2','font-semibold' ]" >{{ item.label }}</span>
+        </a>
+    </template>
+    </PanelMenu>
+
   </div>
 
   <div class="card headerItems">
@@ -34,12 +43,12 @@
         @click="item?.command"
       >
         {{ item?.label }}
-
         <Badge
           :value="store.getters.stats.awatingOrdersCount"
           severity="danger"
           v-if="item?.label === 'Доставки'"
         ></Badge>
+
         <Badge
           :value="store.getters.stats.awatingOrdersPickupCount"
           severity="danger"
@@ -106,8 +115,7 @@ import PanelMenu from "primevue/panelmenu";
 
 import { useConfirm } from "primevue/useconfirm";
 import { useRouter } from "vue-router";
-const isSignOutOpen = ref(false);
-import Stats from "../components/Stats.vue";
+
 import { useStore } from "vuex";
 const confirm = useConfirm();
 const store = useStore();
@@ -117,8 +125,7 @@ let intervalId: any = null;
 const countOverlayKitchen = ref();
 const countOverlayCancel = ref();
 const countOverlayClosed = ref();
-
-
+const selectedRoute=ref('')
 intervalId = setInterval(() => {
 store.dispatch('fetchAwaitingOrders')
 store.dispatch('fetchAwaitingPickup')
@@ -127,6 +134,11 @@ store.dispatch('fetchAwaitingPickup')
 onBeforeUnmount(() => {
   clearInterval(intervalId);
 });
+
+const selecteRoute =(item:any)=>{
+item.command()
+selectedRoute.value = item?.label
+}
 
 const toggle = (event: any) => {
   countOverlay.value.toggle(event);
@@ -276,11 +288,12 @@ const headerItems = ref([
   },
 ]);
 
+
 const items = ref([
   {
     label: "Меню",
     command: () => {
-      router.push("/menu");
+     router.push("/menu");
     },
   },
 
@@ -387,8 +400,19 @@ onMounted(async () => {
   border-radius: 5px;
 }
 
+
 .subitem-link:hover {
   cursor: pointer;
   background: #f1f5f9;
 }
+
+:deep(.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content){
+  color:#334155 !important;
+}
+
+.active-route-item{
+  opacity: .5 !important;
+
+}
+
 </style>

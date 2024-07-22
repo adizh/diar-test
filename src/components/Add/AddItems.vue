@@ -166,6 +166,7 @@
     <div class="flex flex-column gap-3 mb-5">
       <label for="Weight" class="font-semibold">Файл</label>
       <input
+      accept="image/*"
         type="file"
         @change="($event: any) => onUpload($event)"
         id="uploadImage"

@@ -171,7 +171,7 @@ const updatedFoods = computed(() => {
 });
 
 const createPickupOrder = async () => {
-  console.log("orderValues", orderValues);
+
   const foods = selectedFoods.value.map((item: { value: Food }) => {
     return {
       name: item?.value?.name,
@@ -212,7 +212,7 @@ const createPickupOrder = async () => {
         });
         setTimeout(() => {
           emit("closeModal");
-          //window.location.reload()
+          window.location.reload()
         }, 700);
       }
     } catch (err) {

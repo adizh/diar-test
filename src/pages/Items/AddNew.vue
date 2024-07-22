@@ -5,8 +5,6 @@
       <Button label="Добавить категорию" @click="openCategoryModal" />
       <Button label="Добавить контейнер" @click="openContainerModal" />
       <Button label="Добавить еду" @click="openFood" />
-      <!-- <AddFoodsOrder />
-            <SendToKitchen /> -->
     </div>
   </div>
 
@@ -201,9 +199,6 @@
 import { useToast } from "primevue/usetoast";
 import http from "@/http";
 import { onMounted, ref } from "vue";
-import { Category } from "@/types/Category";
-import AddFoodsOrder from "@/components/AddFoodsOrder.vue";
-import SendToKitchen from "@/components/SendToKitchen.vue";
 const isModalVisible = ref(false);
 const isModalVisibleFood = ref(false);
 const isModalContainer = ref(false);
@@ -260,6 +255,7 @@ const addNewCategory = async () => {
     }
   }
 };
+
 const addContainer = async () => {
   if (containerName.value?.length > 0) {
     try {
@@ -287,17 +283,14 @@ const addContainer = async () => {
 };
 
 const onUpload = async (event: any) => {
-  console.log("event onUpload", event);
   uploadFile.value = event.target.files[0];
 };
 
 const addFood = async () => {
   try {
-    const formData = new FormData();
-    // Append the file to the FormData object
-    formData.append("file", uploadFile.value);
 
-    // Additional data fields
+    const formData = new FormData();
+    formData.append("file", uploadFile.value);
     formData.append("name", foodName.value);
     formData.append("categoryName", selectedCategory.value.name);
     formData.append("price", foodPrice.value);
