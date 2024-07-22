@@ -1,23 +1,34 @@
 <template>
   <div class="sidebar">
-    <PanelMenu :model="items" >
-       <template #item="{ item }">
-        <a v-ripple class="flex align-items-center px-3 py-2 cursor-pointer" @click="selecteRoute(item)"
-        :class="{'active-route-item':selectedRoute === item?.label}"
-
+    <PanelMenu :model="items">
+      <template #item="{ item }">
+        <a
+          v-ripple
+          class="flex align-items-center px-3 py-2 cursor-pointer"
+          @click="selecteRoute(item)"
+          :class="{ 'active-route-item': selectedRoute === item?.label }"
         >
-            <span :class="['ml-2','font-semibold' ]" >{{ item.label }}
-
-              <Badge
+          <span :class="['ml-2', 'font-semibold']"
+            >{{ item.label }}
+            <Badge
               :value="`(${stopListCount})`"
               severity="danger"
               v-if="item?.label === 'СТОП-ЛИСТ'"
             ></Badge>
-            </span>
-        </a>
-    </template>
-    </PanelMenu>
 
+            <Badge
+            :value="`(${totalAwaitingCount})`"
+            severity="danger"
+            v-if="item?.label === 'Заказы'"
+          ></Badge>
+
+
+
+
+          </span>
+        </a>
+      </template>
+    </PanelMenu>
   </div>
 
   <div class="card headerItems">
@@ -133,23 +144,24 @@ const isMenuBarOpen = ref(false);
 const countOverlay = ref();
 let intervalId: any = null;
 const countOverlayKitchen = ref();
-const stopListCount =ref(0)
+const stopListCount = ref(0);
 const countOverlayCancel = ref();
 const countOverlayClosed = ref();
-const selectedRoute=ref('')
+const selectedRoute = ref("");
+
 intervalId = setInterval(() => {
-store.dispatch('fetchAwaitingOrders')
-store.dispatch('fetchAwaitingPickup')
+  store.dispatch("fetchAwaitingOrders");
+  store.dispatch("fetchAwaitingPickup");
 }, 5000);
 
 onBeforeUnmount(() => {
   clearInterval(intervalId);
 });
 
-const selecteRoute =(item:any)=>{
-item.command()
-selectedRoute.value = item?.label
-}
+const selecteRoute = (item: any) => {
+  item.command();
+  selectedRoute.value = item?.label;
+};
 
 const toggle = (event: any) => {
   countOverlay.value.toggle(event);
@@ -189,9 +201,9 @@ const getStoppedFoods = async () => {
 
       stopListCount.value = result?.filter(
         (item: CategoryWithFoodsUpdated) => item?.foods !== null,
-      )?.length  
+      )?.length;
 
-      console.log('stopListCount',stopListCount)
+      console.log("stopListCount", stopListCount);
     }
   } catch (err) {
     console.log(err);
@@ -320,12 +332,17 @@ const headerItems = ref([
   },
 ]);
 
-
 const items = ref([
+  {
+    label: "Заказы",
+    command: () => {
+      router.push("/all-awaiting-orders");
+    },
+  },
   {
     label: "Меню",
     command: () => {
-     router.push("/menu");
+      router.push("/menu");
     },
   },
 
@@ -364,13 +381,12 @@ const items = ref([
 ]);
 
 onMounted(async () => {
-  await getStoppedFoods()
+  await getStoppedFoods();
   await store.dispatch("fetchStats");
   store.dispatch("fetchAwaitingPickup");
   setTimeout(() => {
     isMenuBarOpen.value = true;
   }, 1000);
-
 });
 </script>
 
@@ -434,19 +450,16 @@ onMounted(async () => {
   border-radius: 5px;
 }
 
-
 .subitem-link:hover {
   cursor: pointer;
   background: #f1f5f9;
 }
 
-:deep(.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content){
-  color:#334155 !important;
+:deep(.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content) {
+  color: #334155 !important;
 }
 
-.active-route-item{
-  opacity: .5 !important;
-
+.active-route-item {
+  opacity: 0.5 !important;
 }
-
 </style>

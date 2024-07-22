@@ -1,11 +1,7 @@
 <template>
   <div class="w-6">
     <h3>Снять с СТОП-ЛИСТА</h3>
-    <DataTable
-  
-      :value="stoppedListFoodsFalse"
-      dataKey="id"
-    >
+    <DataTable :value="stoppedListFoodsFalse" dataKey="id">
       <template #header>
         <div class="flex flex-column justify-content-between mb-3">
           <div class="flex flex-wrap gap-2">
@@ -34,20 +30,18 @@
         </div>
       </template>
 
-      <Column field="name" header="Категория">
+      <Column field="name" header="Название">
         <template #body="slotProps">
-      <div class='flex gap-2 align-items-center'>
-
-        <span>{{ slotProps.data.name }}</span>
-        <Button
-        icon="pi pi-times"
-        severity="danger"
-        v-tooltip.top="'Снять с СТОП-ЛИСТА'"
-        @click="removeFromList(slotProps.data.name)"
-      ></Button>
-      </div>
+          <div class="flex gap-2 align-items-center">
+            <span>{{ slotProps.data.name }}</span>
+            <Button
+              icon="pi pi-times"
+              severity="danger"
+              v-tooltip.top="'Снять с СТОП-ЛИСТА'"
+              @click="removeFromList(slotProps.data.name)"
+            ></Button>
+          </div>
         </template>
-      
       </Column>
     </DataTable>
 
@@ -105,7 +99,6 @@ const removeFromList = (foodName: string) => {
   selectedFoodList.value = foodName;
 };
 
-
 const expandAll = () => {
   expandedRows.value = stoppedListFoodsFalse.value?.reduce(
     (acc: any, p: any) => (acc[p.id] = true) && acc,
@@ -117,15 +110,15 @@ const handleGlobalSearch = () => {
   if (globalSearch) {
     const value = globalSearch.value.toLowerCase();
     if (value.length > 0) {
-      const result = filteredFoods.value?.filter((item)=>item?.name?.toLowerCase()?.includes(value))
+      const result = filteredFoods.value?.filter((item) =>
+        item?.name?.toLowerCase()?.includes(value),
+      );
       stoppedListFoodsFalse.value = result;
     } else {
       stoppedListFoodsFalse.value = [...filteredFoods.value];
     }
   }
 };
-
-
 
 const collapseAll = () => {
   expandedRows.value = null;
@@ -160,12 +153,13 @@ const getStoppedFoods = async () => {
         foods: item.Foods,
       }));
 
-      stoppedListFoodsFalse.value = result?.filter(
-        (item: CategoryWithFoodsUpdated) => item?.foods !== null,
-      )?.map((item:CategoryWithFoodsUpdated)=>item?.foods)?.flat()
+      stoppedListFoodsFalse.value = result
+        ?.filter((item: CategoryWithFoodsUpdated) => item?.foods !== null)
+        ?.map((item: CategoryWithFoodsUpdated) => item?.foods)
+        ?.flat();
 
-      console.log('stoppedListFoodsFalse',stoppedListFoodsFalse)
-      filteredFoods.value = stoppedListFoodsFalse.value
+      console.log("stoppedListFoodsFalse", stoppedListFoodsFalse);
+      filteredFoods.value = stoppedListFoodsFalse.value;
       console.log("filteredFoods", filteredFoods.value);
       categories.value = response.data?.map(
         (item: CategoryWithFoods) => item?.Category,

@@ -240,7 +240,6 @@ const store: Store<State> = createStore({
         }
       } catch (err) {
         console.log(err);
-        
       }
     },
 
@@ -362,7 +361,7 @@ const store: Store<State> = createStore({
     },
 
     getCategoriesWithFoods(state) {
-      return state.categoriesWithFoods
+      return state.categoriesWithFoods;
     },
     pickUpOrdersCount(state) {
       return state.stats.awatingOrdersPickupCount;

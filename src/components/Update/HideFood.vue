@@ -67,7 +67,6 @@
   </div> -->
 
   <div class="w-6">
-
     <h3>Отправить на СТОП-ЛИСТ</h3>
 
     <DataTable
@@ -306,7 +305,6 @@ onMounted(async () => {
   await store.dispatch("getAllCategoryNames");
   getStoppedFoods();
 });
-
 </script>
 
 <style scoped>

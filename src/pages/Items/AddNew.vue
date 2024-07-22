@@ -288,7 +288,6 @@ const onUpload = async (event: any) => {
 
 const addFood = async () => {
   try {
-
     const formData = new FormData();
     formData.append("file", uploadFile.value);
     formData.append("name", foodName.value);

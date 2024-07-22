@@ -12,7 +12,6 @@
       :value="store.getters.getCategoriesWithFoods"
       dataKey="id"
     >
-
       <template #header>
         <div class="flex justify-content-between mb-3">
           <div class="flex flex-wrap gap-2">
@@ -62,11 +61,17 @@
             style="margin-right: -20px"
           >
             <template #header>
-            <div style="text-align:left">
-              <MultiSelect :modelValue="selectedColumns" :options="foodTogglCol" optionLabel="header" @update:modelValue="onToggle"
-                  display="chip" placeholder="Выбрать столбцы" />
-          </div>
-          </template>
+              <div style="text-align: left">
+                <MultiSelect
+                  :modelValue="selectedColumns"
+                  :options="foodTogglCol"
+                  optionLabel="header"
+                  @update:modelValue="onToggle"
+                  display="chip"
+                  placeholder="Выбрать столбцы"
+                />
+              </div>
+            </template>
             <Column
               field="name"
               header="Название"
@@ -85,19 +90,18 @@
 
               <template #body="slotProps">
                 <div class="flex align-items-center gap-1 w-100">
-                <p>
-                  {{ slotProps.data.name }}
-                </p>
-                <div>
-                  <img
-                  v-tooltip.top="'Изменить'"
-                  :src="`${imgUrl(slotProps.data.URLPhoto)}`"
-                  :alt="slotProps.data.URLPhoto"
-                  class="w-6rem border-round"
-                  @click="updateFoodImage(slotProps.data?.name)"
-                />
-
-                </div>
+                  <p>
+                    {{ slotProps.data.name }}
+                  </p>
+                  <div>
+                    <img
+                      v-tooltip.top="'Изменить'"
+                      :src="`${imgUrl(slotProps.data.URLPhoto)}`"
+                      :alt="slotProps.data.URLPhoto"
+                      class="w-6rem border-round"
+                      @click="updateFoodImage(slotProps.data?.name)"
+                    />
+                  </div>
 
                   <input
                     type="file"
@@ -109,7 +113,12 @@
                 </div>
               </template>
             </Column>
-            <Column v-for="(col, index) of selectedColumns" :field="col.field" :header="col.header" :key="col.field + '_' + index"></Column>
+            <Column
+              v-for="(col, index) of selectedColumns"
+              :field="col.field"
+              :header="col.header"
+              :key="col.field + '_' + index"
+            ></Column>
             <!-- <Column field="price" header="Цена"></Column>
             <Column field="weight" header="Вес"></Column>
             <Column field="iDCTMax" header="iDCTMax"></Column>
@@ -309,20 +318,20 @@ const handleFileChange = async (event: Event) => {
 };
 
 const foodTogglCol = ref([
-  { header: "Цена",field:'price' },
-  { header: "Вес" ,field:'weight' },
-  { header: "iDCTMax",field:'iDCTMax'  },
-  { header: "Контейнер",field:'containerName'  },
-  { header: "Кол-во конт",field:'containerCount'  },
-])
+  { header: "Цена", field: "price" },
+  { header: "Вес", field: "weight" },
+  { header: "iDCTMax", field: "iDCTMax" },
+  { header: "Контейнер", field: "containerName" },
+  { header: "Кол-во конт", field: "containerCount" },
+]);
 
-const onToggle = (val:any) => {
-    selectedColumns.value = foodTogglCol.value.filter(col => val.includes(col));
+const onToggle = (val: any) => {
+  selectedColumns.value = foodTogglCol.value.filter((col) => val.includes(col));
 };
 
 onMounted(async () => {
   await store.dispatch("getAllCategoryNames");
-  selectedColumns.value = foodTogglCol?.value
+  selectedColumns.value = foodTogglCol?.value;
   foodsColumns.value = store.getters.getCategoriesWithFoods?.map(
     (item: CategoryWithFoodsUpdated) => {
       return item?.foods;
@@ -331,7 +340,6 @@ onMounted(async () => {
 
   console.log("foodsColumns", foodsColumns);
   console.log("selectedColumns", selectedColumns);
-
 });
 
 const openDeleteModal = (itemName: string) => {
@@ -433,7 +441,6 @@ const addToPopular = (foodName: string, value: boolean) => {
   itemSelectedPopuler.value.name = foodName;
   itemSelectedPopuler.value.isFeatured = value;
 };
-
 </script>
 
 <style scoped>

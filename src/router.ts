@@ -18,6 +18,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/pages/Menu.vue"),
       },
       {
+        path: "/all-awaiting-orders",
+        name: "AllAwaiting",
+        component: () => import("@/pages/AllAwaiting.vue"),
+      },
+      {
         path: "/sent-to-kitchen",
         name: "SentToKitchen",
         component: () => import("@/pages/Orders/SentKitchen.vue"),

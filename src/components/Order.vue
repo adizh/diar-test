@@ -246,7 +246,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, onBeforeUnmount,onUnmounted } from "vue";
+import { ref, onMounted, computed, onBeforeUnmount, onUnmounted } from "vue";
 import { AwaitingOrder } from "@/types/Order";
 const props = defineProps<{
   order: AwaitingOrder;
@@ -256,7 +256,7 @@ const props = defineProps<{
 import ConfirmButtons from "./UI/ConfirmButtons.vue";
 import EditOrder from "@/components/Update/EditOrder.vue";
 import EditPickupOrder from "@/components/Update/EditPickupOrder.vue";
-let newOrderInverval:any=null
+let newOrderInverval: any = null;
 const isAddNewFoodOpen = ref(false);
 const isStatusOpen = ref(false);
 import OrderAddFood from "@/components/Orders/AddNew.vue";
@@ -448,17 +448,17 @@ onMounted(async () => {
   orderTime.value = useOrderTimer(props?.order?.timeRequest);
 
   newOrderInverval = setInterval(() => {
-        orderTime.value = useOrderTimer(props?.order?.timeRequest);
-        if (!orderTime.value) {
-          clearInterval(newOrderInverval);
-        }
-      }, 1000);
+    orderTime.value = useOrderTimer(props?.order?.timeRequest);
+    if (!orderTime.value) {
+      clearInterval(newOrderInverval);
+    }
+  }, 1000);
 });
 onUnmounted(() => {
-      if (newOrderInverval) {
-        clearInterval(newOrderInverval);
-      }
-    });
+  if (newOrderInverval) {
+    clearInterval(newOrderInverval);
+  }
+});
 </script>
 
 <style scoped lang="scss">
