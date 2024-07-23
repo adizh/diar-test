@@ -46,7 +46,7 @@ const adminLogin = async () => {
         localStorage.setItem("refreshToken", response.data.refreshToken);
         localStorage.setItem("role", response.data.role);
         router.push("/");
-        window.location.reload();
+ 
       }
       console.log("response", response);
     } catch (err) {
@@ -54,8 +54,6 @@ const adminLogin = async () => {
     }
   }
 
-  // "email": "diar.restoran@mail.ru",
-  // "password": "diarrestoran666"
 };
 </script>
 

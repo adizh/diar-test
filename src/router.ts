@@ -118,7 +118,7 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = token ? true : false;
 
   if (isAuthenticated && to.name === "Auth") {
-    next({ name: "Main" });
+    next({ name: "Awaiting" });
   } else if (!isAuthenticated && to.name !== "Auth") {
     next({ name: "Auth" });
   } else {
