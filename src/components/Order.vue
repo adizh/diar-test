@@ -66,7 +66,7 @@
           <div class="m-0 order-info flex flex-row justify-content-between">
             <p class="flex flex-column columns">
               <span
-                ><span class="order-name">Цена</span>: {{ order?.price }}</span
+                ><span class="order-name">Цена</span>: {{ totalFoodPrice }}</span
               >
               <span
                 ><span class="order-name">Сдача</span>:
@@ -77,13 +77,17 @@
                 <span>{{ order?.status }}</span></span
               >
               <span
-                ><span class="order-name">Кол-во блюд</span>:
+                ><span class="order-name">Кол-во столовых приборов</span>:
                 {{ order?.dishesCount }}</span
               >
               <span v-if="order.deliveryPrice"
                 ><span class="order-name">Цена за доставку</span>:
                 {{ order?.deliveryPrice }}</span
               >
+              <span v-if="totalPrice"
+              ><span class="order-name">Общая сумма</span>:
+              {{ totalPrice }}</span
+            >
               <span
                 ><span class="order-name">Комментарий</span>:
                 {{ order?.comment }}</span
@@ -147,7 +151,7 @@
     v-model:visible="isDelegOpen"
     modal
     header="Назначить курьера"
-    :style="{ width: '25rem' }"
+    :style="{ width: '30rem' }"
   >
     <div class="flex flex-column gap-5 align-items-center">
       <Dropdown
@@ -211,7 +215,7 @@
     v-model:visible="isSelectCourier"
     modal
     header="Назначить курьера"
-    :style="{ width: '25rem' }"
+    :style="{ width: '30rem' }"
   >
     <div class="flex flex-column gap-5 align-items-center">
       <Dropdown
@@ -307,6 +311,25 @@ const changeStatus = (event: any) => {
   selectedStatus.value = event?.value;
   isStatusOpen.value = true;
 };
+
+
+const totalPrice = computed(() => {
+  if (props?.order?.foods) {
+    return props.order?.foods?.reduce((total, item) => {
+      return   total + (item?.quantity * item?.price || 0);
+    }, 0) + props?.order?.deliveryPrice
+  }
+  return 0;
+});
+
+const totalFoodPrice =computed(() => {
+  if (props?.order?.foods) {
+    return props.order.foods.reduce((total, item) => {
+      return total + (item?.quantity * item?.price || 0);
+    }, 0) 
+  }
+  return 0;
+});
 
 const updateStatusPickup = async () => {
   try {

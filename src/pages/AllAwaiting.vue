@@ -29,13 +29,13 @@
 <Badge :value="awaitingOrders?.length" severity="danger"></Badge>
 
             </div>
-            <div>
+            <div   v-for="order in awaitingOrders"
+            :key="order?.orderNumber"            class="mb-3">
               <Order
-              v-for="order in awaitingOrders"
-              :key="order?.orderNumber"
+
               :order="order"
               from="awaiting"
-              class="mb-2"
+      
             />
             </div>
        
@@ -54,14 +54,19 @@
                 <Badge :value="store.getters.getAwaitingPickupOrders.length" severity="danger"></Badge>
             </div>
        <div >
+
+        <div class="mb-3"       v-for="order in store.getters.getAwaitingPickupOrders"
+        :key="order?.orderNumber">
         <Order
-        v-for="order in store.getters.getAwaitingPickupOrders"
-          :key="order?.orderNumber"
-          :order="order"
-          from="awaiting-pickup"
- 
- 
-        />
+  
+        :order="order"
+        from="awaiting-pickup"
+
+
+
+      />
+        </div>
+      
        </div>
         </div>
       </div>

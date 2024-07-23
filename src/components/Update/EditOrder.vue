@@ -20,7 +20,7 @@
         />
       </div>
       <div class="flex flex-column gap-3 mb-5">
-        <label for="comment" class="font-semibold">Кол-во еды</label>
+        <label for="comment" class="font-semibold">Кол-во столовых приборов</label>
         <InputNumber
           id="comment"
           class="flex-auto"
@@ -223,7 +223,7 @@ const selectedFoods = ref([] as any[]);
 const orderValues = ref({
   address: "",
   comment: "",
-  dishesCount: 0,
+  dishesCount: null,
   entrance: "",
   floor: "",
   foods: [] as OrderFood[],
@@ -377,9 +377,10 @@ const submitEdit = async (body: any) => {
 };
 
 onMounted(() => {
+
   orderValues.value.address = props?.order?.address;
   orderValues.value.comment = props?.order?.comment;
-  orderValues.value.dishesCount = props?.order?.dishesCount;
+  orderValues.value.dishesCount = props?.order?.dishesCount as unknown as null;
   orderValues.value.entrance = props?.order?.entrance;
   orderValues.value.floor = props?.order?.floor;
   orderValues.value.houseNumber = props?.order?.houseNumber;
