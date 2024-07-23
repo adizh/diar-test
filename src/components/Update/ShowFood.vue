@@ -108,7 +108,7 @@ const expandAll = () => {
 
 const handleGlobalSearch = () => {
   if (globalSearch) {
-    const value = globalSearch.value?.trim()?.toLowerCase();
+    const value = globalSearch.value?.toLowerCase()?.replace(/\s+/g, ' ')?.trim();
     if (value.length > 0) {
       const result = filteredFoods.value?.filter((item) =>
         item?.name?.toLowerCase()?.includes(value),

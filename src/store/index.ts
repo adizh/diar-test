@@ -352,7 +352,7 @@ const store: Store<State> = createStore({
 
     filterCategoriesWithFoodsByCategory({state},search){
       if (search.length > 0) {
-        const searchLower = search.toLowerCase();
+        const searchLower = search.toLowerCase()?.replace(/\s+/g, ' ')?.trim();
         const result = state.filterCategoriesWithFoods?.filter((item: CategoryWithFoodsUpdated) => 
           item.name?.toLowerCase().includes(searchLower)
         );

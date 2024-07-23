@@ -279,7 +279,7 @@ const imgUrl = (url: string) => {
 };
 
 const handleGlobalSearch = () => {
-  const value = globalSearch?.value?.toLocaleLowerCase();
+  const value = globalSearch?.value?.toLowerCase()?.replace(/\s+/g, ' ')?.trim();
   store.dispatch("filterCategoriesWithFoods", value?.trim());
 };
 
