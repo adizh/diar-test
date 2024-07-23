@@ -18,7 +18,7 @@
 
   <main class="flex gap-2">
 
-    <div class="flex flex-wrap">
+    <div class="flex flex-wrap gap-4">
         <Card v-if="!awaitingOrders?.length">
           <template #content>Нет данных</template>
         </Card>
@@ -29,17 +29,21 @@
 <Badge :value="awaitingOrders?.length" severity="danger"></Badge>
 
             </div>
-          <Order
-            v-for="order in awaitingOrders"
-            :key="order?.orderNumber"
-            :order="order"
-            from="awaiting"
-          />
+            <div>
+              <Order
+              v-for="order in awaitingOrders"
+              :key="order?.orderNumber"
+              :order="order"
+              from="awaiting"
+              class="mb-2"
+            />
+            </div>
+       
         </div>
       </div>
-  
+
       <Divider layout="vertical" />
-  
+
       <div class="flex flex-wrap">
         <Card v-if="!store.getters.getAwaitingPickupOrders.length">
           <template #content>Нет данных</template>
@@ -49,12 +53,16 @@
             <div class="flex gap-1 align-items-center mb-3">Заказы в ожидании (самовывоз)
                 <Badge :value="store.getters.getAwaitingPickupOrders.length" severity="danger"></Badge>
             </div>
-          <Order
-          v-for="order in store.getters.getAwaitingPickupOrders"
-            :key="order?.orderNumber"
-            :order="order"
-            from="awaiting-pickup"
-          />
+       <div >
+        <Order
+        v-for="order in store.getters.getAwaitingPickupOrders"
+          :key="order?.orderNumber"
+          :order="order"
+          from="awaiting-pickup"
+ 
+ 
+        />
+       </div>
         </div>
       </div>
   </main>
@@ -133,4 +141,9 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.each-order{
+  margin-bottom: 20px;
+}
+
+</style>

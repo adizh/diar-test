@@ -11,6 +11,7 @@
       filterDisplay="row"
       :value="store.getters.getCategoriesWithFoods"
       dataKey="id"
+      @update:filters="updateFilters"
     >
       <template #header>
         <div class="flex justify-content-between mb-3">
@@ -44,9 +45,9 @@
       <Column field="name" header="Категория">
         <template #filter="{ filterModel, filterCallback }">
           <InputText
-            v-model="filterModel.value"
+            v-model="categoryFilter"
             type="text"
-            @input="filterCallback()"
+            @input="filterCategory"
             class="w-30rem p-column-filter"
             placeholder="Поиск по категориям"
           />
@@ -78,7 +79,7 @@
               style="width: 18rem"
               class="flex nameSearch"
             >
-              <template #filter="{ filterModel, filterCallback }">
+              <template #filter="{filterModel,filterCallback}">
                 <InputText
                   v-model="filterModel.value"
                   type="text"
@@ -119,11 +120,7 @@
               :header="col.header"
               :key="col.field + '_' + index"
             ></Column>
-            <!-- <Column field="price" header="Цена"></Column>
-            <Column field="weight" header="Вес"></Column>
-            <Column field="iDCTMax" header="iDCTMax"></Column>
-            <Column field="containerName" header="Контейнер"></Column>
-            <Column field="containerCount" header="Кол-во конт"></Column> -->
+  
             <Column>
               <template #body="slotProps">
                 <Button
@@ -248,6 +245,7 @@ const store = useStore();
 const expandedRows = ref();
 const selectedColumns = ref();
 const foodsColumns = ref([] as Food[]);
+const foodNameFilter=ref('')
 const itemSelectedPopuler = ref({ name: "", isFeatured: false });
 const openPopularModal = ref(false);
 const filters = ref({
@@ -265,6 +263,7 @@ const editItemValues = ref({
   container: "",
 });
 const globalSearch = ref("");
+const categoryFilter=ref('')
 const isDeleteModalOpen = ref(false);
 const deleteItem = ref("");
 const openStopListModal = ref(false);
@@ -281,8 +280,13 @@ const imgUrl = (url: string) => {
 
 const handleGlobalSearch = () => {
   const value = globalSearch?.value?.toLocaleLowerCase();
-  store.dispatch("filterCategoriesWithFoods", value);
+  store.dispatch("filterCategoriesWithFoods", value?.trim());
 };
+
+const filterFood =()=>{
+  console.log('fitler food foodNameFilter',foodNameFilter)
+  store.dispatch('filterCategoriesWithFoodsByFoodName',foodNameFilter?.value?.trim())
+}
 
 const handleFileChange = async (event: Event) => {
   const input = event.target as HTMLInputElement;
@@ -407,6 +411,21 @@ const updateFoodImage = (foodName: string) => {
     fileInput.value.click();
   }
 };
+
+
+const filterCategory =()=>{
+store.dispatch('filterCategoriesWithFoodsByCategory',categoryFilter?.value?.trim())
+}
+
+
+
+const updateFilters =(event:any)=>{
+  const value = event.name?.value;
+
+  console.log('value',value)
+
+  
+}
 
 const confirmFoodStatus = async () => {
   const body = {

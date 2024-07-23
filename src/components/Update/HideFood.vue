@@ -72,8 +72,11 @@
     <DataTable
       v-model:expandedRows="expandedRows"
       v-model:filters="filtersСategory"
+
       filterDisplay="row"
+
       :value="stoppedListFoodsFalse"
+
       dataKey="id"
     >
       <template #header>
@@ -107,9 +110,9 @@
       <Column field="name" header="Категория">
         <template #filter="{ filterModel, filterCallback }">
           <InputText
-            v-model="filterModel.value"
+            v-model="categoryFilter"
             type="text"
-            @input="filterCallback()"
+            @input="filterCategory"
             class="w-20rem p-column-filter"
             placeholder="Поиск по категориям"
           />
@@ -204,7 +207,9 @@ const selectCategory = (event: any) => {
     selectedFoodFalse.value = null;
     showCheck.value = false;
   }
+
 };
+const categoryFilter =ref('')
 
 const confirmSendStopList = async () => {
   const status = await store.dispatch("sendFoodToStopList", {
@@ -229,9 +234,24 @@ const sendToStopList = (foodName: string) => {
   selectedItemStopList.value = foodName;
 };
 
+
+const filterCategory=()=>{
+  const search = categoryFilter?.value?.trim()?.toLowerCase()
+  if (search.length > 0) {
+
+        const result = filteredFoods?.value?.filter((item: CategoryWithFoodsUpdated) => 
+          item.name?.toLowerCase().includes(search)
+        );
+       stoppedListFoodsFalse.value = result;
+      } else {
+        stoppedListFoodsFalse.value = filteredFoods?.value
+      }
+
+}
+
 const handleGlobalSearch = () => {
   if (globalSearch) {
-    const value = globalSearch.value.toLowerCase();
+    const value = globalSearch.value?.trim()?.toLowerCase();
     if (value.length > 0) {
       const result = filteredFoods.value
         .map((item) => {

@@ -326,6 +326,41 @@ const store: Store<State> = createStore({
       }
     },
 
+    filterCategoriesWithFoodsByFoodName({state},search){
+      console.log('search',search)
+      if (search.length > 0) {
+        const searchLower = search.toLowerCase();
+        const result = state.filterCategoriesWithFoods
+          .map((item) => {
+            const filteredFoods = item.foods.filter((foodItem) => {
+              const foodName = foodItem?.name?.toLowerCase();
+              return foodName?.includes(searchLower);
+            });
+            return {
+              ...item,
+              foods: filteredFoods,
+            };
+          })
+          .filter((category) => category.foods.length > 0);
+    
+          console.log('result',result)
+        state.categoriesWithFoods = result;
+      } else {
+        state.categoriesWithFoods = state.filterCategoriesWithFoods;
+      }
+    },
+
+    filterCategoriesWithFoodsByCategory({state},search){
+      if (search.length > 0) {
+        const searchLower = search.toLowerCase();
+        const result = state.filterCategoriesWithFoods?.filter((item: CategoryWithFoodsUpdated) => 
+          item.name?.toLowerCase().includes(searchLower)
+        );
+        state.categoriesWithFoods = result;
+      } else {
+        state.categoriesWithFoods = state.filterCategoriesWithFoods;
+      }
+    },
     filterCategoriesWithFoods({ state }, search) {
       if (search.length > 0) {
         const searchLower = search.toLowerCase();
