@@ -385,6 +385,17 @@ const store: Store<State> = createStore({
         state.categoriesWithFoods = state.filterCategoriesWithFoods;
       }
     },
+
+ async   fetchCourierById({state},courierId:string){
+      try{
+const response = await http(`admin/get-courier-by-id?courierId=${courierId}`)
+if(response.status===200){
+  return response.data
+}
+      }catch(err){
+        console.log(err)
+      }
+    }
   },
 
   getters: {

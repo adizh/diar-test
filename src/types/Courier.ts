@@ -4,6 +4,6 @@ export type Courier = {
   password: string;
   phone: string;
   role?: string;
-  username: string;
+  userName: string;
   active?: boolean;
 };

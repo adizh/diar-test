@@ -20,6 +20,7 @@ vbas3
         :order="order"
         type="delegated"
         from="delegated"
+
       />
     </div>
   </div>
@@ -32,6 +33,7 @@ import { AwaitingOrder } from "@/types/Order";
 import { onMounted } from "vue";
 import Order from "@/components/Order.vue";
 import PhoneCodeFilters from "@/components/UI/PhoneCodeFilters.vue";
+import { useStore } from "vuex";
 
 const noOrder = ref("");
 const orders = ref<AwaitingOrder[]>([]);
@@ -89,6 +91,7 @@ const changeOption = () => {
 
 onMounted(() => {
   fetchOrders();
+
 });
 </script>
 

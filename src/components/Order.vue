@@ -95,10 +95,16 @@
             </p>
             <div class="columns">
               <div class="order-info" v-if="order.address">
+
                 <span class="long-info">
                   <span class="order-name">Адрес:</span>
                   <span>{{ order?.address }}</span>
                 </span>
+
+                <span v-if="order.courierId && courier?.id"
+                ><span class="order-name">Курьер</span>: {{courier?.userName}}
+    </span
+              >
                 <span v-if="order.entrance"
                   ><span class="order-name">Вход</span>:
                   {{ order.entrance }}</span
@@ -442,11 +448,17 @@ const closeModal = () => {
     window.location.reload();
   }, 1000);
 };
+const courier=ref({} as Courier)
 
 onMounted(async () => {
   await store.dispatch("fetchAllCouriers");
   orderTime.value = useOrderTimer(props?.order?.timeRequest);
 
+   courier.value= await store.dispatch('fetchCourierById',props?.order?.courierId)
+
+
+
+   console.log('courier???',courier)
   newOrderInverval = setInterval(() => {
     orderTime.value = useOrderTimer(props?.order?.timeRequest);
     if (!orderTime.value) {
