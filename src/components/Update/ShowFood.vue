@@ -47,7 +47,7 @@
 
     <Dialog modal header="СТОП-ЛИСТ" v-model:visible="openStopListModal">
       <ConfirmButtons
-        confirmText="Потвердить"
+        confirmText="Подтвердить"
         declineText="Отменить"
         :descrText="`Вы действительно хотите снять с СТОП-ЛИСТА ${selectedFoodList}`"
         @confirmAction="confirmRemoveStopList"

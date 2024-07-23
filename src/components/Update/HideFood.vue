@@ -160,7 +160,7 @@
 
     <Dialog modal header="СТОП-ЛИСТ" v-model:visible="openStopListModal">
       <ConfirmButtons
-        confirmText="Потвердить"
+        confirmText="Подтвердить"
         declineText="Отменить"
         :descrText="`Вы действительно хотите отправить на СТОП-ЛИСТ ${selectedItemStopList}`"
         @confirmAction="confirmSendStopList"

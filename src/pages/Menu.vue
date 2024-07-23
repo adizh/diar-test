@@ -209,7 +209,7 @@
 
     <Dialog v-model:visible="openPopularModal" modal header="Статус еды">
       <ConfirmButtons
-        confirmText="Потвердить"
+        confirmText="Подтвердить"
         declineText="Отменить"
         :descrText="`Вы действительно хотите ${itemSelectedPopuler.isFeatured ? 'убрать из популярного' : 'добавить в популярное'} ${itemSelectedPopuler?.name}`"
         @confirmAction="confirmFoodStatus"
@@ -219,7 +219,7 @@
 
     <Dialog modal header="СТОП-ЛИСТ" v-model:visible="openStopListModal">
       <ConfirmButtons
-        confirmText="Потвердить"
+        confirmText="Подтвердить"
         declineText="Отменить"
         :descrText="`Вы действительно хотите отправить на СТОП-ЛИСТ ${selectedItemForStopList}`"
         @confirmAction="confirmSendStopList"
