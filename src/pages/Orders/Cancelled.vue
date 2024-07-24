@@ -45,18 +45,36 @@ const filteredOrders = ref<AwaitingOrder[]>([]);
 
 const currentPage = ref(1);
 const totalItems = ref(1);
-
+const orderNumber=ref('')
+const phone =ref('')
 const changePage = (event: { page: number }) => {
   currentPage.value = event?.page + 1;
   fetchAwaitingOrders();
   window.scrollTo(0, 0);
 };
-
+type Param={
+  orderNumber?:string,
+  page:number,
+  phone?:string
+}
 const fetchAwaitingOrders = async () => {
+  let params:Param={
+page:currentPage?.value
+  }
+
+  if(orderNumber?.value){
+    params.orderNumber=orderNumber?.value
+  }
+  if(phone?.value){
+    params.phone=phone?.value
+  }
   try {
-    const response = (await http.get(
-      `admin/get-all-cancel-orders?page=${currentPage?.value}`,
-    )) as any;
+    const response = await http({
+      method:'get',
+      url:'admin/get-all-cancel-orders',
+      params:params
+    })
+
     console.log("response cancelled orders", response);
     if (response.status == 200) {
       awaitingOrders.value = response.data.orderResponse;
@@ -73,30 +91,46 @@ const normalizePhone = (phone: string) => {
 };
 
 const handlePhone = (event: string) => {
-  const normalizedInput = normalizePhone(event);
-  const results = filteredOrders?.value?.filter((item) => {
-    const normalizedUserPhone = normalizePhone(item?.userPhone);
-    return normalizedUserPhone.includes(normalizedInput);
-  });
-  if (event?.length > 0) {
-    awaitingOrders.value = results;
-  } else {
-    awaitingOrders.value = filteredOrders?.value;
+  orderNumber.value=''
+  phone.value =`+996 ${event}`
+  if(!event?.length){
+    phone.value=''
+
+
+    console.log('phone  ',phone)
   }
+  fetchAwaitingOrders()
+  // const normalizedInput = normalizePhone(event);
+  // const results = filteredOrders?.value?.filter((item) => {
+  //   const normalizedUserPhone = normalizePhone(item?.userPhone);
+  //   return normalizedUserPhone.includes(normalizedInput);
+  // });
+  // if (event?.length > 0) {
+  //   awaitingOrders.value = results;
+  // } else {
+  //   awaitingOrders.value = filteredOrders?.value;
+  // }
 };
 
 const handleOrderNumber = (event: any) => {
   const value = String(event?.value);
-  const results = filteredOrders?.value?.filter((item) =>
-    String(item?.orderNumber)?.includes(value),
-  );
+  phone.value=''
+  orderNumber.value =value;
 
-  if (value && value?.length > 0) {
-    awaitingOrders.value = results;
-  }
-  if (value === "null") {
-    awaitingOrders.value = filteredOrders.value;
-  }
+
+
+
+  fetchAwaitingOrders()
+  // const results = filteredOrders?.value?.filter((item) =>
+  //   String(item?.orderNumber)?.includes(value),
+  // );
+
+  // if (value && value?.length > 0) {
+  //   awaitingOrders.value = results;
+  // }
+  // if (value === "null") {
+  //   awaitingOrders.value = filteredOrders.value;
+  // }
 };
 
 const changeOption = () => {

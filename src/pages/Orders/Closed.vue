@@ -45,16 +45,39 @@ const filteredOrders = ref<AwaitingOrder[]>([]);
 const totalPages = ref(0);
 const totalItems = ref(0);
 const currentPage = ref(1);
+const orderNumber=ref('')
+const phone=ref('')
+
 const changePage = (event: { page: number }) => {
   currentPage.value = event?.page + 1;
   fetchOrders();
   window.scrollTo(0, 0);
 };
+type Params={
+  orderNumber?:string,
+  page:number,
+  phone?:string
+
+}
 const fetchOrders = async () => {
   try {
-    const response = (await http.get(
-      `admin/get-all-closed-orders?page=${currentPage?.value}`,
-    )) as any;
+
+
+let params:Params={
+        page:currentPage?.value
+}
+if(orderNumber?.value){
+  params.orderNumber=orderNumber?.value
+}
+if( phone?.value){
+  params.phone=phone?.value
+}
+  const response = await http({
+      method:'get',
+      url:"admin/get-all-closed-orders",
+      params:params
+    })
+    
     console.log("response closed order", response);
     if (response.status == 200) {
       orders.value = response.data?.orderResponse;
@@ -72,31 +95,30 @@ const normalizePhone = (phone: string) => {
 };
 
 const handlePhone = (event: string) => {
-  const normalizedInput = normalizePhone(event);
-  const results = filteredOrders?.value?.filter((item) => {
-    const normalizedUserPhone = normalizePhone(item?.userPhone);
-    return normalizedUserPhone.includes(normalizedInput);
-  });
+//+996 (999) 98-85-37
+  phone.value =`+996 ${event}`
+  console.log('handle hpeoin event',event)
+  console.log('handle hpeoin phone',phone)
+  fetchOrders()
+  // const normalizedInput = normalizePhone(event);
+  // const results = filteredOrders?.value?.filter((item) => {
+  //   const normalizedUserPhone = normalizePhone(item?.userPhone);
+  //   return normalizedUserPhone.includes(normalizedInput);
+  // });
 
-  if (event?.length > 0) {
-    orders.value = results;
-  } else {
-    orders.value = filteredOrders?.value;
-  }
+  // if (event?.length > 0) {
+  //   orders.value = results;
+  // } else {
+  //   orders.value = filteredOrders?.value;
+  // }
 };
 
 const handleOrderNumber = (event: any) => {
   const value = String(event?.value);
-  const results = filteredOrders?.value?.filter((item) =>
-    String(item?.orderNumber)?.includes(value),
-  );
+  orderNumber.value = value;
+  fetchOrders()
+  console.log(' handleOrderNumber,value',value)
 
-  if (value && value?.length > 0) {
-    orders.value = results;
-  }
-  if (value === "null") {
-    orders.value = filteredOrders.value;
-  }
 };
 const changeOption = () => {
   orders.value = filteredOrders?.value;

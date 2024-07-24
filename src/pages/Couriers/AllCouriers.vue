@@ -96,7 +96,6 @@ const password = ref("");
 const toast = useToast();
 const createCourier = async () => {
   if (
-    email?.value.length > 0 &&
     username.value?.length > 0 &&
     phone.value?.length > 0 &&
     password.value?.length > 0
@@ -136,6 +135,7 @@ const createCourier = async () => {
 onMounted(() => {
   store.dispatch("fetchAllCouriers");
 });
+
 </script>
 
 <style scoped lang="scss">

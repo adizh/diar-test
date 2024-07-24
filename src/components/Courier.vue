@@ -22,13 +22,13 @@
             @click="() => router.push({ path: `/courier/${item?.id}` })"
           />
         </div>
-        <span> Имя курьера: {{ item?.username }} </span>
+        <span>Имя курьера: {{ item?.username }} </span>
       </div>
     </template>
     <template #content>
       <p class="m-0 flex flex-column g-3">
-        <span>Почта :{{ item?.email }}</span>
-        <span class="mt-2">Номер телефона :{{ item?.phone }}</span>
+        <span>Почта: {{ item?.email }}</span>
+        <span class="mt-2">Номер телефона: {{ item?.phone }}</span>
       </p>
     </template>
   </Card>

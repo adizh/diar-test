@@ -88,6 +88,11 @@
               ><span class="order-name">Общая сумма</span>:
               {{ totalPrice }}</span
             >
+            <span v-if="totalFoodsCount"
+            ><span class="order-name">Общее кол-во блюд</span>:
+            {{ totalFoodsCount }}</span
+          >
+            
               <span
                 ><span class="order-name">Комментарий</span>:
                 {{ order?.comment }}</span
@@ -318,6 +323,15 @@ const totalPrice = computed(() => {
     return props.order?.foods?.reduce((total, item) => {
       return   total + (item?.quantity * item?.price || 0);
     }, 0) + props?.order?.deliveryPrice
+  }
+  return 0;
+});
+
+const totalFoodsCount =  computed(() => {
+  if (props?.order?.foods) {
+    return props.order?.foods?.reduce((total, item) => {
+      return   total + (item?.quantity || 0);
+    }, 0)
   }
   return 0;
 });

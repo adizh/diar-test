@@ -40,7 +40,8 @@ import Order from "@/components/Order.vue";
 import PhoneCodeFilters from "@/components/UI/PhoneCodeFilters.vue";
 
 const noOrder = ref("");
-
+const orderNumber=ref('')
+const phone=ref('')
 const orders = ref<AwaitingOrder[]>([]);
 const filteredOrders = ref<AwaitingOrder[]>([]);
 const currentPage = ref(1);
@@ -51,12 +52,27 @@ const changePage = (event: { page: number }) => {
   fetchOrders();
   window.scrollTo(0, 0);
 };
-
+type Param={
+  orderNumber?:string,
+  page:number,
+  phone?:string
+}
 const fetchOrders = async () => {
   try {
-    const response = (await http.get(
-      `admin/get-all-closed-pickup-orders?page=${currentPage?.value}`,
-    )) as any;
+    let params:Param={
+page:currentPage?.value
+    }
+    if(orderNumber?.value && orderNumber?.value !==null && orderNumber!==null){
+      params.orderNumber =  orderNumber?.value===null ? '' : orderNumber?.value
+    }
+    if(phone?.value){
+      params.phone= phone.value || ''
+    }
+
+    const response = await http({
+      method:'get',
+      url:'admin/get-all-closed-pickup-orders',params:params
+    })
     console.log("response closed pickup", response);
     if (response.status == 200) {
       orders.value = response.data?.pickUpOrderResponse;
@@ -73,31 +89,39 @@ const normalizePhone = (phone: string) => {
 };
 
 const handlePhone = (event: string) => {
-  const normalizedInput = normalizePhone(event);
-  const results = filteredOrders?.value?.filter((item) => {
-    const normalizedUserPhone = normalizePhone(item?.userPhone);
-    return normalizedUserPhone.includes(normalizedInput);
-  });
+  orderNumber.value =''
+  phone.value =`+996 ${event}`
 
-  if (event?.length > 0) {
-    orders.value = results;
-  } else {
-    orders.value = filteredOrders?.value;
-  }
+  fetchOrders()
+  // const normalizedInput = normalizePhone(event);
+  // const results = filteredOrders?.value?.filter((item) => {
+  //   const normalizedUserPhone = normalizePhone(item?.userPhone);
+  //   return normalizedUserPhone.includes(normalizedInput);
+  // });
+
+  // if (event?.length > 0) {
+  //   orders.value = results;
+  // } else {
+  //   orders.value = filteredOrders?.value;
+  // }
 };
 
 const handleOrderNumber = (event: any) => {
+  phone.value =''
   const value = String(event?.value);
-  const results = filteredOrders?.value?.filter((item) =>
-    String(item?.orderNumber)?.includes(value),
-  );
 
-  if (value && value?.length > 0) {
-    orders.value = results;
-  }
-  if (value === "null") {
-    orders.value = filteredOrders.value;
-  }
+  orderNumber.value = value;
+  fetchOrders()
+  // const results = filteredOrders?.value?.filter((item) =>
+  //   String(item?.orderNumber)?.includes(value),
+  // );
+
+  // if (value && value?.length > 0) {
+  //   orders.value = results;
+  // }
+  // if (value === "null") {
+  //   orders.value = filteredOrders.value;
+  // }
 };
 
 const changeOption = () => {

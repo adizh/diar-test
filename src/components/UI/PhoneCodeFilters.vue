@@ -13,8 +13,8 @@
     <InputMask
       v-else
       v-model="filterPhone"
-      mask="999 99-99-99"
-      placeholder="700 11-11-11"
+      mask="(999) 99-99-99"
+      placeholder="(700) 11-11-11"
       @update:modelValue="handlePhone"
       :autoClear="false"
     />
