@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 
 import store from "./store";
-const url = "http://176.126.164.230:8088";
+const url = "https://api.diyar.kg";
 
 const http: AxiosInstance = axios.create({
   baseURL: url,

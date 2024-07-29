@@ -12,7 +12,7 @@
 
     <div class="flex flex-column gap-2">
       <label for="password">Пароль</label>
-      <Password v-model="password" toggleMask id="password" />
+      <Password v-model.trim="password" toggleMask id="password" />
     </div>
     <Button label="Отправить" type="submit" />
   </form>
