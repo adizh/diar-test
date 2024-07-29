@@ -66,7 +66,7 @@
           <div class="m-0 order-info flex flex-row justify-content-between">
             <p class="flex flex-column columns">
               <span
-                ><span class="order-name">Цена</span>: {{ totalFoodPrice }}</span
+                ><span class="order-name">Цена</span>: {{ order?.price }}</span
               >
               <span
                 ><span class="order-name">Сдача</span>:
@@ -86,7 +86,7 @@
               >
               <span v-if="totalPrice"
               ><span class="order-name">Общая сумма</span>:
-              {{ totalPrice }}</span
+              {{ order?.price + order?.deliveryPrice }}</span
             >
             <span v-if="totalFoodsCount"
             ><span class="order-name">Общее кол-во блюд</span>:
@@ -277,7 +277,7 @@ const isStatusOpen = ref(false);
 import OrderAddFood from "@/components/Orders/AddNew.vue";
 const store = useStore();
 const isDelegOpen = ref(false);
-let intervalId: any = null;
+
 const isSelectCourier = ref(false);
 const selectedStatus = ref({} as Status);
 const isCancelOpen = ref(false);
@@ -286,7 +286,6 @@ import { Courier } from "@/types/Courier";
 import http from "@/http";
 import { useToast } from "primevue/usetoast";
 const selectedCourier = ref({} as Courier);
-const selectedCourierForStatus = ref({} as Courier);
 const toast = useToast();
 const isEditOpen = ref(false);
 const orderTime = ref(false);
@@ -336,14 +335,7 @@ const totalFoodsCount =  computed(() => {
   return 0;
 });
 
-const totalFoodPrice =computed(() => {
-  if (props?.order?.foods) {
-    return props.order.foods.reduce((total, item) => {
-      return total + (item?.quantity * item?.price || 0);
-    }, 0) 
-  }
-  return 0;
-});
+
 
 const updateStatusPickup = async () => {
   try {
@@ -492,10 +484,6 @@ onMounted(async () => {
   orderTime.value = useOrderTimer(props?.order?.timeRequest);
 
    courier.value= await store.dispatch('fetchCourierById',props?.order?.courierId)
-
-
-
-   console.log('courier???',courier)
   newOrderInverval = setInterval(() => {
     orderTime.value = useOrderTimer(props?.order?.timeRequest);
     if (!orderTime.value) {
