@@ -307,7 +307,7 @@ const updateOrder = async () => {
     return { name: item?.name, quantity: item?.quantity, price: item?.price };
   });
   const totalFoods = [...foods, ...orderFoods];
-  console.log("totalFoods", totalFoods);
+
   const body = {
     address: orderValues.value.address,
     comment: orderValues.value.comment,
@@ -324,7 +324,7 @@ const updateOrder = async () => {
     userPhone: orderValues.value.userPhone,
     sdacha: orderValues.value?.sdacha,
     orderNumber: props?.order?.orderNumber,
-    deliveryPrice: orderValues?.value?.deliveryPrice,
+    deliveryPrice: orderValues?.value?.deliveryPrice
   };
 
   const areFieldsFilled = Object.entries(orderValues.value)
@@ -333,8 +333,7 @@ const updateOrder = async () => {
         key === "foods" ||
         key === "price" ||
         key === "address" ||
-        key === "dishesCount" ||
-        key === "houseNumber" ||
+key==='paymentMethod' ||
         key === "userPhone" ||
         key === "userName"
       );
@@ -387,7 +386,6 @@ onMounted(() => {
   orderValues.value.intercom = props?.order?.intercom;
   orderValues.value.kvOffice = props?.order?.kvOffice;
   orderValues.value.paymentMethod = props?.order?.paymentMethod;
-  
   orderValues.value.price = props?.order?.price;
   orderValues.value.userName = props?.order?.userName;
   orderValues.value.userPhone = props?.order?.userPhone;

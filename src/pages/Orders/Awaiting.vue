@@ -31,6 +31,7 @@
   <div class="card flex justify-content-center">
     <Dialog
       v-model:visible="isCreateModal"
+
       modal
       header="Создать заказ"
       :style="{ width: '35rem' }"
@@ -173,7 +174,6 @@
       </div>
       <div class="flex flex-column gap-3 mb-5">
         <label for="comment" class="font-semibold">Номер телефона</label>
-        <!-- <InputText id="comment" class="flex-auto" autocomplete="off" v-model.trim="orderValues.userPhone" /> -->
 
         <InputMask
           id="phone"
@@ -364,13 +364,13 @@ const createOrder = async () => {
       console.log("response create order", response);
       if (response.status === 200) {
         isCreateModal.value = false;
-        fetchAwaitingOrders();
         toast.add({
           severity: "success",
           summary: "Успешно",
           detail: "Заказ создан!",
           life: 3000,
         });
+        fetchAwaitingOrders();
       }
     } catch (err) {
       console.log(err);

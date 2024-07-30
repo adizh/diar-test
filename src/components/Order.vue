@@ -240,7 +240,9 @@
   </Dialog>
 
   <Dialog
+  
     v-model:visible="isEditOpen"
+
     modal
     :header="`Редактировать заказ ${order?.orderNumber}`"
     :style="{ width: '45rem' }"
@@ -252,7 +254,7 @@
 
     />
     <EditPickupOrder
-    
+
       :order="order"
       @closeModal="isEditOpen = false"
       v-else-if="from === 'awaiting-pickup'"
