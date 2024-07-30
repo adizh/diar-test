@@ -249,8 +249,10 @@
       :order="order"
       @closeModal="isEditOpen = false"
       v-if="from === 'awaiting'"
+
     />
     <EditPickupOrder
+    
       :order="order"
       @closeModal="isEditOpen = false"
       v-else-if="from === 'awaiting-pickup'"

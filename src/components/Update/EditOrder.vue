@@ -387,6 +387,7 @@ onMounted(() => {
   orderValues.value.intercom = props?.order?.intercom;
   orderValues.value.kvOffice = props?.order?.kvOffice;
   orderValues.value.paymentMethod = props?.order?.paymentMethod;
+  
   orderValues.value.price = props?.order?.price;
   orderValues.value.userName = props?.order?.userName;
   orderValues.value.userPhone = props?.order?.userPhone;
