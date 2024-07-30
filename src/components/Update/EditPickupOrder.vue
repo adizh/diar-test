@@ -271,7 +271,6 @@ const updatePickupOrder = async () => {
 };
 onMounted(() => {
   store.dispatch("fetchAllFood");
-
   orderValues.value.comment = props?.order?.comment;
   orderValues.value.dishesCount = props?.order?.dishesCount;
   orderValues.value.foods = props?.order?.foods;

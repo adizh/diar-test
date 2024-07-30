@@ -31,7 +31,6 @@
   <div class="card flex justify-content-center">
     <Dialog
       v-model:visible="isCreateModal"
-
       modal
       header="Создать заказ"
       :style="{ width: '35rem' }"
