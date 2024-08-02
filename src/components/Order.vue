@@ -65,11 +65,15 @@
           </div>
           <div class="m-0 order-info flex flex-row justify-content-between">
             <p class="flex flex-column columns">
+              <span v-if="totalPrice"
+              ><span class="order-name">Общая сумма</span>:
+              {{ order?.price + order?.deliveryPrice }}</span
+            >
               <span
-                ><span class="order-name">Цена</span>: {{ order?.price }}</span
+                ><span class="order-name">Цена, вместе с контейнером и скидкой(если есть)</span>: {{ order?.price }}</span
               >
               <span
-                ><span class="order-name">Сдача</span>:
+                ><span class="order-name">Сдача c</span>:
                 {{ order?.sdacha }}</span
               >
               <span class="long-info-status"
@@ -84,10 +88,7 @@
                 ><span class="order-name">Цена за доставку</span>:
                 {{ order?.deliveryPrice }}</span
               >
-              <span v-if="totalPrice"
-              ><span class="order-name">Общая сумма</span>:
-              {{ order?.price + order?.deliveryPrice }}</span
-            >
+           
             <span v-if="totalFoodsCount"
             ><span class="order-name">Общее кол-во блюд</span>:
             {{ totalFoodsCount }}</span
@@ -115,7 +116,7 @@
     </span
               >
                 <span v-if="order.entrance"
-                  ><span class="order-name">Вход</span>:
+                  ><span class="order-name">Подъезд</span>:
                   {{ order.entrance }}</span
                 >
                 <span v-if="order.floor"
@@ -123,7 +124,7 @@
                   {{ order?.floor }}</span
                 >
                 <span v-if="order.houseNumber"
-                  ><span class="order-name">Номер квартиры</span>:
+                  ><span class="order-name">Номер дома</span>:
                   {{ order?.houseNumber }}</span
                 >
                 <span v-if="order.intercom"
