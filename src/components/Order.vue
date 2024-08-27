@@ -141,9 +141,15 @@
                   order?.paymentMethod
                 }}</span
               >
+              <span v-if="from==='awaiting-pickup'"
+              ><span class="order-name">Время</span>:{{
+                order?.prepareFor
+              }}</span
+            >
               <span
                 ><span class="order-name">Запрошенное время</span>:{{
                   order?.timeRequest
+
                 }}</span
               >
             </div>
@@ -184,9 +190,13 @@
   >
     <ConfirmButtons
       confirmText="Да"
+
       declineText="Нет"
+
       @close-modal="isCancelOpen = false"
+
       @confirm-action="cancelOrder"
+
       :descr-text="'Вы действительно хотите отменить заказ'"
     />
   </Dialog>
