@@ -1,0 +1,22 @@
+stages:
+  - build_and_deploy
+
+build_and_deploy:
+  stage: build_and_deploy
+  image: docker:dind
+  services:
+    - docker:18.09.7-dind
+  tags:
+    - diar-admin-web
+  script:
+    - apk update
+    - apk add --no-cache nodejs npm docker
+    - npm install
+    - npm run build
+    - docker stop diar_admin_web || true
+    - docker rm diar_admin_web || true
+    - docker rmi -f diar_admin_web || true
+    - docker build -t diar_admin_web:latest .
+    - docker run -d --name diar_admin_web --network=host diar_admin_web:latest
+  only:
+    - test
