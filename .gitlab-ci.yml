@@ -19,4 +19,4 @@ build_and_deploy:
     - docker build -t diar_admin_web:latest .
     - docker run -d --name diar_admin_web --network=host diar_admin_web:latest
   only:
-    - test
+    - adinai
