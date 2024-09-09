@@ -3,9 +3,9 @@ stages:
 
 build_and_deploy:
   stage: build_and_deploy
-  image: docker:dind
+  image: docker:24.0.5
   services:
-    - docker:18.09.7-dind
+    - docker:24.0.5-dind
   tags:
     - diar-admin-web
   script:
