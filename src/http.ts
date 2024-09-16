@@ -13,7 +13,6 @@ http.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-
   return config;
 });
 
@@ -24,7 +23,6 @@ http.interceptors.response.use(
   async (error: AxiosError) => {
     if (error.response && error.response.status === 401) {
       console.log("401 error detected, dispatching refreshToken");
-
       await store.dispatch("refreshToken");
     }
     return Promise.reject(error);

@@ -1,4 +1,5 @@
 import { OrderFood } from "./Food";
+export type OrderStatus='awaiting confirmation from the operator'|'the order is being prepared'|'order is being delivered'|'Finished'|'canceled order'
 
 export type AwaitingOrder = {
   userId: string;
@@ -18,7 +19,7 @@ export type AwaitingOrder = {
   price: number;
   timeRequest: string;
   courierId: string;
-  status: string;
+  status: OrderStatus;
   sdacha: number;
   deliveryPrice: number;
   prepareFor?: string;

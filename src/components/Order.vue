@@ -1,14 +1,19 @@
 <template>
+
   <Card :class="{ open: isOpen, newOrder: orderTime }">
+
     <template #title>
+
       <div class="flex flex-row gap-3 align-items-start">
+
         <div class="flex flex-column mb-2">
+
           <p>№ {{ order?.orderNumber }}</p>
 
           <span
-            ><span class="order-name">Тел</span> :{{ order?.userPhone }}</span
-          >
+            ><span class="order-name">Тел</span> :{{ order?.userPhone }}</span>
         </div>
+
         <Button
           v-if="from === 'kitchen'"
           label="Назначить курьера"
@@ -78,26 +83,28 @@
               >
               <span class="long-info-status"
                 ><span class="order-name">Статус</span>:
-                <span>{{ order?.status }}</span></span
+                <span>{{ orderStatusMapping[order?.status] }}</span></span
               >
               <span
                 ><span class="order-name">Кол-во столовых приборов</span>:
                 {{ order?.dishesCount }}</span
               >
               <span v-if="order.deliveryPrice"
-                ><span class="order-name">Цена за доставку</span>:
+                ><span class="order-name"> Цена за доставку </span>:
                 {{ order?.deliveryPrice }}</span
               >
            
             <span v-if="totalFoodsCount"
-            ><span class="order-name">Общее кол-во блюд</span>:
+            ><span class="order-name"> Общее кол-во блюд </span>:
             {{ totalFoodsCount }}</span
           >
             
               <span
-                ><span class="order-name">Комментарий</span>:
+                >
+                <span class="order-name">Комментарий</span>:
                 {{ order?.comment }}</span
               >
+
               <span
                 ><span class="order-name">Имя</span>:
                 {{ order?.userName }}</span
@@ -149,7 +156,6 @@
               <span
                 ><span class="order-name">Запрошенное время</span>:{{
                   order?.timeRequest
-
                 }}</span
               >
             </div>
@@ -303,7 +309,17 @@ import { useToast } from "primevue/usetoast";
 const selectedCourier = ref({} as Courier);
 const toast = useToast();
 const isEditOpen = ref(false);
+
+const orderStatusMapping = {
+  'awaiting confirmation from the operator':"В ожидании",
+  'the order is being prepared':"На кухне",
+  "order is being delivered":'Передан курьеру',
+  "Finished":"Доставленный",
+  'canceled order':'Отмененный'
+}
+
 const orderTime = ref(false);
+
 import { useOrderTimer } from "@/hooks/ordersTimer";
 
 type Status = {
@@ -311,6 +327,7 @@ type Status = {
   code: string;
 };
 const isOpen = ref(false);
+
 const statusOptions = ref([
   { name: "Отправить на кухню", code: "the order is being prepared" },
   { name: "Закончить заказ", code: "Finished" },

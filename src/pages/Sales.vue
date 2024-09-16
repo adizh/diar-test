@@ -25,7 +25,7 @@
       v-model:visible="isModalVisible"
       modal
       header="Создать распродажу"
-      :style="{ width: '25rem' }"
+      :style="{ width: '35rem' }"
     >
       <div class="flex flex-column gap-3 mb-5">
         <label for="name" class="font-semibold">Название</label>

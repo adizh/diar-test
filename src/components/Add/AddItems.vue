@@ -83,7 +83,7 @@
     header="Добавить еду"
     v-model:visible="isModalVisibleFood"
     modal
-    style="width: 28rem"
+    style="width: 40rem"
   >
     <div class="flex flex-column gap-3 mb-5">
       <label for="name" class="font-semibold">Название еды</label>
@@ -104,7 +104,7 @@
         :options="store.getters.categoriesName"
         optionLabel="name"
         placeholder="Выбрать категорию"
-        class="w-full md:w-14rem"
+        class="w-full md:w-18rem"
         id="category"
       />
     </div>
@@ -118,7 +118,7 @@
         :options="store.getters.allContainers"
         optionLabel="name"
         placeholder="Выбрать контейнер"
-        class="w-full md:w-14rem"
+        class="w-full md:w-18rem"
         id="category"
       />
     </div>
