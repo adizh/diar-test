@@ -11,7 +11,9 @@
           <p>№ {{ order?.orderNumber }}</p>
 
           <span
-            ><span class="order-name">Тел</span> :{{ order?.userPhone }}</span>
+            >
+              <span class="order-name">Тел</span> :{{ order?.userPhone }}</span>
+
         </div>
 
         <Button
@@ -21,6 +23,7 @@
           raised
           @click="isDelegOpen = true"
         />
+
         <Dropdown
           v-model="selectedStatus"
           :options="computedStatus"
@@ -38,6 +41,7 @@
           raised
           @click="isAddNewFoodOpen = true"
         />
+
         <Button
           v-if="from === 'awaiting' || from === 'awaiting-pickup'"
           icon="pi pi-pencil"
@@ -45,6 +49,7 @@
           v-tooltip.top="'Редактировать'"
           @click="isEditOpen = true"
         />
+
       </div>
       <Button
         :label="isOpen ? 'Свернуть' : 'Показать'"
@@ -118,7 +123,7 @@
                   <span>{{ order?.address }}</span>
                 </span>
 
-                <span v-if="order.courierId && courier?.id"
+                <span v-if="order?.courierId && courier?.id"
                 ><span class="order-name">Курьер</span>: {{courier?.userName}}
     </span
               >
@@ -257,9 +262,7 @@
   </Dialog>
 
   <Dialog
-  
     v-model:visible="isEditOpen"
-
     modal
     :header="`Редактировать заказ ${order?.orderNumber}`"
     :style="{ width: '45rem' }"
@@ -268,17 +271,18 @@
       :order="order"
       @closeModal="isEditOpen = false"
       v-if="from === 'awaiting'"
-
     />
-    <EditPickupOrder
 
+    <EditPickupOrder
       :order="order"
       @closeModal="isEditOpen = false"
       v-else-if="from === 'awaiting-pickup'"
     />
+
   </Dialog>
 
   <Toast />
+  
 </template>
 
 <script setup lang="ts">
@@ -505,17 +509,24 @@ const cancelOrder = async () => {
 
 const closeModal = () => {
   isAddNewFoodOpen.value = false;
+
   setTimeout(() => {
     window.location.reload();
   }, 1000);
+
 };
 const courier=ref({} as Courier)
 
 onMounted(async () => {
+
   await store.dispatch("fetchAllCouriers");
+
   orderTime.value = useOrderTimer(props?.order?.timeRequest);
 
-   courier.value= await store.dispatch('fetchCourierById',props?.order?.courierId)
+  if(props.order.courierId){
+   courier.value = await store.dispatch('fetchCourierById',props?.order?.courierId ||null);
+  }
+
   newOrderInverval = setInterval(() => {
     orderTime.value = useOrderTimer(props?.order?.timeRequest);
     if (!orderTime.value) {
@@ -523,24 +534,30 @@ onMounted(async () => {
     }
   }, 1000);
 });
+
 onUnmounted(() => {
   if (newOrderInverval) {
     clearInterval(newOrderInverval);
   }
 });
+
 </script>
 
 <style scoped lang="scss">
 @import "../assets/mixins.scss";
+
 .order-info {
   @include flex(column, center, start);
 }
+
 .newOrder {
   box-shadow: 0 2px 12px #2dd6b1;
 }
+
 .order-name {
   opacity: 0.7;
 }
+
 .columns {
   gap: 10px;
   display: flex;
@@ -568,4 +585,5 @@ onUnmounted(() => {
 .open {
   width: 95% !important;
 }
+
 </style>

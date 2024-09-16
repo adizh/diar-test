@@ -100,7 +100,7 @@ const store: Store<State> = createStore({
           localStorage.removeItem("refreshToken");
           window.location.reload();
         }
-        //  }
+
       }
     },
 
@@ -342,7 +342,7 @@ const store: Store<State> = createStore({
             };
           })
           .filter((category) => category.foods.length > 0);
-    
+
           console.log('result',result)
         state.categoriesWithFoods = result;
       } else {

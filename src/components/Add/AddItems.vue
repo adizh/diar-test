@@ -95,6 +95,16 @@
       />
     </div>
 
+    <div class="flex flex-column gap-3 mb-5">
+      <label for="name" class="font-semibold">Описание</label>
+      <InputText
+        id="name"
+        class="flex-auto"
+        autocomplete="off"
+        v-model.trim="foodDescription"
+      />
+    </div>
+
     <div class="card flex gap-3 mb-5 flex-column">
       <label for="category" class="font-semibold w-full"
         >Название категории</label
@@ -218,6 +228,7 @@ type Event = {
   value: Option;
 };
 
+const foodDescription =ref('')
 const addOptions: Option[] = [
   { name: "Добавить еду", value: "add-food" },
   { name: "Добавить категорию", value: "add-category" },
@@ -294,6 +305,7 @@ const checkFields = () => {
   if (
     uploadFile?.value &&
     foodName?.value &&
+     foodDescription.value &&
     selectedCategory?.value?.name &&
     foodPrice?.value &&
     foodWeight?.value &&
@@ -324,6 +336,8 @@ const addFood = async () => {
       formData.append("categoryName", selectedCategory.value.name);
       formData.append("price", foodPrice.value);
       formData.append("weight", foodWeight.value);
+      formData.append("description", foodDescription.value);
+
       formData.append("iDCTMax", foodiDCTMax.value);
       formData.append("containerName", selectedContainerName.value.name);
       formData.append("containerCount", foodContainerCount.value);

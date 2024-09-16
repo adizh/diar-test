@@ -188,6 +188,7 @@
       v-model:visible="isEditOpen"
       modal
       header="Обновить еду"
+      
       :style="{ width: '35rem' }"
     >
       <EditFood
