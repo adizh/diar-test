@@ -28,10 +28,13 @@
 
     <div class="flex gap-3 mb-5 flex-column">
       <label for="name" class="font-semibold">Новое описание</label>
-      <InputText
+      <Textarea
         id="name"
         class="flex-auto"
         autocomplete="off"
+        rows="5"
+        cols="30"
+        autoResize
         v-model.trim="newFoodDescription"
       />
     </div>
