@@ -1,7 +1,7 @@
 <template>
   <div class="section">
     <div class="section-header">
-      <div class="flex flex-row gap-5 align-items-center">
+      <div class="flex justify-content-between align-items-center mb-5">
         <span> Курьеры </span>
         <Button label="Создать курьера" @click="visible = true" />
       </div>

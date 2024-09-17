@@ -1,17 +1,23 @@
 <template>
   <div class="section">
-    <div class="mb-5 flex flex-row gap-4 align-items-start">
+    <div class="flex justify-content-between align-items-center mb-5">
       <p>Новости</p>
       <Button
-        type="button"
-        label="Добавить новость"
-        @click="isModalVisible = true"
-      ></Button>
+      type="button"
+      label="Добавить новость"
+      @click="isModalVisible = true"
+    ></Button>
     </div>
 
-    <div class="flex flex-row gap-4 flex-wrap">
+    
+
+    <div class="flex flex-row gap-4 flex-wrap" v-if="news.length">
       <ItemsNews v-for="item in news" :key="item?.name" :news="item" />
     </div>
+
+    <Card v-else>
+      <template #content>Нет данных</template>
+    </Card>
   </div>
 
   <div class="card flex justify-content-center">

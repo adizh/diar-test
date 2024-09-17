@@ -1,7 +1,7 @@
 <template>
   <div class="section">
     <div class="mb-5">
-      <div class="flex flex-row gap-4 align-items-start mb-5">
+      <div class="flex justify-content-between align-items-center mb-5">
 
         <p>Распродажи</p>
 
@@ -14,7 +14,7 @@
         ></Button>
       </div>
 
-      <div class="sales flex gap-2">
+      <div class="sales flex gap-2" v-if="sales.length">
         <SaleItem
           v-for="sale in sales"
           :key="sale?.id"
@@ -22,6 +22,10 @@
           class="flex flex-column justify-content-center w-20rem"
         />
       </div>
+
+      <Card v-else>
+        <template #content>Нет данных</template>
+      </Card>
     </div>
   </div>
   <div class="card flex justify-content-center">

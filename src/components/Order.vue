@@ -167,7 +167,7 @@
     v-model:visible="isDelegOpen"
     modal
     header="Назначить курьера"
-    :style="{ width: '30rem' }"
+    :style="{ width: '35rem' }"
   >
     <div class="flex flex-column gap-5 align-items-center">
       <Dropdown
@@ -175,7 +175,7 @@
         :options="store?.getters?.getCouriers"
         optionLabel="username"
         placeholder="Выбрать курьера"
-        class="w-full md:w-14rem"
+        class="w-full md:w-18rem"
       />
       <Button
         label="Назначить"
@@ -231,7 +231,7 @@
     v-model:visible="isSelectCourier"
     modal
     header="Назначить курьера"
-    :style="{ width: '30rem' }"
+    :style="{ width: '35rem' }"
   >
     <div class="flex flex-column gap-5 align-items-center">
       <Dropdown
@@ -239,7 +239,7 @@
         :options="store?.getters?.getCouriers"
         optionLabel="username"
         placeholder="Выбрать курьера"
-        class="w-full md:w-14rem"
+        class="w-full md:w-18rem"
       />
       <Button
         label="Назначить"
