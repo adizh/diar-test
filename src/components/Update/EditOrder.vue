@@ -20,7 +20,9 @@
         />
       </div>
       <div class="flex flex-column gap-3 mb-5">
-        <label for="comment" class="font-semibold">Кол-во столовых приборов</label>
+        <label for="comment" class="font-semibold"
+          >Кол-во столовых приборов</label
+        >
         <InputNumber
           id="comment"
           class="flex-auto"
@@ -324,7 +326,7 @@ const updateOrder = async () => {
     userPhone: orderValues.value.userPhone,
     sdacha: orderValues.value?.sdacha,
     orderNumber: props?.order?.orderNumber,
-    deliveryPrice: orderValues?.value?.deliveryPrice
+    deliveryPrice: orderValues?.value?.deliveryPrice,
   };
 
   const areFieldsFilled = Object.entries(orderValues.value)
@@ -333,7 +335,7 @@ const updateOrder = async () => {
         key === "foods" ||
         key === "price" ||
         key === "address" ||
-key==='paymentMethod' ||
+        key === "paymentMethod" ||
         key === "userPhone" ||
         key === "userName"
       );
@@ -376,7 +378,6 @@ const submitEdit = async (body: any) => {
 };
 
 onMounted(() => {
-
   orderValues.value.address = props?.order?.address;
   orderValues.value.comment = props?.order?.comment;
   orderValues.value.dishesCount = props?.order?.dishesCount as unknown as null;

@@ -3,7 +3,6 @@
     <div class="card flex gap-3 mb-5 flex-column">
       <div class="flex gap-3 mb-5 flex-column">
         <label for="category" class="font-semibold w-full"
-
           >Старое название еды</label
         >
 
@@ -13,7 +12,6 @@
           class="flex-auto"
           autocomplete="off"
           v-model.trim="allFoodName"
-
         />
       </div>
     </div>
@@ -125,8 +123,8 @@ const allFoodName = ref(props.editItemName);
 const newFoodName = ref("");
 const foodPrice = ref(0);
 const foodWeight = ref("");
-const newFoodDescription =ref('');
-const newFoodIDCTMax = ref(0)
+const newFoodDescription = ref("");
+const newFoodIDCTMax = ref(0);
 
 const selectedContainerName = ref({ name: "" } as { name: string });
 const newContainerName = ref("");
@@ -142,8 +140,8 @@ const updateFood = async () => {
         newPrice: foodPrice.value,
         newWeight: foodWeight.value,
         oldName: allFoodName?.value,
-        newDescription:newFoodDescription.value,
-        newIDCTMax:newFoodIDCTMax.value
+        newDescription: newFoodDescription.value,
+        newIDCTMax: newFoodIDCTMax.value,
       };
       const response = await http.put("admin/update-food", body);
       console.log("response", response);
@@ -180,8 +178,8 @@ const getFoodByName = async (foodName: string) => {
       foodWeight.value = response.data.weight;
       newContainerName.value = response.data.containerName;
       newContainerCount.value = response.data.containerCount;
-      newFoodDescription.value =response.data.description;
-      newFoodIDCTMax.value=response.data.iDCTMax
+      newFoodDescription.value = response.data.description;
+      newFoodIDCTMax.value = response.data.iDCTMax;
       selectedContainerName.value = { name: response.data.containerName };
     }
   } catch (err) {

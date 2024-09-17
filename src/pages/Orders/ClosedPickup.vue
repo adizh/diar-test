@@ -40,8 +40,8 @@ import Order from "@/components/Order.vue";
 import PhoneCodeFilters from "@/components/UI/PhoneCodeFilters.vue";
 
 const noOrder = ref("");
-const orderNumber=ref('')
-const phone=ref('')
+const orderNumber = ref("");
+const phone = ref("");
 const orders = ref<AwaitingOrder[]>([]);
 const filteredOrders = ref<AwaitingOrder[]>([]);
 const currentPage = ref(1);
@@ -52,27 +52,33 @@ const changePage = (event: { page: number }) => {
   fetchOrders();
   window.scrollTo(0, 0);
 };
-type Param={
-  orderNumber?:string,
-  page:number,
-  phone?:string
-}
+type Param = {
+  orderNumber?: string;
+  page: number;
+  phone?: string;
+};
 const fetchOrders = async () => {
   try {
-    let params:Param={
-page:currentPage?.value
+    let params: Param = {
+      page: currentPage?.value,
+    };
+    if (
+      orderNumber?.value &&
+      orderNumber?.value !== null &&
+      orderNumber !== null
+    ) {
+      params.orderNumber =
+        orderNumber?.value === null ? "" : orderNumber?.value;
     }
-    if(orderNumber?.value && orderNumber?.value !==null && orderNumber!==null){
-      params.orderNumber =  orderNumber?.value===null ? '' : orderNumber?.value
-    }
-    if(phone?.value){
-      params.phone= phone.value || ''
+    if (phone?.value) {
+      params.phone = phone.value || "";
     }
 
     const response = await http({
-      method:'get',
-      url:'admin/get-all-closed-pickup-orders',params:params
-    })
+      method: "get",
+      url: "admin/get-all-closed-pickup-orders",
+      params: params,
+    });
     console.log("response closed pickup", response);
     if (response.status == 200) {
       orders.value = response.data?.pickUpOrderResponse;
@@ -89,10 +95,10 @@ const normalizePhone = (phone: string) => {
 };
 
 const handlePhone = (event: string) => {
-  orderNumber.value =''
-  phone.value =`+996 ${event}`
+  orderNumber.value = "";
+  phone.value = `+996 ${event}`;
 
-  fetchOrders()
+  fetchOrders();
   // const normalizedInput = normalizePhone(event);
   // const results = filteredOrders?.value?.filter((item) => {
   //   const normalizedUserPhone = normalizePhone(item?.userPhone);
@@ -107,11 +113,11 @@ const handlePhone = (event: string) => {
 };
 
 const handleOrderNumber = (event: any) => {
-  phone.value =''
+  phone.value = "";
   const value = String(event?.value);
 
   orderNumber.value = value;
-  fetchOrders()
+  fetchOrders();
   // const results = filteredOrders?.value?.filter((item) =>
   //   String(item?.orderNumber)?.includes(value),
   // );

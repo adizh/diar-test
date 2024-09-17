@@ -41,7 +41,7 @@ const adminLogin = async () => {
         password: password.value,
       };
       const response = await axios.post(`${BaseUrl}/auth/sign-in`, body);
-      
+
       if (response.status === 200) {
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("refreshToken", response.data.refreshToken);
@@ -54,7 +54,6 @@ const adminLogin = async () => {
       console.log(err, "error login");
     }
   }
-
 };
 </script>
 

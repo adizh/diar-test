@@ -72,11 +72,8 @@
     <DataTable
       v-model:expandedRows="expandedRows"
       v-model:filters="filtersСategory"
-
       filterDisplay="row"
-
       :value="stoppedListFoodsFalse"
-
       dataKey="id"
     >
       <template #header>
@@ -207,9 +204,8 @@ const selectCategory = (event: any) => {
     selectedFoodFalse.value = null;
     showCheck.value = false;
   }
-
 };
-const categoryFilter =ref('')
+const categoryFilter = ref("");
 
 const confirmSendStopList = async () => {
   const status = await store.dispatch("sendFoodToStopList", {
@@ -234,25 +230,25 @@ const sendToStopList = (foodName: string) => {
   selectedItemStopList.value = foodName;
 };
 
-
-const filterCategory=()=>{
-  const search = categoryFilter?.value?.toLowerCase().replace(/\s+/g, ' ').trim();
+const filterCategory = () => {
+  const search = categoryFilter?.value
+    ?.toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
   if (search.length > 0) {
-
-        const result = filteredFoods?.value?.filter((item: CategoryWithFoodsUpdated) => 
-          item.name?.toLowerCase().includes(search)
-        );
-       stoppedListFoodsFalse.value = result;
-      } else {
-        stoppedListFoodsFalse.value = filteredFoods?.value
-      }
-
-}
+    const result = filteredFoods?.value?.filter(
+      (item: CategoryWithFoodsUpdated) =>
+        item.name?.toLowerCase().includes(search),
+    );
+    stoppedListFoodsFalse.value = result;
+  } else {
+    stoppedListFoodsFalse.value = filteredFoods?.value;
+  }
+};
 
 const handleGlobalSearch = () => {
   if (globalSearch) {
-
-    const value = globalSearch.value?.toLowerCase().replace(/\s+/g, ' ').trim();
+    const value = globalSearch.value?.toLowerCase().replace(/\s+/g, " ").trim();
     if (value.length > 0) {
       const result = filteredFoods.value
         .map((item) => {

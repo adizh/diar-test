@@ -1,5 +1,10 @@
 import { OrderFood } from "./Food";
-export type OrderStatus='awaiting confirmation from the operator'|'the order is being prepared'|'order is being delivered'|'Finished'|'canceled order'
+export type OrderStatus =
+  | "awaiting confirmation from the operator"
+  | "the order is being prepared"
+  | "order is being delivered"
+  | "Finished"
+  | "canceled order";
 
 export type AwaitingOrder = {
   userId: string;

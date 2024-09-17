@@ -79,7 +79,7 @@
               style="width: 18rem"
               class="flex nameSearch"
             >
-              <template #filter="{filterModel,filterCallback}">
+              <template #filter="{ filterModel, filterCallback }">
                 <InputText
                   v-model="filterModel.value"
                   type="text"
@@ -120,7 +120,7 @@
               :header="col.header"
               :key="col.field + '_' + index"
             ></Column>
-  
+
             <Column>
               <template #body="slotProps">
                 <Button
@@ -188,7 +188,6 @@
       v-model:visible="isEditOpen"
       modal
       header="Обновить еду"
-      
       :style="{ width: '35rem' }"
     >
       <EditFood
@@ -246,7 +245,7 @@ const store = useStore();
 const expandedRows = ref();
 const selectedColumns = ref();
 const foodsColumns = ref([] as Food[]);
-const foodNameFilter=ref('')
+const foodNameFilter = ref("");
 const itemSelectedPopuler = ref({ name: "", isFeatured: false });
 const openPopularModal = ref(false);
 const filters = ref({
@@ -264,7 +263,7 @@ const editItemValues = ref({
   container: "",
 });
 const globalSearch = ref("");
-const categoryFilter=ref('')
+const categoryFilter = ref("");
 const isDeleteModalOpen = ref(false);
 const deleteItem = ref("");
 const openStopListModal = ref(false);
@@ -280,14 +279,20 @@ const imgUrl = (url: string) => {
 };
 
 const handleGlobalSearch = () => {
-  const value = globalSearch?.value?.toLowerCase()?.replace(/\s+/g, ' ')?.trim();
+  const value = globalSearch?.value
+    ?.toLowerCase()
+    ?.replace(/\s+/g, " ")
+    ?.trim();
   store.dispatch("filterCategoriesWithFoods", value?.trim());
 };
 
-const filterFood =()=>{
-  console.log('fitler food foodNameFilter',foodNameFilter)
-  store.dispatch('filterCategoriesWithFoodsByFoodName',foodNameFilter?.value?.trim())
-}
+const filterFood = () => {
+  console.log("fitler food foodNameFilter", foodNameFilter);
+  store.dispatch(
+    "filterCategoriesWithFoodsByFoodName",
+    foodNameFilter?.value?.trim(),
+  );
+};
 
 const handleFileChange = async (event: Event) => {
   const input = event.target as HTMLInputElement;
@@ -413,20 +418,18 @@ const updateFoodImage = (foodName: string) => {
   }
 };
 
+const filterCategory = () => {
+  store.dispatch(
+    "filterCategoriesWithFoodsByCategory",
+    categoryFilter?.value?.trim(),
+  );
+};
 
-const filterCategory =()=>{
-store.dispatch('filterCategoriesWithFoodsByCategory',categoryFilter?.value?.trim())
-}
-
-
-
-const updateFilters =(event:any)=>{
+const updateFilters = (event: any) => {
   const value = event.name?.value;
 
-  console.log('value',value)
-
-  
-}
+  console.log("value", value);
+};
 
 const confirmFoodStatus = async () => {
   const body = {

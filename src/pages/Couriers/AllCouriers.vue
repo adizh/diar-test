@@ -135,7 +135,6 @@ const createCourier = async () => {
 onMounted(() => {
   store.dispatch("fetchAllCouriers");
 });
-
 </script>
 
 <style scoped lang="scss">

@@ -55,7 +55,9 @@
         />
       </div>
       <div class="flex flex-column gap-3 mb-5">
-        <label for="comment" class="font-semibold">Кол-во столовых приборов</label>
+        <label for="comment" class="font-semibold"
+          >Кол-во столовых приборов</label
+        >
         <InputNumber
           id="comment"
           class="flex-auto"

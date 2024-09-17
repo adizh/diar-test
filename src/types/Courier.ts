@@ -6,5 +6,5 @@ export type Courier = {
   role?: string;
   userName: string;
   active?: boolean;
-  username:string
+  username: string;
 };

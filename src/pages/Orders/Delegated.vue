@@ -20,7 +20,6 @@ vbas3
         :order="order"
         type="delegated"
         from="delegated"
-
       />
     </div>
   </div>
@@ -91,7 +90,6 @@ const changeOption = () => {
 
 onMounted(() => {
   fetchOrders();
-
 });
 </script>
 

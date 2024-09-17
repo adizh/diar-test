@@ -45,35 +45,35 @@ const filteredOrders = ref<AwaitingOrder[]>([]);
 
 const currentPage = ref(1);
 const totalItems = ref(1);
-const orderNumber=ref('')
-const phone =ref('')
+const orderNumber = ref("");
+const phone = ref("");
 const changePage = (event: { page: number }) => {
   currentPage.value = event?.page + 1;
   fetchAwaitingOrders();
   window.scrollTo(0, 0);
 };
-type Param={
-  orderNumber?:string,
-  page:number,
-  phone?:string
-}
+type Param = {
+  orderNumber?: string;
+  page: number;
+  phone?: string;
+};
 const fetchAwaitingOrders = async () => {
-  let params:Param={
-page:currentPage?.value
-  }
+  let params: Param = {
+    page: currentPage?.value,
+  };
 
-  if(orderNumber?.value){
-    params.orderNumber=orderNumber?.value
+  if (orderNumber?.value) {
+    params.orderNumber = orderNumber?.value;
   }
-  if(phone?.value){
-    params.phone=phone?.value
+  if (phone?.value) {
+    params.phone = phone?.value;
   }
   try {
     const response = await http({
-      method:'get',
-      url:'admin/get-all-cancel-orders',
-      params:params
-    })
+      method: "get",
+      url: "admin/get-all-cancel-orders",
+      params: params,
+    });
 
     console.log("response cancelled orders", response);
     if (response.status == 200) {
@@ -91,15 +91,14 @@ const normalizePhone = (phone: string) => {
 };
 
 const handlePhone = (event: string) => {
-  orderNumber.value=''
-  phone.value =`+996 ${event}`
-  if(!event?.length){
-    phone.value=''
+  orderNumber.value = "";
+  phone.value = `+996 ${event}`;
+  if (!event?.length) {
+    phone.value = "";
 
-
-    console.log('phone  ',phone)
+    console.log("phone  ", phone);
   }
-  fetchAwaitingOrders()
+  fetchAwaitingOrders();
   // const normalizedInput = normalizePhone(event);
   // const results = filteredOrders?.value?.filter((item) => {
   //   const normalizedUserPhone = normalizePhone(item?.userPhone);
@@ -114,13 +113,10 @@ const handlePhone = (event: string) => {
 
 const handleOrderNumber = (event: any) => {
   const value = String(event?.value);
-  phone.value=''
-  orderNumber.value =value;
+  phone.value = "";
+  orderNumber.value = value;
 
-
-
-
-  fetchAwaitingOrders()
+  fetchAwaitingOrders();
   // const results = filteredOrders?.value?.filter((item) =>
   //   String(item?.orderNumber)?.includes(value),
   // );

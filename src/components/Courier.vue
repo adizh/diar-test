@@ -43,7 +43,12 @@
     />
   </Dialog>
 
-  <Dialog v-model:visible="isEditOpen" style="width:30rem" modal header="Редактирование курьера">
+  <Dialog
+    v-model:visible="isEditOpen"
+    style="width: 30rem"
+    modal
+    header="Редактирование курьера"
+  >
     <EditCourier :item="item" @closeModal="isEditOpen = false" />
   </Dialog>
 </template>

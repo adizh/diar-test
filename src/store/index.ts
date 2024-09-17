@@ -100,7 +100,6 @@ const store: Store<State> = createStore({
           localStorage.removeItem("refreshToken");
           window.location.reload();
         }
-
       }
     },
 
@@ -326,8 +325,8 @@ const store: Store<State> = createStore({
       }
     },
 
-    filterCategoriesWithFoodsByFoodName({state},search){
-      console.log('search',search)
+    filterCategoriesWithFoodsByFoodName({ state }, search) {
+      console.log("search", search);
       if (search.length > 0) {
         const searchLower = search.toLowerCase();
         const result = state.filterCategoriesWithFoods
@@ -343,18 +342,19 @@ const store: Store<State> = createStore({
           })
           .filter((category) => category.foods.length > 0);
 
-          console.log('result',result)
+        console.log("result", result);
         state.categoriesWithFoods = result;
       } else {
         state.categoriesWithFoods = state.filterCategoriesWithFoods;
       }
     },
 
-    filterCategoriesWithFoodsByCategory({state},search){
+    filterCategoriesWithFoodsByCategory({ state }, search) {
       if (search.length > 0) {
-        const searchLower = search.toLowerCase()?.replace(/\s+/g, ' ')?.trim();
-        const result = state.filterCategoriesWithFoods?.filter((item: CategoryWithFoodsUpdated) => 
-          item.name?.toLowerCase().includes(searchLower)
+        const searchLower = search.toLowerCase()?.replace(/\s+/g, " ")?.trim();
+        const result = state.filterCategoriesWithFoods?.filter(
+          (item: CategoryWithFoodsUpdated) =>
+            item.name?.toLowerCase().includes(searchLower),
         );
         state.categoriesWithFoods = result;
       } else {
@@ -386,16 +386,18 @@ const store: Store<State> = createStore({
       }
     },
 
- async   fetchCourierById({state},courierId:string){
-      try{
-const response = await http(`admin/get-courier-by-id?courierId=${courierId}`)
-if(response.status===200){
-  return response.data
-}
-      }catch(err){
-        console.log(err)
+    async fetchCourierById({ state }, courierId: string) {
+      try {
+        const response = await http(
+          `admin/get-courier-by-id?courierId=${courierId}`,
+        );
+        if (response.status === 200) {
+          return response.data;
+        }
+      } catch (err) {
+        console.log(err);
       }
-    }
+    },
   },
 
   getters: {

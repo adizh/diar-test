@@ -98,10 +98,11 @@
     <div class="flex flex-column gap-3 mb-5">
       <label for="name" class="font-semibold">Описание</label>
       <Textarea
-      autoResize
+        autoResize
         id="name"
         class="flex-auto"
-        rows="5" cols="30"
+        rows="5"
+        cols="30"
         autocomplete="off"
         v-model.trim="foodDescription"
       />
@@ -230,7 +231,7 @@ type Event = {
   value: Option;
 };
 
-const foodDescription =ref('')
+const foodDescription = ref("");
 const addOptions: Option[] = [
   { name: "Добавить еду", value: "add-food" },
   { name: "Добавить категорию", value: "add-category" },
@@ -307,7 +308,7 @@ const checkFields = () => {
   if (
     uploadFile?.value &&
     foodName?.value &&
-     foodDescription.value &&
+    foodDescription.value &&
     selectedCategory?.value?.name &&
     foodPrice?.value &&
     foodWeight?.value &&

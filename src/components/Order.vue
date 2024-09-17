@@ -1,19 +1,13 @@
 <template>
-
   <Card :class="{ open: isOpen, newOrder: orderTime }">
-
     <template #title>
-
       <div class="flex flex-row gap-3 align-items-start">
-
         <div class="flex flex-column mb-2">
-
           <p>№ {{ order?.orderNumber }}</p>
 
-          <span
-            >
-              <span class="order-name">Тел</span> :{{ order?.userPhone }}</span>
-
+          <span>
+            <span class="order-name">Тел</span> :{{ order?.userPhone }}</span
+          >
         </div>
 
         <Button
@@ -49,7 +43,6 @@
           v-tooltip.top="'Редактировать'"
           @click="isEditOpen = true"
         />
-
       </div>
       <Button
         :label="isOpen ? 'Свернуть' : 'Показать'"
@@ -76,11 +69,13 @@
           <div class="m-0 order-info flex flex-row justify-content-between">
             <p class="flex flex-column columns">
               <span v-if="totalPrice"
-              ><span class="order-name">Общая сумма</span>:
-              {{ order?.price + order?.deliveryPrice }}</span
-            >
+                ><span class="order-name">Общая сумма</span>:
+                {{ order?.price + order?.deliveryPrice }}</span
+              >
               <span
-                ><span class="order-name">Цена, вместе с контейнером и скидкой(если есть)</span>: {{ order?.price }}</span
+                ><span class="order-name"
+                  >Цена, вместе с контейнером и скидкой(если есть)</span
+                >: {{ order?.price }}</span
               >
               <span
                 ><span class="order-name">Сдача c</span>:
@@ -98,14 +93,13 @@
                 ><span class="order-name"> Цена за доставку </span>:
                 {{ order?.deliveryPrice }}</span
               >
-           
-            <span v-if="totalFoodsCount"
-            ><span class="order-name"> Общее кол-во блюд </span>:
-            {{ totalFoodsCount }}</span
-          >
-            
-              <span
-                >
+
+              <span v-if="totalFoodsCount"
+                ><span class="order-name"> Общее кол-во блюд </span>:
+                {{ totalFoodsCount }}</span
+              >
+
+              <span>
                 <span class="order-name">Комментарий</span>:
                 {{ order?.comment }}</span
               >
@@ -117,16 +111,15 @@
             </p>
             <div class="columns">
               <div class="order-info" v-if="order.address">
-
                 <span class="long-info">
                   <span class="order-name">Адрес:</span>
                   <span>{{ order?.address }}</span>
                 </span>
 
                 <span v-if="order?.courierId && courier?.id"
-                ><span class="order-name">Курьер</span>: {{courier?.userName}}
-    </span
-              >
+                  ><span class="order-name">Курьер</span>:
+                  {{ courier?.userName }}
+                </span>
                 <span v-if="order.entrance"
                   ><span class="order-name">Подъезд</span>:
                   {{ order.entrance }}</span
@@ -153,11 +146,11 @@
                   order?.paymentMethod
                 }}</span
               >
-              <span v-if="from==='awaiting-pickup'"
-              ><span class="order-name">Время</span>:{{
-                order?.prepareFor
-              }}</span
-            >
+              <span v-if="from === 'awaiting-pickup'"
+                ><span class="order-name">Время</span>:{{
+                  order?.prepareFor
+                }}</span
+              >
               <span
                 ><span class="order-name">Запрошенное время</span>:{{
                   order?.timeRequest
@@ -201,13 +194,9 @@
   >
     <ConfirmButtons
       confirmText="Да"
-
       declineText="Нет"
-
       @close-modal="isCancelOpen = false"
-
       @confirm-action="cancelOrder"
-
       :descr-text="'Вы действительно хотите отменить заказ'"
     />
   </Dialog>
@@ -278,11 +267,9 @@
       @closeModal="isEditOpen = false"
       v-else-if="from === 'awaiting-pickup'"
     />
-
   </Dialog>
 
   <Toast />
-  
 </template>
 
 <script setup lang="ts">
@@ -315,12 +302,12 @@ const toast = useToast();
 const isEditOpen = ref(false);
 
 const orderStatusMapping = {
-  'awaiting confirmation from the operator':"В ожидании",
-  'the order is being prepared':"На кухне",
-  "order is being delivered":'Передан курьеру',
-  "Finished":"Доставленный",
-  'canceled order':'Отмененный'
-}
+  "awaiting confirmation from the operator": "В ожидании",
+  "the order is being prepared": "На кухне",
+  "order is being delivered": "Передан курьеру",
+  Finished: "Доставленный",
+  "canceled order": "Отмененный",
+};
 
 const orderTime = ref(false);
 
@@ -352,26 +339,25 @@ const changeStatus = (event: any) => {
   isStatusOpen.value = true;
 };
 
-
 const totalPrice = computed(() => {
   if (props?.order?.foods) {
-    return props.order?.foods?.reduce((total, item) => {
-      return   total + (item?.quantity * item?.price || 0);
-    }, 0) + props?.order?.deliveryPrice
+    return (
+      props.order?.foods?.reduce((total, item) => {
+        return total + (item?.quantity * item?.price || 0);
+      }, 0) + props?.order?.deliveryPrice
+    );
   }
   return 0;
 });
 
-const totalFoodsCount =  computed(() => {
+const totalFoodsCount = computed(() => {
   if (props?.order?.foods) {
     return props.order?.foods?.reduce((total, item) => {
-      return   total + (item?.quantity || 0);
-    }, 0)
+      return total + (item?.quantity || 0);
+    }, 0);
   }
   return 0;
 });
-
-
 
 const updateStatusPickup = async () => {
   try {
@@ -513,18 +499,19 @@ const closeModal = () => {
   setTimeout(() => {
     window.location.reload();
   }, 1000);
-
 };
-const courier=ref({} as Courier)
+const courier = ref({} as Courier);
 
 onMounted(async () => {
-
   await store.dispatch("fetchAllCouriers");
 
   orderTime.value = useOrderTimer(props?.order?.timeRequest);
 
-  if(props.order.courierId){
-   courier.value = await store.dispatch('fetchCourierById',props?.order?.courierId ||null);
+  if (props.order.courierId) {
+    courier.value = await store.dispatch(
+      "fetchCourierById",
+      props?.order?.courierId || null,
+    );
   }
 
   newOrderInverval = setInterval(() => {
@@ -540,7 +527,6 @@ onUnmounted(() => {
     clearInterval(newOrderInverval);
   }
 });
-
 </script>
 
 <style scoped lang="scss">
@@ -585,5 +571,4 @@ onUnmounted(() => {
 .open {
   width: 95% !important;
 }
-
 </style>

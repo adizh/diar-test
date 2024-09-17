@@ -17,10 +17,10 @@
             ></Badge>
 
             <Badge
-            :value="`(${totalAwaitingCount})`"
-            severity="danger"
-            v-if="item?.label === 'Заказы'"
-          ></Badge>
+              :value="`(${totalAwaitingCount})`"
+              severity="danger"
+              v-if="item?.label === 'Заказы'"
+            ></Badge>
           </span>
         </a>
       </template>
@@ -148,7 +148,7 @@ const selectedRoute = ref("");
 intervalId = setInterval(() => {
   store.dispatch("fetchAwaitingOrders");
   store.dispatch("fetchAwaitingPickup");
-  getStoppedFoods()
+  getStoppedFoods();
 }, 5000);
 
 onBeforeUnmount(() => {
@@ -196,17 +196,18 @@ const getStoppedFoods = async () => {
         foods: item.Foods,
       }));
 
-      const filteredOne= result?.filter(
-        (item: CategoryWithFoodsUpdated) => item?.foods!==null)?.map((subItem:CategoryWithFoodsUpdated)=>subItem?.foods?.length)
-        
-        if(filteredOne && filteredOne?.length){
-          stopListCount.value =   filteredOne?.reduce((acc:number,rec:number)=>acc+rec)
-        }
-        
-      
-      console.log('result',result)
-      console.log("stopListCount", stopListCount);
+      const filteredOne = result
+        ?.filter((item: CategoryWithFoodsUpdated) => item?.foods !== null)
+        ?.map((subItem: CategoryWithFoodsUpdated) => subItem?.foods?.length);
 
+      if (filteredOne && filteredOne?.length) {
+        stopListCount.value = filteredOne?.reduce(
+          (acc: number, rec: number) => acc + rec,
+        );
+      }
+
+      console.log("result", result);
+      console.log("stopListCount", stopListCount);
     }
   } catch (err) {
     console.log(err);
@@ -390,9 +391,6 @@ onMounted(async () => {
   setTimeout(() => {
     isMenuBarOpen.value = true;
   }, 1000);
-
-
-
 });
 </script>
 

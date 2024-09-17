@@ -12,7 +12,9 @@
       </div>
 
       <div class="flex flex-column gap-3 mb-5">
-        <label for="comment" class="font-semibold">Кол-во столовых приборов</label>
+        <label for="comment" class="font-semibold"
+          >Кол-во столовых приборов</label
+        >
 
         <InputNumber
           id="comment"
@@ -232,7 +234,9 @@ const updatePickupOrder = async () => {
   console.log("totalFoods", totalFoods);
   if (
     totalFoods?.length > 0 &&
-    orderValues?.value?.price > 0 && orderValues?.value?.userPhone &&  orderValues?.value?.userName
+    orderValues?.value?.price > 0 &&
+    orderValues?.value?.userPhone &&
+    orderValues?.value?.userName
   ) {
     try {
       const body = {

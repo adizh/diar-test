@@ -45,39 +45,36 @@ const filteredOrders = ref<AwaitingOrder[]>([]);
 const totalPages = ref(0);
 const totalItems = ref(0);
 const currentPage = ref(1);
-const orderNumber=ref('')
-const phone=ref('')
+const orderNumber = ref("");
+const phone = ref("");
 
 const changePage = (event: { page: number }) => {
   currentPage.value = event?.page + 1;
   fetchOrders();
   window.scrollTo(0, 0);
 };
-type Params={
-  orderNumber?:string,
-  page:number,
-  phone?:string
-
-}
+type Params = {
+  orderNumber?: string;
+  page: number;
+  phone?: string;
+};
 const fetchOrders = async () => {
   try {
+    let params: Params = {
+      page: currentPage?.value,
+    };
+    if (orderNumber?.value) {
+      params.orderNumber = orderNumber?.value;
+    }
+    if (phone?.value) {
+      params.phone = phone?.value;
+    }
+    const response = await http({
+      method: "get",
+      url: "admin/get-all-closed-orders",
+      params: params,
+    });
 
-
-let params:Params={
-        page:currentPage?.value
-}
-if(orderNumber?.value){
-  params.orderNumber=orderNumber?.value
-}
-if( phone?.value){
-  params.phone=phone?.value
-}
-  const response = await http({
-      method:'get',
-      url:"admin/get-all-closed-orders",
-      params:params
-    })
-    
     console.log("response closed order", response);
     if (response.status == 200) {
       orders.value = response.data?.orderResponse;
@@ -95,11 +92,11 @@ const normalizePhone = (phone: string) => {
 };
 
 const handlePhone = (event: string) => {
-//+996 (999) 98-85-37
-  phone.value =`+996 ${event}`
-  console.log('handle hpeoin event',event)
-  console.log('handle hpeoin phone',phone)
-  fetchOrders()
+  //+996 (999) 98-85-37
+  phone.value = `+996 ${event}`;
+  console.log("handle hpeoin event", event);
+  console.log("handle hpeoin phone", phone);
+  fetchOrders();
   // const normalizedInput = normalizePhone(event);
   // const results = filteredOrders?.value?.filter((item) => {
   //   const normalizedUserPhone = normalizePhone(item?.userPhone);
@@ -116,9 +113,8 @@ const handlePhone = (event: string) => {
 const handleOrderNumber = (event: any) => {
   const value = String(event?.value);
   orderNumber.value = value;
-  fetchOrders()
-  console.log(' handleOrderNumber,value',value)
-
+  fetchOrders();
+  console.log(" handleOrderNumber,value", value);
 };
 const changeOption = () => {
   orders.value = filteredOrders?.value;

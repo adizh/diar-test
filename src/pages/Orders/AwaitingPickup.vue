@@ -13,7 +13,7 @@
         />
       </div>
     </div>
-    <Card v-if="!store.getters.getAwaitingPickupOrders?.length">
+    <Card v-if="!store.getters.getAwaitingPickupOrders">
       <template #content>Нет данных</template>
     </Card>
 
