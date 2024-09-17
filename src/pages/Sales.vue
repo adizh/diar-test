@@ -2,9 +2,13 @@
   <div class="section">
     <div class="mb-5">
       <div class="flex flex-row gap-4 align-items-start mb-5">
+
         <p>Распродажи</p>
+
         <Button
+
           type="button"
+
           label="Добавить распродажу"
           @click="isModalVisible = true"
         ></Button>
@@ -157,12 +161,21 @@ const createSale = async () => {
           detail: "Распродажа добавлена!",
         });
       }
-    } catch (err) {
-      console.log(err);
-    } finally {
       isModalVisible.value = false;
       fetchSales();
-    }
+    } catch (err:any) {
+      isModalVisible.value = true
+      console.log(err);
+      if(err.response.data.developerMessage.includes('value too long')){
+        toast.add({
+          severity: "error",
+          summary: "Ошибка",
+          detail: "Название слишком длинное!",
+        });
+      }
+
+    } 
+  
   } else {
     toast.add({
       severity: "error",

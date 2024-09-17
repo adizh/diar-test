@@ -101,13 +101,20 @@ const createNews = async () => {
           summary: "Успешно",
           detail: "Новость добавлена!",
         });
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      isModalVisible.value = false;
+        isModalVisible.value = false;
       fetchNews();
+      }
+    } catch (err:any) {
+      if(err.response.data.developerMessage.includes('value too long')){
+        toast.add({
+          severity: "error",
+          summary: "Ошибка",
+          detail: "Название слишком длинное!",
+        });
+      }
+      console.log(err);
     }
+    
   } else {
     toast.add({
       severity: "error",
