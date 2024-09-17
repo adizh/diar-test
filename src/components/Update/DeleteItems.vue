@@ -61,7 +61,7 @@
     <Dialog
       v-model:visible="categoryModal"
       header="Удалить категорию"
-      style="width: 30rem"
+      style="width: 33rem"
       modal
     >
       <div class="card flex flex-column gap-3 w-full">
@@ -74,7 +74,7 @@
           optionLabel="name"
           placeholder="Выбрать категорию"
           filter
-          class="w-full md:w-14rem"
+          class="w-full md:w-18rem"
           id="category"
         />
       </div>
@@ -119,7 +119,7 @@
           optionLabel="name"
           placeholder="Выбрать контейнер"
           filter
-          class="w-full md:w-14rem"
+          class="w-full md:w-18rem"
           id="container"
           @change="handleContainer"
         />

@@ -12,7 +12,7 @@
     header="Добавить категорию"
     v-model:visible="isModalVisible"
     modal
-    style="width: 25rem"
+    style="width: 35rem"
   >
     <div class="flex flex-column gap-3 mb-5">
       <label for="email" class="font-semibold">Название категории</label>
@@ -38,7 +38,7 @@
     header="Добавить контейнер"
     v-model:visible="isModalContainer"
     modal
-    style="width: 25rem"
+    style="width: 32rem"
   >
     <div class="flex flex-column gap-3 mb-5">
       <label for="email" class="font-semibold">Название контейнера</label>
@@ -97,9 +97,11 @@
 
     <div class="flex flex-column gap-3 mb-5">
       <label for="name" class="font-semibold">Описание</label>
-      <InputText
+      <Textarea
+      autoResize
         id="name"
         class="flex-auto"
+        rows="5" cols="30"
         autocomplete="off"
         v-model.trim="foodDescription"
       />
