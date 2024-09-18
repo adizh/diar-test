@@ -1,4 +1,4 @@
-vbas3
+
 <template>
   <div class="section">
     <div class="flex justify-content-between">
@@ -92,22 +92,8 @@ const normalizePhone = (phone: string) => {
 };
 
 const handlePhone = (event: string) => {
-  //+996 (999) 98-85-37
   phone.value = `+996 ${event}`;
-  console.log("handle hpeoin event", event);
-  console.log("handle hpeoin phone", phone);
   fetchOrders();
-  // const normalizedInput = normalizePhone(event);
-  // const results = filteredOrders?.value?.filter((item) => {
-  //   const normalizedUserPhone = normalizePhone(item?.userPhone);
-  //   return normalizedUserPhone.includes(normalizedInput);
-  // });
-
-  // if (event?.length > 0) {
-  //   orders.value = results;
-  // } else {
-  //   orders.value = filteredOrders?.value;
-  // }
 };
 
 const handleOrderNumber = (event: any) => {
@@ -116,8 +102,13 @@ const handleOrderNumber = (event: any) => {
   fetchOrders();
   console.log(" handleOrderNumber,value", value);
 };
+
 const changeOption = () => {
+  console.log('change option')
+  orderNumber.value=''
+  phone.value=''
   orders.value = filteredOrders?.value;
+  fetchOrders();
 };
 
 onMounted(() => {

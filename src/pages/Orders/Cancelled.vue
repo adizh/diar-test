@@ -86,9 +86,7 @@ const fetchAwaitingOrders = async () => {
   }
 };
 
-const normalizePhone = (phone: string) => {
-  return phone.replace(/[^\d]/g, "");
-};
+
 
 const handlePhone = (event: string) => {
   orderNumber.value = "";
@@ -99,16 +97,7 @@ const handlePhone = (event: string) => {
     console.log("phone  ", phone);
   }
   fetchAwaitingOrders();
-  // const normalizedInput = normalizePhone(event);
-  // const results = filteredOrders?.value?.filter((item) => {
-  //   const normalizedUserPhone = normalizePhone(item?.userPhone);
-  //   return normalizedUserPhone.includes(normalizedInput);
-  // });
-  // if (event?.length > 0) {
-  //   awaitingOrders.value = results;
-  // } else {
-  //   awaitingOrders.value = filteredOrders?.value;
-  // }
+
 };
 
 const handleOrderNumber = (event: any) => {
@@ -117,20 +106,15 @@ const handleOrderNumber = (event: any) => {
   orderNumber.value = value;
 
   fetchAwaitingOrders();
-  // const results = filteredOrders?.value?.filter((item) =>
-  //   String(item?.orderNumber)?.includes(value),
-  // );
 
-  // if (value && value?.length > 0) {
-  //   awaitingOrders.value = results;
-  // }
-  // if (value === "null") {
-  //   awaitingOrders.value = filteredOrders.value;
-  // }
 };
 
 const changeOption = () => {
   awaitingOrders.value = filteredOrders?.value;
+  orderNumber.value=''
+  phone.value=''
+  fetchAwaitingOrders();
+
 };
 
 onMounted(() => {

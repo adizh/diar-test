@@ -14,6 +14,7 @@
       </div>
     </div>
     <Card v-if="!store.getters.getAwaitingPickupOrders">
+
       <template #content>Нет данных</template>
     </Card>
 
@@ -66,7 +67,7 @@ onMounted(() => {
 });
 
 intervalId = setInterval(() => {
-  store.dispatch("fetchAwaitingPickup");
+ store.dispatch("fetchAwaitingPickup");
 }, 5000);
 
 onBeforeUnmount(() => {

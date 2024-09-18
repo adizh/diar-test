@@ -255,7 +255,9 @@ const store: Store<State> = createStore({
     },
 
     filterAwaitingPickupOrderNumber({ state }, orderNumber: number) {
+
       const value = String(orderNumber);
+      console.log('filter order by number',orderNumber)
       const results = state.awaitingPickupOrdersFilter?.filter((item) =>
         String(item?.orderNumber)?.includes(value),
       );
@@ -263,8 +265,8 @@ const store: Store<State> = createStore({
 
       if (results?.length) {
         state.awaitingPickupOrders = results;
-      } else {
-        state.awaitingPickupOrders = state.awaitingPickupOrdersFilter;
+      } else if(!results.length && orderNumber===null) {
+       state.awaitingPickupOrders = state.awaitingPickupOrdersFilter;
       }
     },
     filterAwaitingPickupOrderPhone({ state }, phone: string) {

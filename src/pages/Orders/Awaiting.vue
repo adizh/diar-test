@@ -38,6 +38,7 @@
       <span class="p-text-secondary block mb-5">Создать заказ</span>
       <div class="flex flex-column gap-3 mb-5">
         <label for="address" class="font-semibold">Адрес</label>
+
         <InputText
           id="address"
           class="flex-auto"
@@ -207,7 +208,7 @@ import Order from "@/components/Order.vue";
 import { useStore } from "vuex";
 import { useToast } from "primevue/usetoast";
 import PhoneCodeFilters from "@/components/UI/PhoneCodeFilters.vue";
-import { useRouter } from "vue-router";
+
 const noOrder = ref("");
 const toast = useToast();
 const awaitingOrders = ref<AwaitingOrder[]>([]);

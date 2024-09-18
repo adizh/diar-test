@@ -38,8 +38,6 @@ import { AwaitingOrder } from "@/types/Order";
 import { onMounted } from "vue";
 import Order from "@/components/Order.vue";
 import PhoneCodeFilters from "@/components/UI/PhoneCodeFilters.vue";
-
-const noOrder = ref("");
 const orderNumber = ref("");
 const phone = ref("");
 const orders = ref<AwaitingOrder[]>([]);
@@ -90,26 +88,13 @@ const fetchOrders = async () => {
   }
 };
 
-const normalizePhone = (phone: string) => {
-  return phone.replace(/[^\d]/g, "");
-};
+
 
 const handlePhone = (event: string) => {
   orderNumber.value = "";
   phone.value = `+996 ${event}`;
-
   fetchOrders();
-  // const normalizedInput = normalizePhone(event);
-  // const results = filteredOrders?.value?.filter((item) => {
-  //   const normalizedUserPhone = normalizePhone(item?.userPhone);
-  //   return normalizedUserPhone.includes(normalizedInput);
-  // });
 
-  // if (event?.length > 0) {
-  //   orders.value = results;
-  // } else {
-  //   orders.value = filteredOrders?.value;
-  // }
 };
 
 const handleOrderNumber = (event: any) => {
@@ -118,20 +103,14 @@ const handleOrderNumber = (event: any) => {
 
   orderNumber.value = value;
   fetchOrders();
-  // const results = filteredOrders?.value?.filter((item) =>
-  //   String(item?.orderNumber)?.includes(value),
-  // );
 
-  // if (value && value?.length > 0) {
-  //   orders.value = results;
-  // }
-  // if (value === "null") {
-  //   orders.value = filteredOrders.value;
-  // }
 };
 
 const changeOption = () => {
   orders.value = filteredOrders?.value;
+  orderNumber.value=''
+  phone.value=''
+  fetchOrders()
 };
 
 onMounted(() => {
