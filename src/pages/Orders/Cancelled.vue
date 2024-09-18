@@ -7,6 +7,7 @@
         @changeOption="changeOption"
         @handlePhone="handlePhone"
         @handleOrderNumber="handleOrderNumber"
+
       />
     </div>
 
@@ -57,17 +58,23 @@ type Param = {
   page: number;
   phone?: string;
 };
+
 const fetchAwaitingOrders = async () => {
+
   let params: Param = {
     page: currentPage?.value,
   };
 
-  if (orderNumber?.value) {
+  if (orderNumber?.value !== 'null' && orderNumber.value.length>0) {
     params.orderNumber = orderNumber?.value;
+  }else{
+    params.orderNumber=''
   }
+
   if (phone?.value) {
     params.phone = phone?.value;
   }
+
   try {
     const response = await http({
       method: "get",
@@ -81,7 +88,9 @@ const fetchAwaitingOrders = async () => {
       filteredOrders.value = response.data.orderResponse;
       totalItems.value = response.data?.totalItems;
     }
-  } catch (err) {
+  } 
+
+  catch (err) {
     console.log(err);
   }
 };
@@ -94,6 +103,8 @@ const handlePhone = (event: string) => {
 
     console.log("phone  ", phone);
   }
+
+currentPage.value=1
   fetchAwaitingOrders();
 };
 
@@ -101,12 +112,15 @@ const handleOrderNumber = (event: any) => {
   const value = String(event?.value);
   phone.value = "";
   orderNumber.value = value;
+  currentPage.value=1
+
 
   fetchAwaitingOrders();
 };
 
 const changeOption = () => {
   awaitingOrders.value = filteredOrders?.value;
+
   orderNumber.value = "";
   phone.value = "";
   fetchAwaitingOrders();

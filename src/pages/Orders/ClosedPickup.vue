@@ -61,12 +61,12 @@ const fetchOrders = async () => {
       page: currentPage?.value,
     };
     if (
-      orderNumber?.value &&
-      orderNumber?.value !== null &&
-      orderNumber !== null
+      orderNumber?.value.length &&
+      orderNumber?.value !== 'null' 
     ) {
-      params.orderNumber =
-        orderNumber?.value === null ? "" : orderNumber?.value;
+      params.orderNumber = orderNumber?.value;
+    }else{
+      params.orderNumber=''
     }
     if (phone?.value) {
       params.phone = phone.value || "";

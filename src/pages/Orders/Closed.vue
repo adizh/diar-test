@@ -10,6 +10,7 @@
     </div>
     <Card v-if="!orders?.length">
       <template #content>Нет данных</template>
+
     </Card>
 
     <div v-else class="card-list">
@@ -62,8 +63,10 @@ const fetchOrders = async () => {
     let params: Params = {
       page: currentPage?.value,
     };
-    if (orderNumber?.value) {
+    if (orderNumber?.value!=='null' && orderNumber.value.length) {
       params.orderNumber = orderNumber?.value;
+    }else{
+      params.orderNumber=''
     }
     if (phone?.value) {
       params.phone = phone?.value;
@@ -92,14 +95,16 @@ const normalizePhone = (phone: string) => {
 
 const handlePhone = (event: string) => {
   phone.value = `+996 ${event}`;
+  currentPage.value=1
   fetchOrders();
 };
 
 const handleOrderNumber = (event: any) => {
   const value = String(event?.value);
   orderNumber.value = value;
+  currentPage.value=1
   fetchOrders();
-  console.log(" handleOrderNumber,value", value);
+
 };
 
 const changeOption = () => {

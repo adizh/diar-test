@@ -63,8 +63,10 @@ const fetchOrders = async () => {
       page:currentPage.value
     }
 
-    if(orderNumber?.value){
+    if(orderNumber?.value!=='null' && orderNumber.value.length){
       queries.orderNumber=orderNumber.value
+    }else{
+      queries.orderNumber=''
     }
     if(phone?.value){
       queries.phone=phone.value
@@ -92,6 +94,7 @@ const fetchOrders = async () => {
 
 const handlePhone = (event: string) => {
   phone.value = `+996 ${event}`;
+  currentPage.value=1
   fetchOrders()
 };
 
@@ -99,6 +102,7 @@ const handleOrderNumber = (event: any) => {
   const value = String(event?.value);
   console.log('value',value)
   orderNumber.value = value;
+  currentPage.value=1
   fetchOrders()
 };
 
