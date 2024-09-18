@@ -7,6 +7,7 @@
         @changeOption="changeOption"
         @handlePhone="handlePhone"
         @handleOrderNumber="handleOrderNumber"
+
       />
     </div>
 
@@ -38,8 +39,14 @@ import { AwaitingOrder } from "@/types/Order";
 import { onMounted } from "vue";
 import Order from "@/components/Order.vue";
 import PhoneCodeFilters from "@/components/UI/PhoneCodeFilters.vue";
+type QueryType ={
+  orderNumber?:string,
+  phone?:string,
+  page:number
+}
+const orderNumber=ref('');
+const phone=ref('');
 
-const noOrder = ref("");
 const orders = ref<AwaitingOrder[]>([]);
 const filteredOrders = ref<AwaitingOrder[]>([]);
 const currentPage = ref(1);
@@ -52,9 +59,23 @@ const changePage = (event: { page: number }) => {
 };
 const fetchOrders = async () => {
   try {
-    const response = (await http.get(
-      `admin/get-all-cancel-pickup-orders?page=${currentPage?.value}`,
-    )) as any;
+    let queries:QueryType={
+      page:currentPage.value
+    }
+
+    if(orderNumber?.value){
+      queries.orderNumber=orderNumber.value
+    }
+    if(phone?.value){
+      queries.phone=phone.value
+    }
+
+    const response = await http({
+      method:'get',
+      params:queries,
+      url:`admin/get-all-cancel-pickup-orders`
+    })
+
     console.log("response cancelled pickup", response);
 
     if (response.status == 200) {
@@ -67,39 +88,25 @@ const fetchOrders = async () => {
   }
 };
 
-const normalizePhone = (phone: string) => {
-  return phone.replace(/[^\d]/g, "");
-};
+
 
 const handlePhone = (event: string) => {
-  const normalizedInput = normalizePhone(event);
-  const results = filteredOrders?.value?.filter((item) => {
-    const normalizedUserPhone = normalizePhone(item?.userPhone);
-    return normalizedUserPhone.includes(normalizedInput);
-  });
-  if (event?.length > 0) {
-    orders.value = results;
-  } else {
-    orders.value = filteredOrders?.value;
-  }
+  phone.value = `+996 ${event}`;
+  fetchOrders()
 };
 
 const handleOrderNumber = (event: any) => {
   const value = String(event?.value);
-  const results = filteredOrders?.value?.filter((item) =>
-    String(item?.orderNumber)?.includes(value),
-  );
-
-  if (value && value?.length > 0) {
-    orders.value = results;
-  }
-  if (value === "null") {
-    orders.value = filteredOrders.value;
-  }
+  console.log('value',value)
+  orderNumber.value = value;
+  fetchOrders()
 };
 
 const changeOption = () => {
   orders.value = filteredOrders?.value;
+  orderNumber.value=''
+  phone.value=''
+  fetchOrders()
 };
 onMounted(() => {
   fetchOrders();
