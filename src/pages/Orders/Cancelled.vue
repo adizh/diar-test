@@ -86,8 +86,6 @@ const fetchAwaitingOrders = async () => {
   }
 };
 
-
-
 const handlePhone = (event: string) => {
   orderNumber.value = "";
   phone.value = `+996 ${event}`;
@@ -97,7 +95,6 @@ const handlePhone = (event: string) => {
     console.log("phone  ", phone);
   }
   fetchAwaitingOrders();
-
 };
 
 const handleOrderNumber = (event: any) => {
@@ -106,15 +103,13 @@ const handleOrderNumber = (event: any) => {
   orderNumber.value = value;
 
   fetchAwaitingOrders();
-
 };
 
 const changeOption = () => {
   awaitingOrders.value = filteredOrders?.value;
-  orderNumber.value=''
-  phone.value=''
+  orderNumber.value = "";
+  phone.value = "";
   fetchAwaitingOrders();
-
 };
 
 onMounted(() => {

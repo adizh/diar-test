@@ -1,13 +1,12 @@
 <template>
   <Card class="list-card">
     <template #title>
-<div class='flex justify-content-end mb-1'>
-  <Button severity="danger" icon="pi pi-trash" @click="confirmDelete" />
-</div>
+      <div class="flex justify-content-end mb-1">
+        <Button severity="danger" icon="pi pi-trash" @click="confirmDelete" />
+      </div>
 
       <div class="flex flex-row justify-content-between">
         <span> Название: {{ sale?.name }} </span>
- 
       </div>
     </template>
     <template #content>
@@ -51,7 +50,6 @@ const deleteSale = async () => {
     });
     console.log(response);
     if (response.status === 200) {
-
       toast.add({
         severity: "success",
         detail: "Акция удалена!",

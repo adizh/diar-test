@@ -54,7 +54,6 @@ const normalizePhone = (phone: string) => {
 };
 
 const handlePhone = (event: string) => {
-  
   const normalizedInput = normalizePhone(event);
   const results = filterOrders?.value?.filter((item) => {
     const normalizedUserPhone = normalizePhone(item?.userPhone);

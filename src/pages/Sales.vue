@@ -2,13 +2,10 @@
   <div class="section">
     <div class="mb-5">
       <div class="flex justify-content-between align-items-center mb-5">
-
         <p>Распродажи</p>
 
         <Button
-
           type="button"
-
           label="Добавить распродажу"
           @click="isModalVisible = true"
         ></Button>
@@ -167,19 +164,17 @@ const createSale = async () => {
       }
       isModalVisible.value = false;
       fetchSales();
-    } catch (err:any) {
-      isModalVisible.value = true
+    } catch (err: any) {
+      isModalVisible.value = true;
       console.log(err);
-      if(err.response.data.developerMessage.includes('value too long')){
+      if (err.response.data.developerMessage.includes("value too long")) {
         toast.add({
           severity: "error",
           summary: "Ошибка",
           detail: "Название слишком длинное!",
         });
       }
-
-    } 
-  
+    }
   } else {
     toast.add({
       severity: "error",

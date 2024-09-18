@@ -88,13 +88,10 @@ const fetchOrders = async () => {
   }
 };
 
-
-
 const handlePhone = (event: string) => {
   orderNumber.value = "";
   phone.value = `+996 ${event}`;
   fetchOrders();
-
 };
 
 const handleOrderNumber = (event: any) => {
@@ -103,14 +100,13 @@ const handleOrderNumber = (event: any) => {
 
   orderNumber.value = value;
   fetchOrders();
-
 };
 
 const changeOption = () => {
   orders.value = filteredOrders?.value;
-  orderNumber.value=''
-  phone.value=''
-  fetchOrders()
+  orderNumber.value = "";
+  phone.value = "";
+  fetchOrders();
 };
 
 onMounted(() => {

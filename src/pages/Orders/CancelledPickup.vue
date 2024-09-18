@@ -100,7 +100,6 @@ const handleOrderNumber = (event: any) => {
 
 const changeOption = () => {
   orders.value = filteredOrders?.value;
-  
 };
 onMounted(() => {
   fetchOrders();

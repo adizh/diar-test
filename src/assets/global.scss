@@ -33,7 +33,7 @@ li {
   @include flex(row, start, center);
 }
 
-.position-right{
+.position-right {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 20px;

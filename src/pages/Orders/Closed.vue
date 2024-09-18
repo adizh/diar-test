@@ -1,4 +1,3 @@
-
 <template>
   <div class="section">
     <div class="flex justify-content-between">
@@ -104,9 +103,9 @@ const handleOrderNumber = (event: any) => {
 };
 
 const changeOption = () => {
-  console.log('change option')
-  orderNumber.value=''
-  phone.value=''
+  console.log("change option");
+  orderNumber.value = "";
+  phone.value = "";
   orders.value = filteredOrders?.value;
   fetchOrders();
 };

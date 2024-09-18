@@ -3,13 +3,11 @@
     <div class="flex justify-content-between align-items-center mb-5">
       <p>Новости</p>
       <Button
-      type="button"
-      label="Добавить новость"
-      @click="isModalVisible = true"
-    ></Button>
+        type="button"
+        label="Добавить новость"
+        @click="isModalVisible = true"
+      ></Button>
     </div>
-
-    
 
     <div class="flex flex-row gap-4 flex-wrap" v-if="news.length">
       <ItemsNews v-for="item in news" :key="item?.name" :news="item" />
@@ -108,10 +106,10 @@ const createNews = async () => {
           detail: "Новость добавлена!",
         });
         isModalVisible.value = false;
-      fetchNews();
+        fetchNews();
       }
-    } catch (err:any) {
-      if(err.response.data.developerMessage.includes('value too long')){
+    } catch (err: any) {
+      if (err.response.data.developerMessage.includes("value too long")) {
         toast.add({
           severity: "error",
           summary: "Ошибка",
@@ -120,7 +118,6 @@ const createNews = async () => {
       }
       console.log(err);
     }
-    
   } else {
     toast.add({
       severity: "error",

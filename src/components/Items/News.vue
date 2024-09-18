@@ -59,7 +59,6 @@ const deleteNews = async () => {
       });
       setTimeout(() => {
         window.location.reload();
-        
       }, 1000);
     }
   } catch (err) {

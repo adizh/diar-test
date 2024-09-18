@@ -37,12 +37,20 @@
         id="password"
         class="flex-auto pr-3"
         autocomplete="off"
-        :type="isPasswordOpen? 'text':'password'"
+        :type="isPasswordOpen ? 'text' : 'password'"
         v-model="forms.password"
       />
 
-      <span class="pi pi-eye password-eye" @click="isPasswordOpen=false" v-if="isPasswordOpen"></span>
-      <span class="pi pi-eye-slash password-eye" @click="isPasswordOpen=true" v-else></span>
+      <span
+        class="pi pi-eye password-eye"
+        @click="isPasswordOpen = false"
+        v-if="isPasswordOpen"
+      ></span>
+      <span
+        class="pi pi-eye-slash password-eye"
+        @click="isPasswordOpen = true"
+        v-else
+      ></span>
     </div>
 
     <Button label="Отправить" severity="info" @click="editCourier" />
@@ -70,7 +78,7 @@ const emit = defineEmits(["closeModal"]);
 const courier = ref({} as Courier);
 const store = useStore();
 
-const isPasswordOpen=ref(false)
+const isPasswordOpen = ref(false);
 const fetchCourierId = async () => {
   try {
     const response = await http(
@@ -138,18 +146,15 @@ const editCourier = async () => {
 </script>
 
 <style scoped>
-.password-block{
-  position:relative;
+.password-block {
+  position: relative;
 }
 
-.password-eye{
-  position:absolute;
-  top:65%;
-  right:10px;
+.password-eye {
+  position: absolute;
+  top: 65%;
+  right: 10px;
 
   background: white;
 }
-
-
-
 </style>
