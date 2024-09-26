@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 8080
+EXPOSE 4173
 RUN npm run build
 RUN ls -a
 
