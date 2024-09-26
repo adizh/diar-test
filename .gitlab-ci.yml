@@ -9,10 +9,7 @@ build_and_deploy:
   tags:
     - diar-admin-web
   script:
-    - apk update
-    - apk add --no-cache nodejs npm docker
-    - npm install
-    - npm run build
+
     - docker stop diar_admin_web || true
     - docker rm diar_admin_web || true
     - docker rmi -f diar_admin_web || true
