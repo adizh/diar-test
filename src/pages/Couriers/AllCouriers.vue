@@ -23,10 +23,10 @@
         v-model:visible="visible"
         modal
         header="Создать курьера"
-        :style="{ width: '25rem' }"
+        :style="{ width: '30rem' }"
       >
         <span class="p-text-secondary block mb-5">Информация о курьере.</span>
-        <div class="flex align-items-center gap-3 mb-3">
+        <div class="flex flex-column gap-3 mb-3">
           <label for="username" class="font-semibold w-6rem">ФИО</label>
           <InputText
             id="username"
@@ -35,7 +35,7 @@
             v-model.trim="username"
           />
         </div>
-        <div class="flex align-items-center gap-3 mb-5">
+        <div class="flex flex-column gap-3 mb-5">
           <label for="email" class="font-semibold w-6rem">Почта</label>
           <InputText
             id="email"
@@ -44,8 +44,8 @@
             v-model.trim="email"
           />
         </div>
-        <div class="flex align-items-center gap-3 mb-5">
-          <label for="phone" class="font-semibold w-6rem">Номер телефона</label>
+        <div class="flex flex-column gap-3 mb-5">
+          <label for="phone" class="font-semibold">Номер телефона</label>
           <InputMask
             id="phone"
             v-model="phone"
@@ -53,7 +53,7 @@
             placeholder="+996 (700) 11-11-11"
           />
         </div>
-        <div class="flex align-items-center gap-2 mb-5">
+        <div class="flex flex-column gap-2 mb-5">
           <label for="password" class="font-semibold w-6rem">Пароль</label>
           <Password
             id="password"
@@ -141,16 +141,16 @@ onMounted(() => {
 @import "@/assets/mixins.scss";
 
 input {
-  width: 50% !important;
   max-width: 100% !important;
+  width: 100%;
 }
 
 :deep(input.p-inputtext.p-component.p-password-input) {
-  width: 95% !important;
-  margin-left: 22px !important;
+  width: 100% !important;
+
 }
 
 :deep(.p-inputmask) {
-  width: 70% !important;
+  width: 100% !important;
 }
 </style>
