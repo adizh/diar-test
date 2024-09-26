@@ -14,6 +14,6 @@ build_and_deploy:
     - docker rm diar_admin_web || true
     - docker rmi -f diar_admin_web || true
     - docker build -t diar_admin_web:latest .
-    - docker run -d --name diar_admin_web -p 4173:4173 diar_admin_web:latest
+    - docker run -d --name diar_admin_web -p 8000:8000 diar_admin_web:latest
   only:
     - adinai
