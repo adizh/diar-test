@@ -53,14 +53,27 @@
             placeholder="+996 (700) 11-11-11"
           />
         </div>
-        <div class="flex flex-column gap-2 mb-5">
+        <div class="flex flex-column gap-2 mb-5 password-block">
           <label for="password" class="font-semibold w-6rem">Пароль</label>
-          <Password
+          <InputText
             id="password"
             class="flex-auto"
             autocomplete="off"
             v-model="password"
+
+            :type="isPasswordOpen ? 'text' : 'password'"
           />
+
+          <span
+          class="pi pi-eye password-eye"
+          @click="isPasswordOpen = false"
+          v-if="isPasswordOpen"
+        ></span>
+        <span
+          class="pi pi-eye-slash password-eye"
+          @click="isPasswordOpen = true"
+          v-else
+        ></span>
         </div>
         <div class="flex justify-content-end gap-2">
           <Button
@@ -94,6 +107,7 @@ const phone = ref("");
 const store = useStore();
 const password = ref("");
 const toast = useToast();
+const isPasswordOpen =ref(false)
 const createCourier = async () => {
   if (
     username.value?.length > 0 &&
@@ -108,7 +122,7 @@ const createCourier = async () => {
     };
     try {
       const response = await http.post("admin/create-courier", body);
-      console.log(response.status, "response create a courier");
+      console.log( "response create a courier",response);
       if (response.status === 200) {
         toast.add({
           severity: "success",
@@ -152,5 +166,17 @@ input {
 
 :deep(.p-inputmask) {
   width: 100% !important;
+}
+
+.password-block {
+  position: relative;
+}
+
+.password-eye {
+  position: absolute;
+  top: 60%;
+  right: 10px;
+
+  background: white;
 }
 </style>

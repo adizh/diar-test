@@ -28,6 +28,7 @@
         v-model.trim="forms.phone"
         mask="+996 (999) 99-99-99"
         placeholder="+996 (700) 11-11-11"
+        
       />
     </div>
 
