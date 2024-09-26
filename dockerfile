@@ -8,8 +8,8 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 4173
+EXPOSE 3000
 RUN npm run build
 RUN ls -a
 
-CMD ["npm", "run", "preview"]
+CMD ["npm", "run", "dev"]
