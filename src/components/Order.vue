@@ -79,7 +79,9 @@
               >
               <span
                 ><span class="order-name">Сдача c</span>:
-                {{ order?.sdacha }}</span
+
+                <span class="bold-big-txt">  {{ order?.sdacha }}</span>
+</span
               >
               <span class="long-info-status"
                 ><span class="order-name">Статус</span>:
@@ -101,7 +103,7 @@
 
               <span>
                 <span class="order-name">Комментарий</span>:
-                {{ order?.comment }}</span
+                <span class="bold-big-txt">{{ order?.comment }}  </span>  </span
               >
 
               <span
@@ -566,6 +568,11 @@ onUnmounted(() => {
 .slide-fade-leave-to {
   transform: translateY(-5%);
   opacity: 0;
+}
+
+.bold-big-txt{
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .open {

@@ -28,12 +28,12 @@
         v-model.trim="forms.phone"
         mask="+996 (999) 99-99-99"
         placeholder="+996 (700) 11-11-11"
-        
+
       />
     </div>
 
     <div class="flex flex-column gap-3 mb-5 password-block">
-      <label for="password" class="font-semibold">Пароль</label>
+      <label for="password" class="font-semibold">Новый пароль</label>
       <InputText
         id="password"
         class="flex-auto pr-3"
@@ -98,7 +98,7 @@ onMounted(async () => {
   await fetchCourierId();
   console.log("courier", courier);
   for (const key in courier.value) {
-    if (key === "active" || key === "role") continue;
+    if (key === "active" || key === "role" || key==='password') continue;
     forms.value[key as keyof typeof forms.value] = courier.value[
       key as keyof typeof courier.value
     ] as any;
@@ -106,9 +106,11 @@ onMounted(async () => {
 });
 
 const editCourier = async () => {
-  const isError = Object.values(forms.value)?.every(
-    (value) => value?.trim()?.length > 0,
-  );
+  const isError = Object.entries(forms.value)
+
+  .filter(([key]) => key !== 'password')
+
+  .every(([, value]) => value?.trim()?.length > 0);
 
   if (isError) {
     const body = {

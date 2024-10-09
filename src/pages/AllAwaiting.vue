@@ -43,10 +43,10 @@
         <div v-else>
           <div class="flex gap-1 align-items-center mb-3">
             Заказы в ожидании (самовывоз)
-            <Badge
+            <!-- <Badge
               :value="store.getters.getAwaitingPickupOrders"
               severity="danger"
-            ></Badge>
+            ></Badge> -->
           </div>
           <div>
             <div
