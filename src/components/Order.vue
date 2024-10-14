@@ -156,7 +156,7 @@
               <span
                 ><span class="order-name">Запрошенное время</span>: <span class="requested-time">
                   {{
-                    order?.timeRequest
+                    formatDateTime(order?.timeRequest)
                     
                   }}
                 </span></span
@@ -323,7 +323,11 @@ type Status = {
   code: string;
 };
 const isOpen = ref(false);
-
+function formatDateTime(dateTimeStr:string) {
+  const [date, time] = dateTimeStr.split(' '); 
+  const [year, month, day] = date.split('-');  
+  return `${day}.${month}.${year} ${time}`;  
+}
 const statusOptions = ref([
   { name: "Отправить на кухню", code: "the order is being prepared" },
   { name: "Закончить заказ", code: "Finished" },
