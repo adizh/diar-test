@@ -6,7 +6,7 @@
           <p>№ {{ order?.orderNumber }}</p>
 
           <span>
-            <span class="order-name">Тел</span> :{{ order?.userPhone }}</span
+            <span class="order-name">Тел</span>: {{ order?.userPhone }}</span
           >
         </div>
 
@@ -97,7 +97,7 @@
               >
 
               <span v-if="totalFoodsCount"
-                ><span class="order-name"> Общее кол-во блюд </span>:
+                ><span class="order-name"> Общее кол-во блюд</span>:
                 {{ totalFoodsCount }}</span
               >
 
@@ -154,9 +154,12 @@
                 }}</span
               >
               <span
-                ><span class="order-name">Запрошенное время</span>:{{
-                  order?.timeRequest
-                }}</span
+                ><span class="order-name">Запрошенное время</span>: <span class="requested-time">
+                  {{
+                    order?.timeRequest
+                    
+                  }}
+                </span></span
               >
             </div>
           </div>
@@ -552,6 +555,12 @@ onUnmounted(() => {
   flex-direction: column;
 }
 
+.requested-time{
+font-size: 19px;
+font-weight: 600;
+color:#1f2e53;
+}
+
 .long-info {
   max-width: 400px;
 }
@@ -571,8 +580,9 @@ onUnmounted(() => {
 }
 
 .bold-big-txt{
-  font-size: 18px;
+
   font-weight: 600;
+  font-size: 19px;
 }
 
 .open {
