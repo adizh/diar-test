@@ -3,6 +3,7 @@
     <template #title>
       <div class="flex flex-row gap-3 align-items-start">
         <div class="flex flex-column mb-2">
+          <p v-if="order?.prepareFor?.length" class="prepare-for">Время вывоза: <span class="prepareFor">{{ order?.prepareFor }}</span></p>
           <p>№ {{ order?.orderNumber }}</p>
 
           <span>
@@ -149,7 +150,7 @@
                 }}</span
               >
               <span v-if="order?.prepareFor?.length"
-                ><span class="order-name">Время</span>: <span class="prepareFor">{{
+                ><span class="order-name prepare-for">Приготовить к</span>: <span class="prepareFor">{{
                   order?.prepareFor
                 }}</span></span
               >
@@ -592,9 +593,11 @@ color:#1f2e53;
 .open {
   width: 95% !important;
 }
-
-.prepareFor{
-  font-size: 19px;
+.prepare-for {
+  font-size: 28px;
+}
+.prepareFor {
+  font-size: 36px;
   font-weight: 700;
   color:rgb(238, 50, 50);
 }
