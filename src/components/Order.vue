@@ -148,10 +148,10 @@
                   order?.paymentMethod
                 }}</span
               >
-              <span v-if="from === 'awaiting-pickup'"
-                ><span class="order-name">Время</span>:{{
+              <span v-if="order?.prepareFor?.length"
+                ><span class="order-name">Время</span>: <span class="prepareFor">{{
                   order?.prepareFor
-                }}</span
+                }}</span></span
               >
               <span
                 ><span class="order-name">Запрошенное время</span>: <span class="requested-time">
@@ -591,5 +591,11 @@ color:#1f2e53;
 
 .open {
   width: 95% !important;
+}
+
+.prepareFor{
+  font-size: 19px;
+  font-weight: 700;
+  color:rgb(238, 50, 50);
 }
 </style>
